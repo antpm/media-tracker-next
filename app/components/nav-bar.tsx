@@ -42,7 +42,7 @@ export default function Navbar() {
     return (
         <>
             {currentUser &&
-                <div className="w-48 mr-6">
+                <div className="w-48">
                     <div className="h-full w-fit fixed flex flex-col bg-purple-800 shadow-2xl shadow-black">
                         <button className="mr-2 ml-auto flex flex-row border-b-2 border-purple-950 w-full place-content-end bg-purple-900" onClick={changeMenu}>
                             {isOpen ? (
