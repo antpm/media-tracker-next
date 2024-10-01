@@ -15,20 +15,11 @@ export default function Login() {
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             setCurrentUser(user);
-            console.log("authState change user: ", user);
-            if(user){
-                router.push("/");
-            }
+            user && router.push("/");
         });
-        
         return () => unsubscribe();
     }, []);
 
-    /* useEffect(()=>{
-        if (currentUser){
-            router.push("/");
-        }
-    }, [currentUser]); */
 
     async function handleLogin() {
         try {
@@ -42,15 +33,15 @@ export default function Login() {
 
     return (
         <div className="w-full h-full">
-            {!currentUser && <div className="flex flex-col w-full h-full">
-            <div className="flex flex-col w-fit m-auto">
-                <h1>Log In</h1>
-                <input className="text-black" type="email" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-                <input className="text-black" type="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-                <button type="submit" onClick={handleLogin}>Submit</button>
-            </div>
-        </div>}
+            {!currentUser &&
+                <div className="flex flex-col w-full h-full">
+                    <div className="flex flex-col w-fit m-auto">
+                        <h1>Log In</h1>
+                        <input className="text-black" type="email" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                        <input className="text-black" type="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                        <button type="submit" onClick={handleLogin}>Submit</button>
+                    </div>
+                </div>}
         </div>
-        
-    )
+    );
 }

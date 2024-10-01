@@ -1,8 +1,8 @@
 import { QueryDocumentSnapshot } from 'firebase/firestore';
 
-function HomeGameCard({ gameDoc }: { gameDoc: QueryDocumentSnapshot }) {
-	const game = gameDoc.data();
-	const date = game.complete.toDate();
+function HomeBookCard({ bookDoc }: { bookDoc: QueryDocumentSnapshot }) {
+	const book = bookDoc.data();
+	const date = book.complete.toDate();
 	const formattedDate = new Intl.DateTimeFormat('en-US', {
 		month: 'long',
 		day: '2-digit',
@@ -15,17 +15,14 @@ function HomeGameCard({ gameDoc }: { gameDoc: QueryDocumentSnapshot }) {
 				<p>Image Will Go here</p>
 			</div>
 			<div className=" m-2 h-full flex flex-col">
-				<p>{game.title}</p>
-				<p>{game.developer}</p>
-				<p>{game.platform}</p>
-				<p>{game.genre}</p>
+				<p>{book.title}</p>
+				<p>{book.author}</p>
+				<p>{book.genre}</p>
 				<p>{formattedDate}</p>
-				<p>{game.rating}</p>
+				<p>{book.rating}</p>
 			</div>
 		</div>
 	);
 }
 
-function ListGameCard({ gameDoc }: { gameDoc: any }) {}
-
-export { HomeGameCard, ListGameCard };
+export { HomeBookCard };
