@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from 'react';
 import { auth } from '../util/firebase/firebase-app';
-import { signInWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+import { signInWithEmailAndPassword, onAuthStateChanged, browserLocalPersistence, browserSessionPersistence } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 
 export default function Login() {
 	const [currentUser, setCurrentUser] = useState(auth.currentUser);
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
+	const [remember, setRemember] = useState(false);
 	const [errors, setErrors] = useState(false);
 	const [errorsMsg, setErrorsMsg] = useState('');
 	const router = useRouter();
@@ -30,6 +31,7 @@ export default function Login() {
 			setErrorsMsg('All fields are required');
 		} else {
 			try {
+				remember ? auth.setPersistence(browserLocalPersistence) : auth.setPersistence(browserSessionPersistence);
 				const userCredential = await signInWithEmailAndPassword(auth, email, password);
 				setCurrentUser(userCredential.user);
 				router.push('/');
@@ -49,9 +51,13 @@ export default function Login() {
 					<div className="flex flex-col bg-slate-600 rounded-lg">
 						<h1 className="mx-auto m-4 text-2xl">Log In</h1>
 						<p className="mx-2">Email*:</p>
-						<input className="text-black mx-2" type="email" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+						<input className="text-black mx-2 mb-2" type="email" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
 						<p className="mx-2">Password*:</p>
-						<input className="text-black mx-2" type="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+						<input className="text-black mx-2 mb-2" type="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+						<div className="flex mx-auto items-center">
+							<input className="test-black mx-2" type="checkbox" checked={remember} onChange={() => setRemember(!remember)} />
+							Remember me
+						</div>
 						<button className="m-4 bg-purple-600 w-fit mx-auto p-1 rounded-lg border-2" type="submit" onClick={handleLogin}>
 							Submit
 						</button>
