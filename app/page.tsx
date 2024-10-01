@@ -52,7 +52,7 @@ export default function Home() {
 			{currentUser && (
 				<div className="flex flex-col h-full">
 					<div className="mx-auto my-4 text-2xl">Welcome {currentUser!.displayName}</div>
-					<div className="my-4 w-10/12 h-full mx-auto flex flex-row flex-wrap justify-center gap-10">
+					<div className="my-4 w-10/12 h-fit mx-auto flex flex-row flex-wrap justify-center gap-10">
 						{!waiting && <HomeGameCard gameDoc={latestGame!} />}
 						{!waiting && <HomeBookCard bookDoc={latestBook!} />}
 					</div>
