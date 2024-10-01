@@ -44,7 +44,7 @@ export default function Login() {
 	}
 
 	return (
-		<>
+		<div className="w-screen h-screen">
 			{errors && <div className="fixed top-0 w-full bg-red-600 h-fit text-center text-3xl">{errorsMsg}</div>}
 			{!currentUser && (
 				<div className="flex w-full h-full items-center justify-center">
@@ -64,6 +64,6 @@ export default function Login() {
 					</div>
 				</div>
 			)}
-		</>
+		</div>
 	);
 }

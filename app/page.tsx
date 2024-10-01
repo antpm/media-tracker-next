@@ -52,14 +52,24 @@ export default function Home() {
 			{currentUser && (
 				<div className="flex flex-col h-full">
 					<div className="mx-auto my-4 text-2xl">Welcome {currentUser!.displayName}</div>
-					<div className="my-4 w-10/12 h-fit mx-auto flex flex-row flex-wrap justify-center gap-10">
-						{!waiting && <HomeGameCard gameDoc={latestGame!} />}
-						{!waiting && <HomeBookCard bookDoc={latestBook!} />}
-					</div>
-					<div className="mx-auto my-4 text-2xl flex flex-col">
-						<p>Statistics</p>
-						<p className="">Games: {gameCount}</p>
-						<p>Books: {bookCount}</p>
+					<div className="flex flex-row w-full justify-between">
+						<div className="my-4 h-fit mx-auto flex flex-col items-center gap-10">
+							{!waiting && <HomeGameCard gameDoc={latestGame!} />}
+							{!waiting && <HomeBookCard bookDoc={latestBook!} />}
+							{!waiting && <HomeGameCard gameDoc={latestGame!} />}
+							{!waiting && <HomeBookCard bookDoc={latestBook!} />}
+							{!waiting && <HomeGameCard gameDoc={latestGame!} />}
+							{!waiting && <HomeBookCard bookDoc={latestBook!} />}
+							{!waiting && <HomeGameCard gameDoc={latestGame!} />}
+							{!waiting && <HomeBookCard bookDoc={latestBook!} />}
+						</div>
+						<div className="mx-auto relative w-96">
+							<div className="mx-auto my-4 text-2xl flex flex-col fixed right-64">
+								<p>Statistics</p>
+								<p className="">Games: {gameCount}</p>
+								<p>Books: {bookCount}</p>
+							</div>
+						</div>
 					</div>
 				</div>
 			)}
