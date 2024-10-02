@@ -53,7 +53,7 @@ export default function Home() {
 	return (
 		<>
 			{currentUser && (
-				<div className="flex flex-col my-10 w-full">
+				<div className="flex flex-col my-10 mx-auto lg:w-3/4">
 					<h1 id="home-welcome" className="mx-auto mb-10">
 						Welcome {currentUser!.displayName}
 					</h1>

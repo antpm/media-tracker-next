@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { HomeIcon, GameIcon, BookIcon, AccountIcon, LogOutIcon, NavClose, NavOpen } from '../public/icons/icons';
+import { HomeIcon, GameIcon, BookIcon, AccountIcon, LogOutIcon, NavClose, NavOpen, Logo } from '../public/icons/icons';
 import Link from 'next/link';
 import Image from 'next/image';
 import { auth } from '../util/firebase/firebase-app';
@@ -9,7 +9,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
-	const [isOpen, setIsOpen] = useState(false);
+	const [isOpen, setIsOpen] = useState(true);
 	const [currentUser, setCurrentUser] = useState(auth.currentUser);
 	const router = useRouter();
 
@@ -40,34 +40,40 @@ export default function Navbar() {
 	return (
 		<>
 			{currentUser && (
-				<div className="lg:w-48 w-full h-48">
-					<div id="mobile-nav" className="h-fit flex fixed w-full lg:hidden bg-purple-800 ">
-						My movile nav menu will go here
-					</div>
-					<div id="desktop-nav" className="hidden lg:flex h-full w-fit fixed flex-col bg-purple-800 shadow-2xl shadow-black">
-						<button className="mr-2 ml-auto flex flex-row border-b-2 border-purple-950 w-full place-content-end bg-purple-900" onClick={changeMenu}>
-							{isOpen ? <Image className="w-16 h-16" src={NavClose} alt="" /> : <Image className="w-16 h-16" src={NavOpen} alt="" />}
-						</button>
-						<div className="flex flex-col h-full mx-4 my-10 place-content-start">
+				<div className="lg:w-48 w-full">
+					<div id="desktop-nav" className="hidden fixed lg:flex w-48 h-screen flex-col bg-purple-800 border-r-2 border-purple-950">
+						<div className="p-4 flex flex-row items-center border-b-2 bg-purple-900  border-purple-950">
+							<Image src={Logo} alt="logo" width={48} height={48} />
+							<p className="ml-2">Media Tracker</p>
+						</div>
+						{/* this button opened and closed the desktop menu, which I decided to get rid of
+                        <button className="mr-2 ml-auto flex flex-row border-b-2 border-purple-950 w-full place-content-end" onClick={changeMenu}>
+								{isOpen ? <Image className="w-16 h-16" src={NavClose} alt="" /> : <Image className="w-16 h-16" src={NavOpen} alt="" />}
+							</button> */}
+						<div className={`flex flex-col h-full my-10 place-content-start`}>
 							{links.map((link) => {
 								return (
-									<Link key={link.name} href={link.path} className="m-2 flex flex-row items-center">
-										<Image src={link.icon} alt="" className="" />
-										{isOpen && <p className="ml-2 text-xl text-white">{link.name}</p>}
+									<Link key={link.name} href={link.path} className="my-2 flex flex-row items-center w-full">
+										<Image src={link.icon} alt="" className={`ml-8`} />
+										{isOpen && <p className=" ml-2 text-xl text-white">{link.name}</p>}
 									</Link>
 								);
 							})}
 						</div>
-						<div className="flex flex-col h-fit mx-4 mb-4 place-content-start border-t-2 border-purple-900">
-							<Link className="m-2 flex flex-row items-center" href={'/account'}>
-								<Image src={AccountIcon} alt="" />
+						<div className="flex flex-col h-56 place-content-start border-t-2 border-purple-950 bg-purple-900">
+							<Link className="my-2 flex flex-row items-center w-full" href={'/account'}>
+								<Image src={AccountIcon} alt="" className="ml-6" />
 								{isOpen && <p className="ml-2 text-xl text-white">Account</p>}
 							</Link>
-							<button className="m-2 flex flex-row items-center" onClick={logOut}>
-								<Image src={LogOutIcon} alt="" />
+							<button className="my-2 flex flex-row items-center w-full" onClick={logOut}>
+								<Image src={LogOutIcon} alt="" className="ml-6" />
 								{isOpen && <p className="ml-2 text-xl text-white">Log Out</p>}
 							</button>
 						</div>
+					</div>
+
+					<div id="mobile-nav" className="h-fit flex fixed w-full lg:hidden bg-purple-800 ">
+						My movile nav menu will go here
 					</div>
 				</div>
 			)}
