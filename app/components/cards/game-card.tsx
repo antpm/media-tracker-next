@@ -20,21 +20,23 @@ function HomeGameCard({ gameDoc }: { gameDoc: QueryDocumentSnapshot }) {
 	});
 
 	return (
-		<div className="card border-gray-500 shadow-md shadow-slate-950 p-4 flex items-center">
-			<div className="h-64 w-1/3 flex items-center">
+		<div className="flex flex-col">
+			<h1 className="mx-auto">Game</h1>
+			<div className="card border-gray-500 shadow-md shadow-slate-950 p-4 flex items-center max-w-md">
 				{image === '' ? (
 					<div className="w-4/5 h-4/5 bg-gray-600 animate-pulse rounded-xl text-gray-400 flex items-center justify-center">Loading...</div>
 				) : (
-					<img src={image} className="max-h-64" />
+					<img src={image} className="max-w-48" />
 				)}
-			</div>
-			<div className=" m-2 h-full flex flex-col">
-				<p>{game.title}</p>
-				<p>{game.developer}</p>
-				<p>{game.platform}</p>
-				<p>{game.genre}</p>
-				<p>{formattedDate}</p>
-				<p>{game.rating}</p>
+
+				<div className=" m-2 h-full flex flex-col">
+					<p>{game.title}</p>
+					<p>{game.developer}</p>
+					<p>{game.platform}</p>
+					<p>{game.genre}</p>
+					<p>{formattedDate}</p>
+					<p>{game.rating}</p>
+				</div>
 			</div>
 		</div>
 	);

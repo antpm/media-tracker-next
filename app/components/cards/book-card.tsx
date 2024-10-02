@@ -20,20 +20,23 @@ function HomeBookCard({ bookDoc }: { bookDoc: QueryDocumentSnapshot }) {
 	});
 
 	return (
-		<div className="card border-gray-500 shadow-md shadow-slate-950 p-4">
-			<div className="h-64 w-1/3 flex items-center">
-				{image === '' ? (
-					<div className="w-4/5 h-4/5 bg-gray-600 animate-pulse rounded-xl text-gray-400 flex items-center justify-center">Loading...</div>
-				) : (
-					<img src={image} className="max-h-64" />
-				)}
-			</div>
-			<div className=" m-2 h-full flex flex-col">
-				<p>{book.title}</p>
-				<p>{book.author}</p>
-				<p>{book.genre}</p>
-				<p>{formattedDate}</p>
-				<p>{book.rating}</p>
+		<div className="flex flex-col">
+			<h1 className="mx-auto">Book</h1>
+			<div className="card border-gray-500 shadow-md shadow-slate-950 p-4">
+				<div className="h-64 w-1/3 flex items-center">
+					{image === '' ? (
+						<div className="w-4/5 h-4/5 bg-gray-600 animate-pulse rounded-xl text-gray-400 flex items-center justify-center">Loading...</div>
+					) : (
+						<img src={image} className="max-h-64" />
+					)}
+				</div>
+				<div className=" m-2 h-full flex flex-col">
+					<p>{book.title}</p>
+					<p>{book.author}</p>
+					<p>{book.genre}</p>
+					<p>{formattedDate}</p>
+					<p>{book.rating}</p>
+				</div>
 			</div>
 		</div>
 	);
