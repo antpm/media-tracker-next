@@ -58,7 +58,7 @@ export default function Home() {
 						Welcome {currentUser!.displayName}
 					</h1>
 					<div id="home-content" className="flex flex-row flex-wrap justify-evenly mt-4">
-						<div id="home-latest" className="flex flex-col lg:max-w-5xl w-fit p-4 rounded-xl ">
+						<div id="home-latest" className="flex flex-col flex-grow p-4 rounded-xl ">
 							<h2 className="mx-auto mb-4">Your Latest:</h2>
 							<div className="flex flex-row flex-wrap gap-4 lg:justify-evenly">
 								{latestGame && <HomeGameCard gameDoc={latestGame} />}
@@ -66,7 +66,7 @@ export default function Home() {
 							</div>
 						</div>
 
-						<div id="home-stats" className="flex flex-col lg:w-1/4 w-fit rounded-xl  p-4">
+						<div id="home-stats" className="flex flex-col lg:w-1/3 w-fit rounded-xl  p-4">
 							<h2 className="mx-auto">Your Stats:</h2>
 							{!waiting && <StatCard snapshots={{ games: gameSnap!, books: bookSnap! }} />}
 						</div>

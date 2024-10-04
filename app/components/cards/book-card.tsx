@@ -4,6 +4,7 @@ import { QueryDocumentSnapshot } from 'firebase/firestore';
 import Image from 'next/image';
 import { storage } from '@/app/util/firebase/firebase-app';
 import { getDownloadURL, ref } from 'firebase/storage';
+import LoadingCard from './loading-card';
 
 function HomeBookCard({ bookDoc }: { bookDoc: QueryDocumentSnapshot }) {
 	const book = bookDoc.data();
@@ -20,23 +21,22 @@ function HomeBookCard({ bookDoc }: { bookDoc: QueryDocumentSnapshot }) {
 	});
 
 	return (
-		<div className="flex flex-col w-fit lg:max-w-md">
+		<div className="flex flex-col">
 			<h3 className="mx-auto mb-4">Book</h3>
-			<div className="card border-gray-500 shadow-md shadow-slate-950 p-4 gap-2 flex items-center max-w-md">
-				{image === '' ? (
-					<div className="w-4/5 h-4/5 bg-gray-600 animate-pulse rounded-xl text-gray-400 flex items-center justify-center">Loading...</div>
-				) : (
+			{image === '' ? (
+				<LoadingCard />
+			) : (
+				<div className="card border-gray-500 shadow-md shadow-slate-950 p-4 items-center w-96 h-80">
 					<img src={image} className="max-w-32" />
-				)}
-
-				<div className=" m-2 h-full flex flex-col justify-evenly text-lg">
-					<p>{book.title}</p>
-					<p>{book.author}</p>
-					<p>{book.genre}</p>
-					<p>{formattedDate}</p>
-					<p>{book.rating}</p>
+					<div className=" m-2 h-full flex flex-col justify-evenly text-lg">
+						<p>{book.title}</p>
+						<p>{book.author}</p>
+						<p>{book.genre}</p>
+						<p>{formattedDate}</p>
+						<p>{book.rating}</p>
+					</div>
 				</div>
-			</div>
+			)}
 		</div>
 	);
 }

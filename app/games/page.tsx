@@ -1,27 +1,48 @@
 'use client';
 import { useState } from 'react';
+import Modal from '../components/modal';
 
 export default function Games() {
 	const [modal, setModal] = useState(false);
+	const [mode, setMode] = useState<string>('');
+
+	function saveGame() {
+		if (mode === 'Add') {
+			console.log('Game Added');
+			toggleModal();
+		} else {
+			console.log('Game Edited');
+			toggleModal();
+		}
+	}
 
 	function toggleModal() {
 		setModal(!modal);
-		console.log(modal);
 	}
 
 	return (
 		<>
-			<div id="modal-container" className={`${modal ? 'flex flex-col' : 'hidden'} modal-background fixed inset-x-0 inset-y-0 m-auto bg-gray-600 items-center`}>
-				<div id="modal" className="w-96 h-96 flex flex-col m-auto items-center bg-gray-800 rounded-xl justify-center">
-					<p>This will be my modal for my add/edit stuff</p>
-					<button onClick={toggleModal} className=" bg-gray-500">
-						Close modal
-					</button>
-				</div>
-			</div>
+			<Modal modalState={modal} modalToggle={toggleModal} saveFunction={saveGame} media="Game" mode={mode}>
+				<p>I am some content for this modal</p>
+			</Modal>
 			<div className="w-full h-full flex flex-col">
-				<button onClick={toggleModal} className="bg-gray-500 m-auto">
-					Open Modal
+				<button
+					onClick={() => {
+						setMode('Add');
+						toggleModal();
+					}}
+					className="bg-gray-500 m-auto"
+				>
+					Add Game
+				</button>
+				<button
+					onClick={() => {
+						setMode('Edit');
+						toggleModal();
+					}}
+					className="bg-gray-500 m-auto"
+				>
+					Edit Game
 				</button>
 			</div>
 		</>
