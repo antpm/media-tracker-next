@@ -12,8 +12,8 @@ type props = {
 export default function Modal({ children, modalState, modalToggle, saveFunction, media, mode }: props) {
 	return (
 		<>
-			<div onClick={modalToggle} id="modal-bg" className={`${modalState ? 'block' : 'hidden'} modal-background fixed inset-x-0 inset-y-0`}></div>
-			<div id="modal" className={`${modalState ? 'flex flex-col' : 'hidden'} w-96 h-96 fixed inset-x-0 inset-y-0 m-auto items-center bg-gray-800 rounded-xl`}>
+			<div onClick={modalToggle} id="modal-bg" className={`${modalState ? 'block' : 'hidden'} modal-background fixed inset-x-0 inset-y-0 z-40`}></div>
+			<div id="modal" className={`${modalState ? 'flex flex-col' : 'hidden'} lg:w-96 w-4/5 h-96 fixed inset-x-0 inset-y-0 m-auto items-center bg-gray-800 rounded-xl z-50`}>
 				<h1 className="mx-auto">
 					{mode} {media}
 				</h1>

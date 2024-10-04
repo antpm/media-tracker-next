@@ -40,7 +40,7 @@ export default function Navbar() {
 	return (
 		<>
 			{currentUser && (
-				<div className="lg:w-48 w-full">
+				<div className="lg:w-48 w-full z-30">
 					<div id="desktop-nav" className="hidden fixed lg:flex w-48 h-screen flex-col bg-purple-800 border-r-2 border-purple-950">
 						<div className="p-4 flex flex-row items-center border-b-2 bg-purple-900  border-purple-950">
 							<Image src={Logo} alt="logo" width={48} height={48} />

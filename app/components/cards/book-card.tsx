@@ -21,12 +21,12 @@ function HomeBookCard({ bookDoc }: { bookDoc: QueryDocumentSnapshot }) {
 	});
 
 	return (
-		<div className="flex flex-col">
-			<h3 className="mx-auto mb-4">Book</h3>
+		<div className="columns-1 h-96 mx-auto">
+			<h3 className="mx-auto mb-4 text-center">Book</h3>
 			{image === '' ? (
 				<LoadingCard />
 			) : (
-				<div className="card border-gray-500 shadow-md shadow-slate-950 p-4 items-center w-96 h-80">
+				<div className="card border-gray-500 shadow-md shadow-slate-950 p-4 items-center w-96 h-72">
 					<img src={image} className="max-w-32" />
 					<div className=" m-2 h-full flex flex-col justify-evenly text-lg">
 						<p>{book.title}</p>
