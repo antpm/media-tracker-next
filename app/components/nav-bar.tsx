@@ -55,7 +55,7 @@ export default function Navbar() {
 								return (
 									<Link key={link.name} href={link.path} className="my-2 flex flex-row items-center w-full">
 										<Image src={link.icon} alt="" className={`ml-8`} />
-										{isOpen && <p className=" ml-2 text-xl text-white">{link.name}</p>}
+										<p className=" ml-2 text-xl text-white">{link.name}</p>
 									</Link>
 								);
 							})}
@@ -63,11 +63,11 @@ export default function Navbar() {
 						<div className="flex flex-col h-56 place-content-start border-t-2 border-purple-950 bg-purple-900">
 							<Link className="my-2 flex flex-row items-center w-full" href={'/account'}>
 								<Image src={AccountIcon} alt="" className="ml-6" />
-								{isOpen && <p className="ml-2 text-xl text-white">Account</p>}
+								<p className="ml-2 text-xl text-white">Account</p>
 							</Link>
 							<button className="my-2 flex flex-row items-center w-full" onClick={logOut}>
 								<Image src={LogOutIcon} alt="" className="ml-6" />
-								{isOpen && <p className="ml-2 text-xl text-white">Log Out</p>}
+								<p className="ml-2 text-xl text-white">Log Out</p>
 							</button>
 						</div>
 					</div>
@@ -79,7 +79,7 @@ export default function Navbar() {
 								<Image src={Menu} alt="menu" />
 							</button>
 						</div>
-						<div className={`${isOpen ? 'block' : 'hidden'} columns-1 w-full h-fit bg-purple-950 divide-y-2 divide-violet-700 justify-evenly`}>
+						<div className={`${isOpen ? 'block' : 'hidden'} columns-1 w-full h-fit bg-purple-950 divide-y-2 divide-violet-700 justify-start`}>
 							{links.map((link) => {
 								return (
 									<Link key={link.name} onClick={changeMenu} href={link.path} className="my-2 mx-auto flex flex-row items-center justify-center">

@@ -50,8 +50,7 @@ body {
 	border-top-width: 2px;
 	display: flex;
 	flex-direction: row;
-	font-size: 1.5rem;
-	line-height: 2rem;
+
 	min-height: 15rem;
 }
 

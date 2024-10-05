@@ -7,6 +7,7 @@ import { useRouter } from 'next/navigation';
 import { getGames } from '../util/firebase/firebase-app';
 import { QueryDocumentSnapshot, QuerySnapshot } from 'firebase/firestore';
 import { list } from 'firebase/storage';
+import { GameListCard } from '../components/cards/game-card';
 
 export default function Games() {
 	const [currentUser, setCurrentUser] = useState(auth.currentUser);
@@ -24,6 +25,8 @@ export default function Games() {
 		year: 'numeric',
 	});
 
+	const fields = ['Title', 'Rating', 'Completion Date'];
+
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, (user) => {
 			setCurrentUser(user);
@@ -36,17 +39,20 @@ export default function Games() {
 
 	function sortGames(mode: Number) {
 		//data must from current array must be copied into a new array to trigger re-render when setting state with sorted array
+		setWaiting(true);
 		const old = [...games!];
 		switch (mode) {
 			case 1:
 				const sortCompleted = old.sort((a, b) => (a.get('complete') < b.get('complete') ? 1 : -1));
 				setGames(sortCompleted);
 				setListMode('complete');
+				setWaiting(false);
 				break;
 			case 2:
 				const sortRating = old.sort((a, b) => (a.get('rating') < b.get('rating') ? 1 : -1));
 				setGames(sortRating);
 				setListMode('rating');
+				setWaiting(false);
 				break;
 		}
 	}
@@ -79,31 +85,10 @@ export default function Games() {
 					<Modal modalState={modal} modalToggle={toggleModal} saveFunction={saveGame} media="Game" mode={mode}>
 						<p>I am some content for this modal</p>
 					</Modal>
-					<div id="games-screen-content" className="md:w-3/5 w-4/5 columns-1 mx-auto mt-20">
-						<div id="game-screen-sort-add" className="w-full flex flex-row flex-wrap items-center justify-start">
+					<section title="Games Page" className="md:w-3/5 w-full h-4/5 mx-auto mt-20">
+						<div id="game-screen-sort-add" className="w-4/5  flex flex-row flex-wrap items-center justify-start mx-auto">
 							<div className="flex flex-row flex-grow md:justify-start justify-center items-center">
 								<h4>Sort By:</h4>
-								{/* <input
-									type="radio"
-									id="game-completion"
-									name="game-sort"
-									className="ml-2"
-									defaultChecked
-									onClick={() => {
-										sortGames(1);
-									}}
-								/>
-								<label className="text-lg">Completion Date</label>
-								<input
-									type="radio"
-									id="game-rating"
-									name="game-sort"
-									className="ml-2"
-									onClick={() => {
-										sortGames(2);
-									}}
-								/> */}
-								<label className="text-lg">Rating</label>
 								<div className="w-fit flex border-2 border-gray-400 rounded-xl">
 									<button
 										className={`p-1 rounded-s-xl ${listMode === 'complete' ? 'bg-purple-600 opacity-100' : 'opacity-50  bg-purple-950'} transition-opacity duration-500`}
@@ -136,17 +121,23 @@ export default function Games() {
 							</button>
 						</div>
 						{!waiting && (
-							<div className="flex flex-col">
-								{games!.map((doc) => {
+							<div className="lg:w-4/5 w-full mt-12 mx-auto h-full">
+								{games?.map((doc) => {
 									return (
-										<p key={doc.id} id={doc.id}>
-											{doc.get('title')} - {doc.get('rating')} - {dateFormat.format(doc.get('complete').toDate())}
-										</p>
+										<div className="my-4 mx-auto">
+											<GameListCard
+												gameDoc={doc}
+												editGame={() => {
+													setMode('Edit');
+													toggleModal();
+												}}
+											/>
+										</div>
 									);
 								})}
 							</div>
 						)}
-					</div>
+					</section>
 				</>
 			)}
 		</>
