@@ -47,25 +47,23 @@ export default function Home() {
 	return (
 		<>
 			{currentUser && (
-				<div className="flex flex-col my-10 w-full">
-					<h1 id="home-welcome" className="mx-auto mb-10">
-						Welcome {currentUser!.displayName}
-					</h1>
+				<section title="Home Page" className="flex flex-col my-10 max-w-full">
+					<h1 className="mx-auto mb-10">Welcome {currentUser!.displayName}</h1>
 					<div id="home-content" className="flex flex-row flex-wrap justify-evenly mt-4 w-full">
-						<div id="home-latest" className="flex flex-col flex-grow p-4 rounded-xl ">
+						<section title="Your Latest" className="flex flex-col flex-grow p-4 rounded-xl ">
 							<h2 className="mx-auto mb-4">Your Latest:</h2>
-							<div className="flex flex-row flex-wrap gap-4 lg:justify-evenly">
+							<div className="flex flex-row flex-wrap gap-4 lg:justify-evenly max-w-full">
 								{latestGame && <HomeGameCard gameDoc={latestGame} />}
 								{latestBook && <HomeBookCard bookDoc={latestBook} />}
 							</div>
-						</div>
+						</section>
 
-						<div id="home-stats" className="flex flex-col lg:w-1/3 w-full rounded-xl mx-auto p-4">
+						<section title="Your Stats" className="flex flex-col lg:w-1/3 w-full rounded-xl mx-auto p-4">
 							<h2 className="mx-auto">Your Stats:</h2>
 							{!waiting && <StatCard snapshots={{ games: gameSnap!, books: bookSnap! }} />}
-						</div>
+						</section>
 					</div>
-				</div>
+				</section>
 			)}
 		</>
 	);

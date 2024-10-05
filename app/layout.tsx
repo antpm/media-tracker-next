@@ -26,9 +26,9 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en">
-			<body className={`${geistSans.variable} ${geistMono.variable} flex lg:flex-row flex-col antialiased h-screen w-screen`}>
+			<body className={`${geistSans.variable} ${geistMono.variable} flex lg:flex-row flex-col antialiased h-screen w-full`}>
 				<Navbar />
-				<main className="h-screen flex-grow">{children}</main>
+				<main className="h-full w-full lg:ml-48 mt-16 lg:mt-0">{children}</main>
 			</body>
 		</html>
 	);

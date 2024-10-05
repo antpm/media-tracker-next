@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { HomeIcon, GameIcon, BookIcon, AccountIcon, LogOutIcon, NavClose, NavOpen, Logo } from '../public/icons/icons';
+import { HomeIcon, GameIcon, BookIcon, AccountIcon, LogOutIcon, NavClose, NavOpen, Logo, Menu } from '../public/icons/icons';
 import Link from 'next/link';
 import Image from 'next/image';
 import { auth } from '../util/firebase/firebase-app';
@@ -40,7 +40,7 @@ export default function Navbar() {
 	return (
 		<>
 			{currentUser && (
-				<div className="lg:w-48 w-full z-30">
+				<div className="z-30">
 					<div id="desktop-nav" className="hidden fixed lg:flex w-48 h-screen flex-col bg-purple-800 border-r-2 border-purple-950">
 						<div className="p-4 flex flex-row items-center border-b-2 bg-purple-900  border-purple-950">
 							<Image src={Logo} alt="logo" width={48} height={48} />
@@ -71,9 +71,29 @@ export default function Navbar() {
 							</button>
 						</div>
 					</div>
-
-					<div id="mobile-nav" className="h-fit flex fixed w-full lg:hidden bg-purple-800 ">
-						My movile nav menu will go here
+					<div id="mobile-nav" className="h-fit flex flex-col fixed w-full lg:hidden items-center ">
+						<div className="w-full flex flex-row items-center bg-purple-800">
+							<Image src={Logo} alt="logo" width={48} height={48} />
+							<p className="ml-2 text-2xl flex-grow">Media Tracker</p>
+							<button onClick={changeMenu}>
+								<Image src={Menu} alt="menu" />
+							</button>
+						</div>
+						<div className={`${isOpen ? 'block' : 'hidden'} columns-1 w-full h-fit bg-purple-950 divide-y-2 divide-violet-700 justify-evenly`}>
+							{links.map((link) => {
+								return (
+									<Link key={link.name} onClick={changeMenu} href={link.path} className="my-2 mx-auto flex flex-row items-center justify-center">
+										<p className=" ml-2 text-xl text-white">{link.name}</p>
+									</Link>
+								);
+							})}
+							<Link href={'/account'} onClick={changeMenu} className="my-2 mx-auto flex flex-row items-center justify-center">
+								<p className=" ml-2 text-xl text-white">Account</p>
+							</Link>
+							<button onClick={logOut} className="my-2 w-full mx-auto flex flex-row items-center justify-center">
+								<p className=" ml-2 text-xl text-white">Log Out</p>
+							</button>
+						</div>
 					</div>
 				</div>
 			)}
