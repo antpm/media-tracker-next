@@ -19,6 +19,8 @@ export default function Games() {
 	const [games, setGames] = useState<QueryDocumentSnapshot[]>();
 	const [waiting, setWaiting] = useState(true);
 	const [listMode, setListMode] = useState('complete');
+	const [errors, setErrors] = useState(false);
+	const [errorsMsg, setErrorMsg] = useState('');
 
 	const [title, setTitle] = useState('');
 	const [genre, setGenre] = useState('');
@@ -75,31 +77,65 @@ export default function Games() {
 	}
 
 	async function saveGame() {
-		const imageName = generateImageName(30);
+		const valid = validateForm();
 
-		const docData = {
-			title: title,
-			developer: developer,
-			platform: platform,
-			genre: genre,
-			complete: Timestamp.fromDate(complete),
-			rating: rating,
-			image: imageName,
-		};
+		if (valid) {
+			const imageName = generateImageName(30);
 
-		if (mode === 'Add') {
-			console.log('Game Added');
-			await addDocument(currentUser!.uid, 'games', docData, imageName, image!).then(() => {
-				console.log(docData);
-				toggleModal();
-				getData();
-			});
+			const docData = {
+				title: title,
+				developer: developer,
+				platform: platform,
+				genre: genre,
+				complete: Timestamp.fromDate(complete),
+				rating: rating,
+				image: imageName,
+			};
+
+			if (mode === 'Add') {
+				//console.log('Game Added');
+
+				await addDocument(currentUser!.uid, 'games', docData, imageName, image!).then(() => {
+					//console.log(docData);
+					toggleModal();
+					getData();
+				});
+			} else {
+				console.log('Game Edited');
+			}
 		} else {
-			console.log('Game Edited');
+			setErrors(true);
 		}
 	}
 
+	function validateForm(): Boolean {
+		let valid = true;
+
+		if (title === '') {
+			valid = false;
+			setErrorMsg('Title field is required');
+		} else if (developer === '') {
+			valid = false;
+			setErrorMsg('Developer field is required');
+		} else if (platform === '') {
+			valid = false;
+			setErrorMsg('Platform field is required');
+		} else if (genre === '') {
+			valid = false;
+			setErrorMsg('Genre field is required');
+		} else if (rating < 1 || rating > 5) {
+			valid = false;
+			setErrorMsg('Rating must be between 1 and 5');
+		} else if (complete === null) {
+			valid = false;
+			setErrorMsg('Completion Date is required');
+		}
+
+		return valid;
+	}
+
 	function toggleModal() {
+		setErrors(false);
 		clearForm();
 		setModal(!modal);
 	}
@@ -119,9 +155,10 @@ export default function Games() {
 		<>
 			{currentUser && (
 				<>
+					<div className={`${errors ? 'block' : 'hidden'} text-3xl animate-pulse w-screen bg-red-700 text-center fixed z-50 inset-x-0`}>{errorsMsg}</div>
 					<AddModal modalState={modal} modalToggle={toggleModal} saveFunction={saveGame} media="Game" mode={mode}>
 						<form className="flex flex-col my-auto w-3/4">
-							<label>Title:</label>
+							<label>Title*:</label>
 							<input
 								type="text"
 								className="text-black mb-4"
@@ -132,7 +169,7 @@ export default function Games() {
 								placeholder="Title"
 							/>
 
-							<label>Developer:</label>
+							<label>Developer*:</label>
 							<input
 								type="text"
 								className="text-black mb-4"
@@ -143,7 +180,7 @@ export default function Games() {
 								placeholder="Developer"
 							/>
 
-							<label>Platform:</label>
+							<label>Platform*:</label>
 							<input
 								type="text"
 								className="text-black mb-4"
@@ -154,7 +191,7 @@ export default function Games() {
 								placeholder="Platform"
 							/>
 
-							<label>Genre:</label>
+							<label>Genre*:</label>
 							<input
 								type="text"
 								className="text-black mb-4"
@@ -165,7 +202,7 @@ export default function Games() {
 								placeholder="Genre"
 							/>
 
-							<label>Rating:</label>
+							<label>Rating*:</label>
 							<select
 								className="w-16 text-black mb-4"
 								value={rating}
@@ -189,7 +226,7 @@ export default function Games() {
 									5
 								</option>
 							</select>
-							<label>Completion Date:</label>
+							<label>Completion Date*:</label>
 							<DatePicker selected={complete} onChange={(date) => SetComplete(date!)} className="text-black mb-4" />
 							<label>Image:</label>
 							<input
@@ -202,7 +239,7 @@ export default function Games() {
 							/>
 						</form>
 					</AddModal>
-					<section title="Games Page" className="md:w-3/5 w-full h-4/5 mx-auto pb-10 mt-20">
+					<section title="Games Page" className="md:w-3/5 w-full h-4/5 mx-auto pb-10 mt-10">
 						<div id="game-screen-sort-add" className="w-4/5  flex flex-row flex-wrap items-center justify-start mx-auto">
 							<div className="flex flex-row flex-grow md:justify-start justify-center items-center">
 								<h4>Sort By:</h4>
