@@ -28,7 +28,7 @@ export default function RootLayout({
 		<html lang="en">
 			<body className={`${geistSans.variable} ${geistMono.variable} flex lg:flex-row flex-col antialiased h-screen w-full`}>
 				<Navbar />
-				<main className="h-full w-full lg:ml-48 mt-16 lg:mt-0">{children}</main>
+				<main className="h-fit w-full lg:ml-48 mt-16 lg:mt-0">{children}</main>
 			</body>
 		</html>
 	);

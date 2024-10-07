@@ -1,9 +1,9 @@
 'use client';
 
-import { auth, db, collections, getGames, getBooks } from './util/firebase/firebase-app';
+import { auth, getDocuments } from './util/firebase/firebase-app';
 import { onAuthStateChanged } from 'firebase/auth';
-import { collection, getDocs, query, orderBy, limit, QueryDocumentSnapshot, QuerySnapshot } from 'firebase/firestore';
-import { useState, useEffect, MouseEventHandler } from 'react';
+import { QueryDocumentSnapshot, QuerySnapshot } from 'firebase/firestore';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { HomeGameCard } from './components/cards/game-card';
 import { HomeBookCard } from './components/cards/book-card';
@@ -22,8 +22,8 @@ export default function Home() {
 	const [waiting, setWaiting] = useState(true);
 
 	async function getData() {
-		const gameQuerySnap = await getGames(currentUser!.uid);
-		const bookQuerySnap = await getBooks(currentUser!.uid);
+		const gameQuerySnap = await getDocuments(currentUser!.uid, 'games');
+		const bookQuerySnap = await getDocuments(currentUser!.uid, 'books');
 
 		setGameSnap(gameQuerySnap);
 		setBookSnap(bookQuerySnap);

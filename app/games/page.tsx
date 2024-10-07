@@ -1,13 +1,14 @@
 'use client';
 import { useEffect, useState } from 'react';
-import Modal from '../components/modal';
+import AddModal from '../components/add-modal';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth } from '../util/firebase/firebase-app';
+import { auth, generateImageName, addDocument } from '../util/firebase/firebase-app';
 import { useRouter } from 'next/navigation';
-import { getGames } from '../util/firebase/firebase-app';
-import { QueryDocumentSnapshot, QuerySnapshot } from 'firebase/firestore';
+import { getDocuments } from '../util/firebase/firebase-app';
+import { QueryDocumentSnapshot, QuerySnapshot, Timestamp } from 'firebase/firestore';
 import { list } from 'firebase/storage';
 import { GameListCard } from '../components/cards/game-card';
+import DatePicker from 'react-datepicker';
 
 export default function Games() {
 	const [currentUser, setCurrentUser] = useState(auth.currentUser);
@@ -18,6 +19,16 @@ export default function Games() {
 	const [games, setGames] = useState<QueryDocumentSnapshot[]>();
 	const [waiting, setWaiting] = useState(true);
 	const [listMode, setListMode] = useState('complete');
+
+	const [title, setTitle] = useState('');
+	const [genre, setGenre] = useState('');
+	const [platform, setPlatform] = useState('');
+	const [developer, setDeveloper] = useState('');
+	const [rating, setRating] = useState(1);
+	const [complete, SetComplete] = useState(new Date());
+	const [image, setImage] = useState<File | null>(null);
+	//in order to get the file input to reset when the modal closes, it is assigned a key which gets changed on close, causing it to be re-rendered
+	const [imageKey, setImageKey] = useState(Date());
 
 	const dateFormat = new Intl.DateTimeFormat('en-US', {
 		month: 'long',
@@ -57,32 +68,141 @@ export default function Games() {
 
 	async function getData() {
 		console.log('getData');
-		const gameQuerySnap = await getGames(currentUser!.uid);
+		const gameQuerySnap = await getDocuments(currentUser!.uid, 'games');
 		setGames(gameQuerySnap.docs);
 		setGameSnap(gameQuerySnap);
 		setWaiting(false);
 	}
 
-	function saveGame() {
+	async function saveGame() {
+		const imageName = generateImageName(30);
+
+		const docData = {
+			title: title,
+			developer: developer,
+			platform: platform,
+			genre: genre,
+			complete: Timestamp.fromDate(complete),
+			rating: rating,
+			image: imageName,
+		};
+
 		if (mode === 'Add') {
 			console.log('Game Added');
-			toggleModal();
+			await addDocument(currentUser!.uid, 'games', docData, imageName, image!).then(() => {
+				console.log(docData);
+				toggleModal();
+				getData();
+			});
 		} else {
 			console.log('Game Edited');
-			toggleModal();
 		}
 	}
 
 	function toggleModal() {
+		clearForm();
 		setModal(!modal);
+	}
+
+	function clearForm() {
+		setTitle('');
+		setDeveloper('');
+		setPlatform('');
+		setGenre('');
+		setRating(1);
+		SetComplete(new Date());
+		setImage(null);
+		setImageKey(Date());
 	}
 
 	return (
 		<>
 			{currentUser && (
 				<>
-					<Modal modalState={modal} modalToggle={toggleModal} saveFunction={saveGame} media="Game" mode={mode} />
-					<section title="Games Page" className="md:w-3/5 w-full h-4/5 mx-auto mt-20">
+					<AddModal modalState={modal} modalToggle={toggleModal} saveFunction={saveGame} media="Game" mode={mode}>
+						<form className="flex flex-col my-auto w-3/4">
+							<label>Title:</label>
+							<input
+								type="text"
+								className="text-black mb-4"
+								onChange={(e) => {
+									setTitle(e.target.value);
+								}}
+								value={title}
+								placeholder="Title"
+							/>
+
+							<label>Developer:</label>
+							<input
+								type="text"
+								className="text-black mb-4"
+								onChange={(e) => {
+									setDeveloper(e.target.value);
+								}}
+								value={developer}
+								placeholder="Developer"
+							/>
+
+							<label>Platform:</label>
+							<input
+								type="text"
+								className="text-black mb-4"
+								onChange={(e) => {
+									setPlatform(e.target.value);
+								}}
+								value={platform}
+								placeholder="Platform"
+							/>
+
+							<label>Genre:</label>
+							<input
+								type="text"
+								className="text-black mb-4"
+								onChange={(e) => {
+									setGenre(e.target.value);
+								}}
+								value={genre}
+								placeholder="Genre"
+							/>
+
+							<label>Rating:</label>
+							<select
+								className="w-16 text-black mb-4"
+								value={rating}
+								onChange={(e) => {
+									setRating(Number(e.target.value));
+								}}
+							>
+								<option className="text-end text-black" value={1}>
+									1
+								</option>
+								<option className="text-end text-black" value={2}>
+									2
+								</option>
+								<option className="text-end text-black" value={3}>
+									3
+								</option>
+								<option className="text-end text-black" value={4}>
+									4
+								</option>
+								<option className="text-end text-black" value={5}>
+									5
+								</option>
+							</select>
+							<label>Completion Date:</label>
+							<DatePicker selected={complete} onChange={(date) => SetComplete(date!)} className="text-black mb-4" />
+							<label>Image:</label>
+							<input
+								type="file"
+								accept="image/*"
+								key={imageKey}
+								onChange={(e) => {
+									setImage(e.target.files ? e.target.files[0] : null);
+								}}
+							/>
+						</form>
+					</AddModal>
+					<section title="Games Page" className="md:w-3/5 w-full h-4/5 mx-auto pb-10 mt-20">
 						<div id="game-screen-sort-add" className="w-4/5  flex flex-row flex-wrap items-center justify-start mx-auto">
 							<div className="flex flex-row flex-grow md:justify-start justify-center items-center">
 								<h4>Sort By:</h4>
