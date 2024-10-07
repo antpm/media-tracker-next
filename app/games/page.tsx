@@ -25,20 +25,18 @@ export default function Games() {
 		year: 'numeric',
 	});
 
-	const fields = ['Title', 'Rating', 'Completion Date'];
-
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, (user) => {
 			setCurrentUser(user);
 		});
-
+		console.log('useeffect');
 		currentUser ? getData() : router.push('/login');
 
 		return () => unsubscribe();
 	}, []);
 
 	function sortGames(mode: Number) {
-		//data must from current array must be copied into a new array to trigger re-render when setting state with sorted array
+		//data from current array must be copied into a new array to trigger re-render when setting state with sorted array
 		setWaiting(true);
 		const old = [...games!];
 		switch (mode) {
@@ -58,6 +56,7 @@ export default function Games() {
 	}
 
 	async function getData() {
+		console.log('getData');
 		const gameQuerySnap = await getGames(currentUser!.uid);
 		setGames(gameQuerySnap.docs);
 		setGameSnap(gameQuerySnap);
@@ -82,25 +81,22 @@ export default function Games() {
 		<>
 			{currentUser && (
 				<>
-					<Modal modalState={modal} modalToggle={toggleModal} saveFunction={saveGame} media="Game" mode={mode}>
-						<p>I am some content for this modal</p>
-					</Modal>
+					<Modal modalState={modal} modalToggle={toggleModal} saveFunction={saveGame} media="Game" mode={mode} />
 					<section title="Games Page" className="md:w-3/5 w-full h-4/5 mx-auto mt-20">
 						<div id="game-screen-sort-add" className="w-4/5  flex flex-row flex-wrap items-center justify-start mx-auto">
 							<div className="flex flex-row flex-grow md:justify-start justify-center items-center">
 								<h4>Sort By:</h4>
-								<div className="w-fit flex border-2 border-gray-400 rounded-xl">
+								<div className="w-fit flex rounded-xl">
 									<button
-										className={`p-1 rounded-s-xl ${listMode === 'complete' ? 'bg-purple-600 opacity-100' : 'opacity-50  bg-purple-950'} transition-opacity duration-500`}
+										className={`p-1 rounded-s-xl w-24 h-12  ${listMode === 'complete' ? 'bg-purple-800 opacity-100' : 'opacity-50  bg-purple-950'} transition-opacity duration-500`}
 										onClick={() => {
 											sortGames(1);
 										}}
 									>
 										Completion
 									</button>
-									<div className="w-0.5 bg-gray-400" />
 									<button
-										className={` p-1  rounded-e-xl  ${listMode === 'rating' ? 'bg-purple-600 opacity-100' : 'opacity-50 bg-purple-950'} transition-opacity duration-500`}
+										className={` p-1 rounded-e-xl w-24 h-12 ${listMode === 'rating' ? 'bg-purple-800 opacity-100' : 'opacity-50 bg-purple-950'} transition-opacity duration-500`}
 										onClick={() => {
 											sortGames(2);
 										}}
@@ -111,7 +107,7 @@ export default function Games() {
 							</div>
 
 							<button
-								className="bg-purple-600 rounded-xl p-1 justify-self-end mx-auto"
+								className="p-1 bg-purple-800 w-24 h-12 rounded-xl justify-self-end mx-auto"
 								onClick={() => {
 									setMode('Add');
 									toggleModal();
@@ -124,7 +120,7 @@ export default function Games() {
 							<div className="lg:w-4/5 w-full mt-12 mx-auto h-full">
 								{games?.map((doc) => {
 									return (
-										<div className="my-4 mx-auto">
+										<div key={doc.id} className="my-4 mx-auto">
 											<GameListCard
 												gameDoc={doc}
 												editGame={() => {
