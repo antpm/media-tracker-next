@@ -39,7 +39,7 @@ export default function Home() {
 			setCurrentUser(user);
 		});
 
-		currentUser ? getData() : router.push('/login');
+		currentUser ? getData() : router.push('/login', { scroll: false });
 
 		return () => unsubscribe();
 	}, []);

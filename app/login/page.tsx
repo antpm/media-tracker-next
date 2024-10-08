@@ -17,7 +17,7 @@ export default function Login() {
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, (user) => {
 			setCurrentUser(user);
-			user && router.push('/');
+			user && router.push('/', { scroll: false });
 		});
 		return () => unsubscribe();
 	}, []);
@@ -34,7 +34,7 @@ export default function Login() {
 				remember ? auth.setPersistence(browserLocalPersistence) : auth.setPersistence(browserSessionPersistence);
 				const userCredential = await signInWithEmailAndPassword(auth, email, password);
 				setCurrentUser(userCredential.user);
-				router.push('/');
+				router.push('/', { scroll: false });
 			} catch (error) {
 				console.log(error);
 				setErrors(true);

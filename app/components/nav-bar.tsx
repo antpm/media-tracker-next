@@ -9,7 +9,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 
 export default function Navbar() {
-	const [isOpen, setIsOpen] = useState(true);
+	const [isOpen, setIsOpen] = useState(false);
 	const [currentUser, setCurrentUser] = useState(auth.currentUser);
 	const router = useRouter();
 
@@ -28,7 +28,7 @@ export default function Navbar() {
 	function logOut() {
 		auth.signOut();
 		setCurrentUser(null);
-		router.push('/login');
+		router.push('/login', { scroll: false });
 	}
 
 	const links = [

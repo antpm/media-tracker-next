@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import AddModal from '../components/add-modal';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth, generateImageName, addDocument } from '../util/firebase/firebase-app';
+import { auth, generateImageName, addDocument, editDocument } from '../util/firebase/firebase-app';
 import { useRouter } from 'next/navigation';
 import { getDocuments } from '../util/firebase/firebase-app';
 import { QueryDocumentSnapshot, QuerySnapshot, Timestamp } from 'firebase/firestore';
@@ -15,12 +15,13 @@ export default function Games() {
 	const [modal, setModal] = useState(false);
 	const [mode, setMode] = useState<string>('');
 	const router = useRouter();
-	const [gameSnap, setGameSnap] = useState<QuerySnapshot>();
 	const [games, setGames] = useState<QueryDocumentSnapshot[]>();
 	const [waiting, setWaiting] = useState(true);
 	const [listMode, setListMode] = useState('complete');
 	const [errors, setErrors] = useState(false);
 	const [errorsMsg, setErrorMsg] = useState('');
+	const [oldImageName, setOldImageName] = useState('');
+	const [editID, setEditID] = useState('');
 
 	const [title, setTitle] = useState('');
 	const [genre, setGenre] = useState('');
@@ -43,7 +44,7 @@ export default function Games() {
 			setCurrentUser(user);
 		});
 		console.log('useeffect');
-		currentUser ? getData() : router.push('/login');
+		currentUser ? getData() : router.push('/login', { scroll: false });
 
 		return () => unsubscribe();
 	}, []);
@@ -70,9 +71,9 @@ export default function Games() {
 
 	async function getData() {
 		console.log('getData');
+		setListMode('complete');
 		const gameQuerySnap = await getDocuments(currentUser!.uid, 'games');
 		setGames(gameQuerySnap.docs);
-		setGameSnap(gameQuerySnap);
 		setWaiting(false);
 	}
 
@@ -80,7 +81,16 @@ export default function Games() {
 		const valid = validateForm();
 
 		if (valid) {
-			const imageName = generateImageName(30);
+			let imageName = 'noimage.jpg';
+
+			if (mode === 'Edit') {
+				imageName = oldImageName;
+			}
+
+			if (image) {
+				imageName = generateImageName(30);
+				console.log('image name generated');
+			}
 
 			const docData = {
 				title: title,
@@ -92,16 +102,18 @@ export default function Games() {
 				image: imageName,
 			};
 
+			//console.log('Game Added');
 			if (mode === 'Add') {
-				//console.log('Game Added');
-
-				await addDocument(currentUser!.uid, 'games', docData, imageName, image!).then(() => {
+				await addDocument(currentUser!.uid, 'games', docData, imageName, image).then(() => {
 					//console.log(docData);
 					toggleModal();
 					getData();
 				});
-			} else {
-				console.log('Game Edited');
+			} else if (mode === 'Edit') {
+				await editDocument(currentUser!.uid, 'games', docData, editID, imageName, image).then(() => {
+					toggleModal();
+					getData();
+				});
 			}
 		} else {
 			setErrors(true);
@@ -136,7 +148,9 @@ export default function Games() {
 
 	function toggleModal() {
 		setErrors(false);
-		clearForm();
+		if (modal) {
+			clearForm();
+		}
 		setModal(!modal);
 	}
 
@@ -149,6 +163,17 @@ export default function Games() {
 		SetComplete(new Date());
 		setImage(null);
 		setImageKey(Date());
+	}
+
+	function enableEditing(doc: QueryDocumentSnapshot) {
+		setTitle(doc.get('title'));
+		setDeveloper(doc.get('developer'));
+		setPlatform(doc.get('platform'));
+		setGenre(doc.get('genre'));
+		setRating(doc.get('rating'));
+		setOldImageName(doc.get('image'));
+		setEditID(doc.id);
+		SetComplete(doc.get('complete').toDate());
 	}
 
 	return (
@@ -227,7 +252,15 @@ export default function Games() {
 								</option>
 							</select>
 							<label>Completion Date*:</label>
-							<DatePicker selected={complete} onChange={(date) => SetComplete(date!)} className="text-black mb-4" />
+							<DatePicker
+								onKeyDown={(e) => {
+									//this prevents user from editing the date by typing in the textfield
+									e.preventDefault();
+								}}
+								selected={complete}
+								onChange={(date) => SetComplete(date!)}
+								className="text-black mb-4"
+							/>
 							<label>Image:</label>
 							<input
 								type="file"
@@ -239,13 +272,15 @@ export default function Games() {
 							/>
 						</form>
 					</AddModal>
-					<section title="Games Page" className="md:w-3/5 w-full h-4/5 mx-auto pb-10 mt-10">
+					<section title="Games Page" className="md:w-3/5 w-full h-fit mx-auto my-10">
 						<div id="game-screen-sort-add" className="w-4/5  flex flex-row flex-wrap items-center justify-start mx-auto">
 							<div className="flex flex-row flex-grow md:justify-start justify-center items-center">
 								<h4>Sort By:</h4>
 								<div className="w-fit flex rounded-xl">
 									<button
-										className={`p-1 rounded-s-xl w-24 h-12  ${listMode === 'complete' ? 'bg-purple-800 opacity-100' : 'opacity-50  bg-purple-950'} transition-opacity duration-500`}
+										className={`p-1 rounded-s-xl w-24 h-12  ${
+											listMode === 'complete' ? 'bg-purple-800 opacity-100 pointer-events-none' : 'opacity-50  bg-purple-950 pointer-events-auto'
+										} transition-opacity duration-500`}
 										onClick={() => {
 											sortGames(1);
 										}}
@@ -253,7 +288,9 @@ export default function Games() {
 										Completion
 									</button>
 									<button
-										className={` p-1 rounded-e-xl w-24 h-12 ${listMode === 'rating' ? 'bg-purple-800 opacity-100' : 'opacity-50 bg-purple-950'} transition-opacity duration-500`}
+										className={` p-1 rounded-e-xl w-24 h-12 ${
+											listMode === 'rating' ? 'bg-purple-800 opacity-100 pointer-events-none' : 'opacity-50 bg-purple-950 pointer-events-auto'
+										} transition-opacity duration-500`}
 										onClick={() => {
 											sortGames(2);
 										}}
@@ -274,7 +311,7 @@ export default function Games() {
 							</button>
 						</div>
 						{!waiting && (
-							<div className="lg:w-4/5 w-full mt-12 mx-auto h-full">
+							<div className="lg:w-4/5 w-full mx-auto">
 								{games?.map((doc) => {
 									return (
 										<div key={doc.id} className="my-4 mx-auto">
@@ -282,6 +319,7 @@ export default function Games() {
 												gameDoc={doc}
 												editGame={() => {
 													setMode('Edit');
+													enableEditing(doc);
 													toggleModal();
 												}}
 											/>
