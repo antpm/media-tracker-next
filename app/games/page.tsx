@@ -55,13 +55,13 @@ export default function Games() {
 		const old = [...games!];
 		switch (mode) {
 			case 1:
-				const sortCompleted = old.sort((a, b) => (a.get('complete') < b.get('complete') ? 1 : -1));
+				const sortCompleted = old.sort((a, b) => (a.get('complete') <= b.get('complete') ? 1 : -1));
 				setGames(sortCompleted);
 				setListMode('complete');
 				setWaiting(false);
 				break;
 			case 2:
-				const sortRating = old.sort((a, b) => (a.get('rating') < b.get('rating') ? 1 : -1));
+				const sortRating = old.sort((a, b) => (a.get('rating') <= b.get('rating') ? 1 : -1));
 				setGames(sortRating);
 				setListMode('rating');
 				setWaiting(false);
@@ -71,9 +71,11 @@ export default function Games() {
 
 	async function getData() {
 		console.log('getData');
-		setListMode('complete');
-		const gameQuerySnap = await getDocuments(currentUser!.uid, 'games');
-		setGames(gameQuerySnap.docs);
+		await getDocuments(currentUser!.uid, 'games', listMode).then((snapshot) => {
+			console.log('get documents promise');
+			setGames(snapshot.docs);
+		});
+
 		setWaiting(false);
 	}
 
@@ -276,9 +278,9 @@ export default function Games() {
 						<div id="game-screen-sort-add" className="w-4/5  flex flex-row flex-wrap items-center justify-start mx-auto">
 							<div className="flex flex-row flex-grow md:justify-start justify-center items-center">
 								<h4>Sort By:</h4>
-								<div className="w-fit flex rounded-xl">
+								<div className="w-fit flex rounded-3xl">
 									<button
-										className={`p-1 rounded-s-xl w-24 h-12  ${
+										className={`p-1 rounded-s-3xl w-24 h-12  ${
 											listMode === 'complete' ? 'bg-purple-800 opacity-100 pointer-events-none' : 'opacity-50  bg-purple-950 pointer-events-auto'
 										} transition-opacity duration-500`}
 										onClick={() => {
@@ -288,7 +290,7 @@ export default function Games() {
 										Completion
 									</button>
 									<button
-										className={` p-1 rounded-e-xl w-24 h-12 ${
+										className={` p-1 rounded-e-3xl w-24 h-12 ${
 											listMode === 'rating' ? 'bg-purple-800 opacity-100 pointer-events-none' : 'opacity-50 bg-purple-950 pointer-events-auto'
 										} transition-opacity duration-500`}
 										onClick={() => {
@@ -301,7 +303,7 @@ export default function Games() {
 							</div>
 
 							<button
-								className="p-1 bg-purple-800 w-24 h-12 rounded-xl justify-self-end mx-auto"
+								className="p-1 bg-purple-800 w-24 h-12 rounded-3xl justify-self-end mx-auto"
 								onClick={() => {
 									setMode('Add');
 									toggleModal();

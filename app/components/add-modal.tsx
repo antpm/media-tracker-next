@@ -13,10 +13,6 @@ type props = {
 };
 
 export default function AddModal({ children, modalState, modalToggle, saveFunction, media, mode }: props) {
-	function saveForm() {
-		//console.log(`Title: ${title}\nDeveloper: ${develoer}\nPlatform: ${platform}\nGenere: ${genre}\nRating: ${rating}\nComplete: ${complete}\nImage: ${image?.name}`);
-	}
-
 	return (
 		<>
 			<div onClick={modalToggle} id="modal-bg" className={`${modalState ? 'block' : 'hidden'} modal-background fixed inset-x-0 inset-y-0 z-40`}></div>
@@ -31,10 +27,10 @@ export default function AddModal({ children, modalState, modalToggle, saveFuncti
 				</h1>
 				{children}
 				<div className="flex flex-row justify-evenly w-full mt-4">
-					<button onClick={saveFunction} className="bg-purple-800 min-w-24 h-12 rounded-xl p-1">
+					<button onClick={saveFunction} className="bg-purple-800 min-w-24 h-12 rounded-3xl p-2">
 						Save {media}
 					</button>
-					<button onClick={modalToggle} className=" bg-purple-800 min-w-24 h-12 rounded-xl p-1">
+					<button onClick={modalToggle} className=" bg-purple-800 min-w-24 h-12 rounded-3xl p-2">
 						Cancel
 					</button>
 				</div>

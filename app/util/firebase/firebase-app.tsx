@@ -9,9 +9,9 @@ export const auth = getAuth(firebaseApp);
 export const db = getFirestore(firebaseApp);
 export const storage = getStorage(firebaseApp);
 
-export async function getDocuments(userID: string, table: string): Promise<QuerySnapshot> {
+export async function getDocuments(userID: string, table: string, sort: string): Promise<QuerySnapshot> {
 	const ref = collection(db, 'users', userID, table);
-	const q = query(ref, orderBy('complete', 'desc'));
+	const q = query(ref, orderBy(sort, 'desc'));
 	const querySnap = await getDocs(q);
 
 	return querySnap;

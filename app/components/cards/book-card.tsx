@@ -4,7 +4,7 @@ import { QueryDocumentSnapshot } from 'firebase/firestore';
 import Image from 'next/image';
 import { storage } from '@/app/util/firebase/firebase-app';
 import { getDownloadURL, ref } from 'firebase/storage';
-import LoadingCard from './loading-card';
+import { HomeLoadingCard, ListLoadingCard } from './loading-card';
 
 function HomeBookCard({ bookDoc }: { bookDoc: QueryDocumentSnapshot }) {
 	const book = bookDoc.data();
@@ -24,7 +24,7 @@ function HomeBookCard({ bookDoc }: { bookDoc: QueryDocumentSnapshot }) {
 		<div className="columns-1 h-96 mx-auto">
 			<h3 className="mx-auto mb-4 text-center">Book</h3>
 			{image === '' ? (
-				<LoadingCard />
+				<HomeLoadingCard />
 			) : (
 				<div className="card border-gray-500 shadow-md shadow-slate-950 p-4 items-center md:w-96 w-full h-72">
 					<img src={image} className="max-w-32" />

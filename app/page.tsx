@@ -22,8 +22,8 @@ export default function Home() {
 	const [waiting, setWaiting] = useState(true);
 
 	async function getData() {
-		const gameQuerySnap = await getDocuments(currentUser!.uid, 'games');
-		const bookQuerySnap = await getDocuments(currentUser!.uid, 'books');
+		const gameQuerySnap = await getDocuments(currentUser!.uid, 'games', 'complete');
+		const bookQuerySnap = await getDocuments(currentUser!.uid, 'books', 'complete');
 
 		setGameSnap(gameQuerySnap);
 		setBookSnap(bookQuerySnap);
