@@ -1,28 +1,31 @@
 'use client';
 import { useEffect, useState } from 'react';
-import AddModal from '../components/add-modal';
+import ModalWrapper from '../components/modal-wrapper';
 import { onAuthStateChanged } from 'firebase/auth';
-import { auth, generateImageName, addDocument, editDocument } from '../util/firebase/firebase-app';
+import { auth, generateImageName, addDocument, editDocument, storage } from '../util/firebase/firebase-app';
 import { useRouter } from 'next/navigation';
 import { getDocuments } from '../util/firebase/firebase-app';
 import { QueryDocumentSnapshot, QuerySnapshot, Timestamp } from 'firebase/firestore';
-import { list } from 'firebase/storage';
+import { getDownloadURL, list, ref } from 'firebase/storage';
 import { GameListCard } from '../components/cards/game-card';
 import DatePicker from 'react-datepicker';
 
 export default function Games() {
-	const [currentUser, setCurrentUser] = useState(auth.currentUser);
-	const [modal, setModal] = useState(false);
-	const [mode, setMode] = useState<string>('');
 	const router = useRouter();
+
+	const [addModal, setAddModal] = useState(false);
+	const [viewModal, setViewModal] = useState(false);
+
+	const [saveMode, setSaveMode] = useState<string>('');
+
 	const [games, setGames] = useState<QueryDocumentSnapshot[]>();
 	const [waiting, setWaiting] = useState(true);
 	const [listMode, setListMode] = useState('complete');
+
 	const [errors, setErrors] = useState(false);
 	const [errorsMsg, setErrorMsg] = useState('');
 	const [oldImageName, setOldImageName] = useState('');
 	const [editID, setEditID] = useState('');
-
 	const [title, setTitle] = useState('');
 	const [genre, setGenre] = useState('');
 	const [platform, setPlatform] = useState('');
@@ -33,20 +36,40 @@ export default function Games() {
 	//in order to get the file input to reset when the modal closes, it is assigned a key which gets changed on close, causing it to be re-rendered
 	const [imageKey, setImageKey] = useState(Date());
 
+	const [viewGame, setViewGame] = useState<QueryDocumentSnapshot | null>(null);
+	const [viewGameImage, setViewGameImage] = useState('');
+
 	const dateFormat = new Intl.DateTimeFormat('en-US', {
 		month: 'long',
 		day: '2-digit',
 		year: 'numeric',
 	});
 
+	function sleep(time: number) {
+		return new Promise((resolve) => setTimeout(resolve, time));
+	}
+
 	useEffect(() => {
-		const unsubscribe = onAuthStateChanged(auth, (user) => {
+		//firebase's auth persistance has a delay on re-authenticating the user, so we check if auth has a currentUser and if not we wait 1 second and check again
+		//if auth still doesn't have a currentUser after the wait, we push to login
+		//without the sleep, users would get routed to login when navigating to this page using the address bar or refreshing
+		//then login would route them to home since firebase would have re-authenticated by the time the page loads
+		//there is probably a better way to handle this
+		if (!auth.currentUser) {
+			//in my testing, a sleep as low as 140 allows users to refresh the page without getting routed to login
+			sleep(1000).then(() => {
+				auth.currentUser ? getData() : router.push('/login', { scroll: false });
+			});
+		} else {
+			getData();
+		}
+
+		/* const unsubscribe = onAuthStateChanged(auth, (user) => {
+			console.log('authstatechangeuser: ', user);
 			setCurrentUser(user);
 		});
-		console.log('useeffect');
-		currentUser ? getData() : router.push('/login', { scroll: false });
 
-		return () => unsubscribe();
+		return () => unsubscribe(); */
 	}, []);
 
 	function sortGames(mode: Number) {
@@ -70,8 +93,7 @@ export default function Games() {
 	}
 
 	async function getData() {
-		console.log('getData');
-		await getDocuments(currentUser!.uid, 'games', listMode).then((snapshot) => {
+		await getDocuments(auth.currentUser!.uid, 'games', listMode).then((snapshot) => {
 			console.log('get documents promise');
 			setGames(snapshot.docs);
 		});
@@ -85,7 +107,7 @@ export default function Games() {
 		if (valid) {
 			let imageName = 'noimage.jpg';
 
-			if (mode === 'Edit') {
+			if (saveMode === 'Edit') {
 				imageName = oldImageName;
 			}
 
@@ -105,15 +127,15 @@ export default function Games() {
 			};
 
 			//console.log('Game Added');
-			if (mode === 'Add') {
-				await addDocument(currentUser!.uid, 'games', docData, imageName, image).then(() => {
+			if (saveMode === 'Add') {
+				await addDocument(auth.currentUser!.uid, 'games', docData, imageName, image).then(() => {
 					//console.log(docData);
-					toggleModal();
+					toggleAddModal();
 					getData();
 				});
-			} else if (mode === 'Edit') {
-				await editDocument(currentUser!.uid, 'games', docData, editID, imageName, image).then(() => {
-					toggleModal();
+			} else if (saveMode === 'Edit') {
+				await editDocument(auth.currentUser!.uid, 'games', docData, editID, imageName, image).then(() => {
+					toggleAddModal();
 					getData();
 				});
 			}
@@ -148,12 +170,12 @@ export default function Games() {
 		return valid;
 	}
 
-	function toggleModal() {
+	function toggleAddModal() {
 		setErrors(false);
-		if (modal) {
+		if (addModal) {
 			clearForm();
 		}
-		setModal(!modal);
+		setAddModal(!addModal);
 	}
 
 	function clearForm() {
@@ -178,12 +200,24 @@ export default function Games() {
 		SetComplete(doc.get('complete').toDate());
 	}
 
+	function toggleViewModal() {
+		if (viewModal) setViewGameImage('');
+		setViewModal(!viewModal);
+	}
+
+	function getImage(image: string) {
+		getDownloadURL(ref(storage, `/images/games/${image}`)).then((url) => {
+			setViewGameImage(url);
+		});
+	}
+
 	return (
 		<>
-			{currentUser && (
+			{auth.currentUser && (
 				<>
 					<div className={`${errors ? 'block' : 'hidden'} text-3xl animate-pulse w-screen bg-red-700 text-center fixed z-50 inset-x-0`}>{errorsMsg}</div>
-					<AddModal modalState={modal} modalToggle={toggleModal} saveFunction={saveGame} media="Game" mode={mode}>
+					<ModalWrapper modalState={addModal} modalToggle={toggleAddModal}>
+						<h1 className="mx-auto">{saveMode} Game</h1>
 						<form className="flex flex-col my-auto w-3/4">
 							<label>Title*:</label>
 							<input
@@ -265,6 +299,7 @@ export default function Games() {
 							/>
 							<label>Image:</label>
 							<input
+								className="text-sm text-wrap"
 								type="file"
 								accept="image/*"
 								key={imageKey}
@@ -273,16 +308,35 @@ export default function Games() {
 								}}
 							/>
 						</form>
-					</AddModal>
+						<div className="flex flex-row justify-evenly w-full mt-4">
+							<button onClick={saveGame} className="bg-purple-800 min-w-24 h-12 rounded-3xl p-2 hover:bg-purple-500 transition-all duration-500 ease-in-out">
+								Save Game
+							</button>
+							<button onClick={toggleAddModal} className=" bg-purple-800 min-w-24 h-12 rounded-3xl p-2 hover:bg-purple-500 transition-all duration-500 ease-in-out">
+								Cancel
+							</button>
+						</div>
+					</ModalWrapper>
+					<ModalWrapper modalState={viewModal} modalToggle={toggleViewModal}>
+						<div className="flex flex-col">
+							<img src={viewGameImage} alt="" />
+							<p>{viewGame?.get('title')}</p>
+							<p>{viewGame?.get('developer')}</p>
+							<p>{viewGame?.get('platform')}</p>
+							<p>{viewGame?.get('genre')}</p>
+							<p>{dateFormat.format(viewGame?.get('complete').toDate())}</p>
+							<p>{viewGame?.get('rating')}</p>
+						</div>
+					</ModalWrapper>
 					<section title="Games Page" className="md:w-3/5 w-full h-fit mx-auto my-10">
 						<div id="game-screen-sort-add" className="w-4/5  flex flex-row flex-wrap items-center justify-start mx-auto">
 							<div className="flex flex-row flex-grow md:justify-start justify-center items-center">
-								<h4>Sort By:</h4>
+								<h4 className="mr-4">Sort By:</h4>
 								<div className="w-fit flex rounded-3xl">
 									<button
 										className={`p-1 rounded-s-3xl w-24 h-12  ${
-											listMode === 'complete' ? 'bg-purple-800 opacity-100 pointer-events-none' : 'opacity-50  bg-purple-950 pointer-events-auto'
-										} transition-opacity duration-500`}
+											listMode === 'complete' ? 'bg-purple-800 opacity-100 pointer-events-none' : 'opacity-50  bg-purple-950 pointer-events-auto hover:bg-purple-900 '
+										} transition-opacity duration-500 ease-in-out`}
 										onClick={() => {
 											sortGames(1);
 										}}
@@ -291,8 +345,8 @@ export default function Games() {
 									</button>
 									<button
 										className={` p-1 rounded-e-3xl w-24 h-12 ${
-											listMode === 'rating' ? 'bg-purple-800 opacity-100 pointer-events-none' : 'opacity-50 bg-purple-950 pointer-events-auto'
-										} transition-opacity duration-500`}
+											listMode === 'rating' ? 'bg-purple-800 opacity-100 pointer-events-none' : 'opacity-50 bg-purple-950 pointer-events-auto hover:bg-purple-900'
+										} transition-all duration-500 ease-in-out`}
 										onClick={() => {
 											sortGames(2);
 										}}
@@ -303,10 +357,10 @@ export default function Games() {
 							</div>
 
 							<button
-								className="p-1 bg-purple-800 w-24 h-12 rounded-3xl justify-self-end mx-auto"
+								className="p-1 bg-purple-800 w-48 h-12 rounded-3xl justify-self-end mx-auto hover:bg-purple-500 transition-color duration-500 ease-in-out mt-4 md:mt-0 "
 								onClick={() => {
-									setMode('Add');
-									toggleModal();
+									setSaveMode('Add');
+									toggleAddModal();
 								}}
 							>
 								Add Game
@@ -320,9 +374,14 @@ export default function Games() {
 											<GameListCard
 												gameDoc={doc}
 												editGame={() => {
-													setMode('Edit');
+													setSaveMode('Edit');
 													enableEditing(doc);
-													toggleModal();
+													toggleAddModal();
+												}}
+												viewGame={() => {
+													setViewGame(doc);
+													getImage(doc.get('image'));
+													toggleViewModal();
 												}}
 											/>
 										</div>

@@ -50,7 +50,8 @@ body {
 	border-top-width: 2px;
 	display: flex;
 	flex-direction: row;
-
+	--tw-border-opacity: 1;
+	border-color: rgb(107 114 128 / var(--tw-border-opacity));
 	min-height: 15rem;
 }
 

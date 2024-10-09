@@ -44,7 +44,7 @@ export default function Login() {
 	}
 
 	return (
-		<div className="w-screen h-screen">
+		<div className=" fixed w-screen h-screen inset-x-0 inset-y-0">
 			{errors && <div className="fixed top-0 w-full bg-red-600 h-fit text-center text-3xl">{errorsMsg}</div>}
 			{!currentUser && (
 				<div className="flex w-full h-full items-center justify-center">

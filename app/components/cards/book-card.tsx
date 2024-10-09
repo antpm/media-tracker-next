@@ -26,7 +26,7 @@ function HomeBookCard({ bookDoc }: { bookDoc: QueryDocumentSnapshot }) {
 			{image === '' ? (
 				<HomeLoadingCard />
 			) : (
-				<div className="card border-gray-500 shadow-md shadow-slate-950 p-4 items-center md:w-96 w-full h-72">
+				<div className="card shadow-md shadow-slate-950 p-4 items-center md:w-96 w-full h-72">
 					<img src={image} className="max-w-32" />
 					<div className=" m-2 h-full flex flex-col justify-evenly text-lg">
 						<p>{book.title}</p>

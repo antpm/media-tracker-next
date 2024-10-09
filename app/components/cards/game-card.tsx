@@ -26,7 +26,7 @@ function HomeGameCard({ gameDoc }: { gameDoc: QueryDocumentSnapshot }) {
 			{image === '' ? (
 				<HomeLoadingCard />
 			) : (
-				<div className="card border-gray-500 shadow-md shadow-slate-950 p-4 items-center md:w-96 w-full min-h-72">
+				<div className="card border-gray-500 shadow-md shadow-slate-950 p-4 items-center md:w-96 w-full h-72">
 					<img src={image} className="max-w-32" />
 					<div className=" m-2 h-full flex flex-col justify-evenly text-lg">
 						<p>{game.title}</p>
@@ -42,7 +42,7 @@ function HomeGameCard({ gameDoc }: { gameDoc: QueryDocumentSnapshot }) {
 	);
 }
 
-function GameListCard({ gameDoc, editGame }: { gameDoc: QueryDocumentSnapshot; editGame: MouseEventHandler }) {
+function GameListCard({ gameDoc, editGame, viewGame }: { gameDoc: QueryDocumentSnapshot; editGame: MouseEventHandler; viewGame: MouseEventHandler }) {
 	const game = gameDoc.data();
 	const date = game.complete.toDate();
 	const [image, setImage] = useState('');
@@ -60,21 +60,23 @@ function GameListCard({ gameDoc, editGame }: { gameDoc: QueryDocumentSnapshot; e
 			{image === '' ? (
 				<ListLoadingCard />
 			) : (
-				<div className="lg:w-full mx-auto w-11/12 border-gray-500 shadow-md shadow-slate-950 card p-2 h-72 items-center justify-center rounded-xl text-lg">
+				<div className=" lg:w-full mx-auto w-11/12 border-gray-500 shadow-md shadow-slate-950 card p-2 h-72 items-center justify-evenly rounded-xl text-lg">
 					<div className="w-1/3 hidden lg:flex h-64 items-center justify-center">
 						<img src={image} className=" max-w-44" />
 					</div>
-					<div className="flex flex-col justify-around lg:w-1/3 w-3/4 h-3/4">
-						<p>{game.title}</p>
+					<div className="flex flex-col justify-around lg:w-1/2 w-3/4 h-3/4">
+						<p className="text-2xl">{game.title}</p>
 						<p className="hidden lg:block">{game.developer}</p>
 						<p className="hidden lg:block">{game.platform}</p>
 						<p className="hidden lg:block">{game.genre}</p>
 						<p>{formattedDate}</p>
 						<p>{game.rating}</p>
 					</div>
-					<div className="flex flex-col justify-around items-center w-1/3 h-3/4">
-						<button className="lg:hidden p-1 bg-purple-800 w-24 h-12 rounded-3xl ">View</button>
-						<button className="p-1 bg-purple-800 w-24 h-12 rounded-3xl " onClick={editGame}>
+					<div className="flex flex-col justify-around items-center lg:w-1/6 w-fit ml-2 lg:ml-0 h-3/4">
+						<button className="lg:hidden p-1 bg-purple-800 w-24 h-12 rounded-3xl hover:bg-purple-500 transition-color duration-500 ease-in-out" onClick={viewGame}>
+							View
+						</button>
+						<button className="p-1 bg-purple-800 w-24 h-12 rounded-3xl hover:bg-purple-500 transition-color duration-500 ease-in-out" onClick={editGame}>
 							Edit
 						</button>
 					</div>
