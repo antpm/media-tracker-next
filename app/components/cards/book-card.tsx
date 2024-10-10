@@ -1,14 +1,17 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { QueryDocumentSnapshot } from 'firebase/firestore';
 import Image from 'next/image';
 import { storage } from '@/app/util/firebase/firebase-app';
 import { getDownloadURL, ref } from 'firebase/storage';
 import { HomeLoadingCard, ListLoadingCard } from './loading-card';
+import { StarEmpty, StarFilled } from '@/app/public/icons/icons';
 
 function HomeBookCard({ bookDoc }: { bookDoc: QueryDocumentSnapshot }) {
 	const book = bookDoc.data();
 	const date = book.complete.toDate();
+	const [stars, setStars] = useState<boolean[]>([false, false, false, false, false]);
+
 	const [image, setImage] = useState('');
 	const formattedDate = new Intl.DateTimeFormat('en-US', {
 		month: 'long',
@@ -16,9 +19,16 @@ function HomeBookCard({ bookDoc }: { bookDoc: QueryDocumentSnapshot }) {
 		year: 'numeric',
 	}).format(date);
 
-	getDownloadURL(ref(storage, `/images/books/${book.image}`)).then((url) => {
-		setImage(url);
-	});
+	useEffect(() => {
+		getDownloadURL(ref(storage, `/images/books/${book.image}`)).then((url) => {
+			setImage(url);
+		});
+		let array: boolean[] = [false, false, false, false, false];
+		for (let i = 0; i < bookDoc.get('rating'); i++) {
+			array[i] = true;
+		}
+		setStars(array);
+	}, []);
 
 	return (
 		<div className="columns-1 h-96 mx-auto">
@@ -26,14 +36,18 @@ function HomeBookCard({ bookDoc }: { bookDoc: QueryDocumentSnapshot }) {
 			{image === '' ? (
 				<HomeLoadingCard />
 			) : (
-				<div className="card shadow-md shadow-slate-950 p-4 items-center md:w-96 w-full h-72">
+				<div className="card shadow-md shadow-slate-950 p-4 items-center md:w-96 w-full h-72 justify-between">
 					<img src={image} className="max-w-32" />
 					<div className=" m-2 h-full flex flex-col justify-evenly text-lg">
 						<p>{book.title}</p>
 						<p>{book.author}</p>
 						<p>{book.genre}</p>
 						<p>{formattedDate}</p>
-						<p>{book.rating}</p>
+						<div className="w-full flex flex-row">
+							{stars?.map((star, i) => {
+								return <Image key={i} src={star ? StarFilled : StarEmpty} alt="star" width={36} height={36} />;
+							})}
+						</div>
 					</div>
 				</div>
 			)}

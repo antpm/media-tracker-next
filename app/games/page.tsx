@@ -201,8 +201,8 @@ export default function Games() {
 	}
 
 	function toggleViewModal() {
-		if (viewModal) setViewGameImage('');
 		setViewModal(!viewModal);
+		if (viewModal) setViewGameImage('');
 	}
 
 	function getImage(image: string) {
@@ -269,8 +269,7 @@ export default function Games() {
 								value={rating}
 								onChange={(e) => {
 									setRating(Number(e.target.value));
-								}}
-							>
+								}}>
 								<option className="text-end text-black" value={1}>
 									1
 								</option>
@@ -318,8 +317,10 @@ export default function Games() {
 						</div>
 					</ModalWrapper>
 					<ModalWrapper modalState={viewModal} modalToggle={toggleViewModal}>
-						<div className="flex flex-col">
-							<img src={viewGameImage} alt="" />
+						<div className="columns-1 w-4/5 mx-auto">
+							<div className={` mx-auto w-full h-72 place-content-center`}>
+								<img src={viewGameImage} alt="" className="m-auto" />
+							</div>
 							<p>{viewGame?.get('title')}</p>
 							<p>{viewGame?.get('developer')}</p>
 							<p>{viewGame?.get('platform')}</p>
@@ -339,8 +340,7 @@ export default function Games() {
 										} transition-opacity duration-500 ease-in-out`}
 										onClick={() => {
 											sortGames(1);
-										}}
-									>
+										}}>
 										Completion
 									</button>
 									<button
@@ -349,8 +349,7 @@ export default function Games() {
 										} transition-all duration-500 ease-in-out`}
 										onClick={() => {
 											sortGames(2);
-										}}
-									>
+										}}>
 										Rating
 									</button>
 								</div>
@@ -361,8 +360,7 @@ export default function Games() {
 								onClick={() => {
 									setSaveMode('Add');
 									toggleAddModal();
-								}}
-							>
+								}}>
 								Add Game
 							</button>
 						</div>
