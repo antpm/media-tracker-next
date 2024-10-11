@@ -201,7 +201,6 @@ export default function Games() {
 		SetComplete(doc.get('complete').toDate());
 
 		toggleAddModal();
-		console.log(rating);
 	}
 
 	function toggleViewModal() {
@@ -222,74 +221,83 @@ export default function Games() {
 					<div className={`${errors ? 'block' : 'hidden'} text-3xl animate-pulse w-screen bg-red-700 text-center fixed z-50 inset-x-0`}>{errorsMsg}</div>
 					<ModalWrapper modalState={addModal} modalToggle={toggleAddModal}>
 						<h1 className="mx-auto">{saveMode} Game</h1>
-						<form className="flex flex-col my-auto w-3/4">
-							<label>Title*:</label>
-							<input
-								type="text"
-								className="text-black mb-4"
-								onChange={(e) => {
-									setTitle(e.target.value);
-								}}
-								value={title}
-								placeholder="Title"
-							/>
+						<form className="flex flex-col my-auto w-fit mx-auto ">
+							<div className="w-full text-end">
+								<label className="text-right flex-grow">Title*:</label>
+								<input
+									type="text"
+									className="text-black mb-4"
+									onChange={(e) => {
+										setTitle(e.target.value);
+									}}
+									value={title}
+									placeholder="Title"
+								/>
+							</div>
+							<div className="w-full text-end">
+								<label className="text-right flex-grow">Developer*:</label>
+								<input
+									type="text"
+									className="text-black mb-4"
+									onChange={(e) => {
+										setDeveloper(e.target.value);
+									}}
+									value={developer}
+									placeholder="Developer"
+								/>
+							</div>
+							<div className="w-full text-end">
+								<label className="text-right flex-grow">Platform*:</label>
+								<input
+									type="text"
+									className="text-black mb-4"
+									onChange={(e) => {
+										setPlatform(e.target.value);
+									}}
+									value={platform}
+									placeholder="Platform"
+								/>
+							</div>
+							<div className="w-full text-end">
+								<label className="text-right flex-grow">Genre*:</label>
+								<input
+									type="text"
+									className="text-black mb-4"
+									onChange={(e) => {
+										setGenre(e.target.value);
+									}}
+									value={genre}
+									placeholder="Genre"
+								/>
+							</div>
+							<div className="w-full text-end">
+								<label className="text-right">Completion Date*:</label>
+								<DatePicker
+									onKeyDown={(e) => {
+										//this prevents user from editing the date by typing in the textfield
+										e.preventDefault();
+									}}
+									selected={complete}
+									onChange={(date) => SetComplete(date!)}
+									className="text-black mb-4"
+								/>
+							</div>
+							<div className="w-full text-end">
+								<RatingSelect setRating={setRating} rating={rating} />
+							</div>
 
-							<label>Developer*:</label>
-							<input
-								type="text"
-								className="text-black mb-4"
-								onChange={(e) => {
-									setDeveloper(e.target.value);
-								}}
-								value={developer}
-								placeholder="Developer"
-							/>
-
-							<label>Platform*:</label>
-							<input
-								type="text"
-								className="text-black mb-4"
-								onChange={(e) => {
-									setPlatform(e.target.value);
-								}}
-								value={platform}
-								placeholder="Platform"
-							/>
-
-							<label>Genre*:</label>
-							<input
-								type="text"
-								className="text-black mb-4"
-								onChange={(e) => {
-									setGenre(e.target.value);
-								}}
-								value={genre}
-								placeholder="Genre"
-							/>
-
-							<label>Rating*:</label>
-							<RatingSelect setRating={setRating} rating={rating} />
-
-							<label>Completion Date*:</label>
-							<DatePicker
-								onKeyDown={(e) => {
-									//this prevents user from editing the date by typing in the textfield
-									e.preventDefault();
-								}}
-								selected={complete}
-								onChange={(date) => SetComplete(date!)}
-								className="text-black mb-4"
-							/>
-							<label>Image:</label>
-							<input
-								className="text-sm text-wrap"
-								type="file"
-								accept="image/*"
-								key={imageKey}
-								onChange={(e) => {
-									setImage(e.target.files ? e.target.files[0] : null);
-								}}
-							/>
+							<div className="w-40 mx-auto">
+								<label className="text-right">Image:</label>
+								<input
+									className="text-sm text-wrap"
+									type="file"
+									accept="image/*"
+									key={imageKey}
+									onChange={(e) => {
+										setImage(e.target.files ? e.target.files[0] : null);
+									}}
+								/>
+							</div>
 						</form>
 						<div className="flex flex-row justify-evenly w-full mt-4">
 							<button onClick={saveGame} className="bg-purple-800 min-w-24 h-12 rounded-3xl p-2 hover:bg-purple-500 transition-all duration-500 ease-in-out">

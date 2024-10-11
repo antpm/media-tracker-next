@@ -23,6 +23,7 @@ export default function RatingSelect({ setRating, rating }: { setRating: Functio
 		}
 
 		setStars(array);
+		setSelectedStars(array);
 	}, [rating]);
 
 	function starUnhovered() {
@@ -39,31 +40,34 @@ export default function RatingSelect({ setRating, rating }: { setRating: Functio
 	}
 
 	return (
-		<div className="flex flex-row w-full h-fit">
-			{stars.map((star, i) => {
-				return (
-					<button
-						key={i}
-						className={`${star ? 'opacity-100' : 'opacity-25'} hover:scale-125 w-24 h-24  transition-all duration-300 ease-in-out`}
-						onClick={(e) => {
-							e.preventDefault();
-							starSelected(i);
-							setRating(i + 1);
-							console.log('star clicked');
-						}}>
-						<Image
-							alt="star"
-							src={Star}
-							onMouseEnter={() => {
-								starHovered(i);
-							}}
-							onMouseLeave={() => {
-								starUnhovered();
-							}}
-						/>
-					</button>
-				);
-			})}
+		<div className="flex flex-row w-full h-10 items-center text-end justify-end mb-4">
+			<label>Rating*:</label>
+			<div className="flex w-48 h-10">
+				{stars.map((star, i) => {
+					return (
+						<button
+							key={i}
+							className={`${star ? 'opacity-100' : 'opacity-25'} hover:scale-125 h-full  transition-all duration-300 ease-in-out`}
+							onClick={(e) => {
+								e.preventDefault();
+								starSelected(i);
+								setRating(i + 1);
+								console.log('star clicked');
+							}}>
+							<Image
+								alt="star"
+								src={Star}
+								onMouseEnter={() => {
+									starHovered(i);
+								}}
+								onMouseLeave={() => {
+									starUnhovered();
+								}}
+							/>
+						</button>
+					);
+				})}
+			</div>
 		</div>
 	);
 }
