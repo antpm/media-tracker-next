@@ -9,6 +9,7 @@ import { QueryDocumentSnapshot, QuerySnapshot, Timestamp } from 'firebase/firest
 import { getDownloadURL, list, ref } from 'firebase/storage';
 import { GameListCard } from '../components/cards/game-card';
 import DatePicker from 'react-datepicker';
+import RatingSelect from '../components/rating-select';
 
 export default function Games() {
 	const router = useRouter();
@@ -198,6 +199,9 @@ export default function Games() {
 		setOldImageName(doc.get('image'));
 		setEditID(doc.id);
 		SetComplete(doc.get('complete').toDate());
+
+		toggleAddModal();
+		console.log(rating);
 	}
 
 	function toggleViewModal() {
@@ -264,28 +268,8 @@ export default function Games() {
 							/>
 
 							<label>Rating*:</label>
-							<select
-								className="w-16 text-black mb-4"
-								value={rating}
-								onChange={(e) => {
-									setRating(Number(e.target.value));
-								}}>
-								<option className="text-end text-black" value={1}>
-									1
-								</option>
-								<option className="text-end text-black" value={2}>
-									2
-								</option>
-								<option className="text-end text-black" value={3}>
-									3
-								</option>
-								<option className="text-end text-black" value={4}>
-									4
-								</option>
-								<option className="text-end text-black" value={5}>
-									5
-								</option>
-							</select>
+							<RatingSelect setRating={setRating} rating={rating} />
+
 							<label>Completion Date*:</label>
 							<DatePicker
 								onKeyDown={(e) => {
@@ -374,7 +358,6 @@ export default function Games() {
 												editGame={() => {
 													setSaveMode('Edit');
 													enableEditing(doc);
-													toggleAddModal();
 												}}
 												viewGame={() => {
 													setViewGame(doc);

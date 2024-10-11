@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { storage } from '@/app/util/firebase/firebase-app';
 import { getDownloadURL, ref } from 'firebase/storage';
 import { HomeLoadingCard, ListLoadingCard } from './loading-card';
-import { StarEmpty, StarFilled } from '@/app/public/icons/icons';
+import { Star } from '@/app/public/icons/icons';
 
 function HomeGameCard({ gameDoc }: { gameDoc: QueryDocumentSnapshot }) {
 	const game = gameDoc.data();
@@ -48,7 +48,7 @@ function HomeGameCard({ gameDoc }: { gameDoc: QueryDocumentSnapshot }) {
 						<p>{formattedDate}</p>
 						<div className="w-full flex flex-row">
 							{stars?.map((star, i) => {
-								return <Image key={i} src={star ? StarFilled : StarEmpty} alt="star" width={36} height={36} />;
+								return <Image key={i} src={Star} alt="star" width={36} height={36} className={`${star ? 'opacity-100' : 'opacity-25'}`} />;
 							})}
 						</div>
 					</div>
@@ -61,7 +61,11 @@ function HomeGameCard({ gameDoc }: { gameDoc: QueryDocumentSnapshot }) {
 function GameListCard({ gameDoc, editGame, viewGame }: { gameDoc: QueryDocumentSnapshot; editGame: MouseEventHandler; viewGame: MouseEventHandler }) {
 	const game = gameDoc.data();
 	const date = game.complete.toDate();
-	const [stars, setStars] = useState<boolean[]>([false, false, false, false, false]);
+	var stars: boolean[] = [false, false, false, false, false];
+	for (let i = 0; i < game.rating; i++) {
+		stars[i] = true;
+	}
+
 	const [image, setImage] = useState('');
 	const formattedDate = new Intl.DateTimeFormat('en-US', {
 		month: 'long',
@@ -70,14 +74,10 @@ function GameListCard({ gameDoc, editGame, viewGame }: { gameDoc: QueryDocumentS
 	}).format(date);
 
 	useEffect(() => {
+		console.log('list game card useeffect');
 		getDownloadURL(ref(storage, `/images/games/${game.image}`)).then((url) => {
 			setImage(url);
 		});
-		let array: boolean[] = [false, false, false, false, false];
-		for (let i = 0; i < gameDoc.get('rating'); i++) {
-			array[i] = true;
-		}
-		setStars(array);
 	}, []);
 
 	return (
@@ -85,12 +85,12 @@ function GameListCard({ gameDoc, editGame, viewGame }: { gameDoc: QueryDocumentS
 			{image === '' ? (
 				<ListLoadingCard />
 			) : (
-				<div className=" lg:w-full flex flex-row flex-wrap mx-auto w-11/12 border-gray-500 shadow-md shadow-slate-950 card p-2 md:h-72 h-56 items-center justify-evenly rounded-xl text-lg">
-					<div className="w-1/3 hidden lg:flex flex-col h-64 items-center justify-center">
-						<img src={image} className=" max-w-44" />
+				<div className=" lg:w-full flex flex-row flex-wrap mx-auto w-11/12 border-gray-500 shadow-md shadow-slate-950 card p-2 md:h-56 h-56 items-center justify-evenly rounded-xl text-lg">
+					<div className="w-1/3 hidden lg:flex flex-col h-full items-center justify-center">
+						<img src={image} className=" max-h-44" />
 						<div className="w-fit md:flex flex-row mx-auto hidden mt-2">
 							{stars?.map((star, i) => {
-								return <Image key={i} src={star ? StarFilled : StarEmpty} alt="star" width={36} height={36} />;
+								return <Image key={i} src={Star} alt="star" width={36} height={36} className={`${star ? 'opacity-100' : 'opacity-25'}`} />;
 							})}
 						</div>
 					</div>
@@ -102,7 +102,7 @@ function GameListCard({ gameDoc, editGame, viewGame }: { gameDoc: QueryDocumentS
 						<p>{formattedDate}</p>
 						<div className="w-fit flex flex-row mx-auto md:hidden">
 							{stars?.map((star, i) => {
-								return <Image key={i} src={star ? StarFilled : StarEmpty} alt="star" width={36} height={36} />;
+								return <Image key={i} src={Star} alt="star" width={36} height={36} className={`${star ? 'opacity-100' : 'opacity-25'}`} />;
 							})}
 						</div>
 					</div>
