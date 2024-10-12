@@ -1,12 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
 import ModalWrapper from '../components/modal-wrapper';
-import { onAuthStateChanged } from 'firebase/auth';
 import { auth, generateImageName, addDocument, editDocument, storage } from '../util/firebase/firebase-app';
 import { useRouter } from 'next/navigation';
 import { getDocuments } from '../util/firebase/firebase-app';
-import { QueryDocumentSnapshot, QuerySnapshot, Timestamp } from 'firebase/firestore';
-import { getDownloadURL, list, ref } from 'firebase/storage';
+import { QueryDocumentSnapshot, Timestamp } from 'firebase/firestore';
+import { getDownloadURL, ref } from 'firebase/storage';
 import { GameListCard } from '../components/cards/game-card';
 import DatePicker from 'react-datepicker';
 import RatingSelect from '../components/rating-select';
@@ -222,6 +221,7 @@ export default function Games() {
 					<ModalWrapper modalState={addModal} modalToggle={toggleAddModal}>
 						<h1 className="mx-auto">{saveMode} Game</h1>
 						<form className="flex flex-col my-auto w-fit mx-auto ">
+							<p className="mb-4 mx-auto">Field marked with an asterisk* are required</p>
 							<div className="w-full text-end">
 								<label className="text-right flex-grow">Title*:</label>
 								<input
@@ -286,7 +286,7 @@ export default function Games() {
 								<RatingSelect setRating={setRating} rating={rating} />
 							</div>
 
-							<div className="w-40 mx-auto">
+							<div className="w-1/2 place-content-end mx-auto">
 								<label className="text-right">Image:</label>
 								<input
 									className="text-sm text-wrap"
