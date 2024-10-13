@@ -71,7 +71,7 @@ function BookListCard({ bookDoc, editBook, viewBook }: { bookDoc: QueryDocumentS
 	}).format(date);
 
 	useEffect(() => {
-		console.log('list game card useeffect');
+		//console.log('list game card useeffect');
 		getDownloadURL(ref(storage, `/images/books/${book.image}`)).then((url) => {
 			setImage(url);
 		});

@@ -21,20 +21,20 @@ export async function addDocument(userID: string, table: string, docData: {}, im
 	const fsRef = collection(db, 'users', userID, table);
 	await addDoc(fsRef, docData)
 		.then(() => {
-			console.log('doc added');
+			//console.log('doc added');
 		})
 		.catch((error) => {
-			console.log('Error: ', error.message);
+			//console.log('Error: ', error.message);
 		});
 
 	const storageRef = ref(storage, `/images/${table}/${imageName}`);
 	if (image != null) {
 		await uploadBytes(storageRef, image)
 			.then(() => {
-				console.log('image uploaded');
+				//console.log('image uploaded');
 			})
 			.catch((error) => {
-				console.log('Error: ', error.message);
+				//console.log('Error: ', error.message);
 			});
 	}
 }
@@ -43,20 +43,20 @@ export async function editDocument(userID: string, table: string, docData: {}, d
 	const fsRef = doc(db, 'users', userID, table, docID);
 	await setDoc(fsRef, docData)
 		.then(() => {
-			console.log('doc edited');
+			//console.log('doc edited');
 		})
 		.catch((error) => {
-			console.log('Error: ', error.message);
+			//console.log('Error: ', error.message);
 		});
 
 	const storageRef = ref(storage, `/images/${table}/${imageName}`);
 	if (image != null) {
 		await uploadBytes(storageRef, image)
 			.then(() => {
-				console.log('image uploaded');
+				//console.log('image uploaded');
 			})
 			.catch((error) => {
-				console.log('Error: ', error.message);
+				//console.log('Error: ', error.message);
 			});
 	}
 }

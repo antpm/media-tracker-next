@@ -43,7 +43,7 @@ export default function Login() {
 		setErrors(false);
 		setErrorsMsg('');
 		if (email === '' || password === '') {
-			console.log('vaidation failed');
+			//console.log('vaidation failed');
 			setErrors(true);
 			setErrorsMsg('All fields are required');
 		} else {
@@ -53,7 +53,7 @@ export default function Login() {
 				setCurrentUser(userCredential.user);
 				router.push('/', { scroll: false });
 			} catch (error) {
-				console.log(error);
+				//console.log(error);
 				setErrors(true);
 				setErrorsMsg('Email/Password incorrect');
 			}

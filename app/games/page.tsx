@@ -94,7 +94,7 @@ export default function Games() {
 
 	async function getData() {
 		await getDocuments(auth.currentUser!.uid, 'games', listMode).then((snapshot) => {
-			console.log('get documents promise');
+			//console.log('get documents promise');
 			setGames(snapshot.docs);
 		});
 
@@ -113,7 +113,7 @@ export default function Games() {
 
 			if (image) {
 				imageName = generateImageName(30);
-				console.log('image name generated');
+				//console.log('image name generated');
 			}
 
 			const docData = {

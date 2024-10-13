@@ -92,7 +92,7 @@ export default function Books() {
 
 	async function getData() {
 		await getDocuments(auth.currentUser!.uid, 'books', listMode).then((snapshot) => {
-			console.log('get documents promise');
+			//console.log('get documents promise');
 			setBooks(snapshot.docs);
 		});
 
@@ -111,7 +111,7 @@ export default function Books() {
 
 			if (image) {
 				imageName = generateImageName(30);
-				console.log('image name generated');
+				//console.log('image name generated');
 			}
 
 			const docData = {

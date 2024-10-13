@@ -1,10 +1,11 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { auth } from '../util/firebase/firebase-app';
+import { auth, db } from '../util/firebase/firebase-app';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { FirebaseError } from 'firebase/app';
+import { doc, setDoc, Timestamp } from 'firebase/firestore';
 
 export default function SignUp() {
 	const [currentUser, setCurrentUser] = useState(auth.currentUser);
@@ -54,6 +55,9 @@ export default function SignUp() {
 		} else {
 			await createUserWithEmailAndPassword(auth, email, password)
 				.then((userCred) => {
+					setDoc(doc(db, 'users', userCred.user.uid), {
+						join: Timestamp.fromDate(new Date()),
+					});
 					auth.signOut();
 					setCurrentUser(userCred.user);
 					setSuccess(true);
@@ -62,7 +66,7 @@ export default function SignUp() {
 					});
 				})
 				.catch((error: FirebaseError) => {
-					console.log(error.code);
+					//console.log(error.code);
 					switch (error.code) {
 						case 'auth/invalid-email':
 							setErrorsMsg('Invalid Email');

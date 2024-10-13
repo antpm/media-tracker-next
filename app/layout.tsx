@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import Navbar from './components/nav-bar';
+import { Suspense } from 'react';
 
 const geistSans = localFont({
 	src: './fonts/GeistVF.woff',
@@ -28,7 +29,9 @@ export default function RootLayout({
 		<html lang="en">
 			<body className={`${geistSans.variable} ${geistMono.variable} flex lg:flex-row flex-col antialiased h-screen w-full`}>
 				<Navbar />
-				<main className="w-full h-fit lg:ml-48 mt-16 lg:mt-0 p-4">{children}</main>
+				<Suspense>
+					<main className="w-full h-fit lg:ml-48 mt-16 lg:mt-0 p-4">{children}</main>
+				</Suspense>
 			</body>
 		</html>
 	);

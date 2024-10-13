@@ -52,7 +52,7 @@ export default function RatingSelect({ setRating, rating }: { setRating: Functio
 								e.preventDefault();
 								starSelected(i);
 								setRating(i + 1);
-								console.log('star clicked');
+								//console.log('star clicked');
 							}}>
 							<Image
 								alt="star"

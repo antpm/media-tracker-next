@@ -23,7 +23,7 @@ function HomeGameCard({ gameDoc }: { gameDoc: QueryDocumentSnapshot }) {
 		getDownloadURL(ref(storage, `/images/games/${game.image}`)).then((url) => {
 			setImage(url);
 
-			console.log('getdownloadurl');
+			//console.log('getdownloadurl');
 		});
 		let array: boolean[] = [false, false, false, false, false];
 		for (let i = 0; i < gameDoc.get('rating'); i++) {
@@ -74,7 +74,7 @@ function GameListCard({ gameDoc, editGame, viewGame }: { gameDoc: QueryDocumentS
 	}).format(date);
 
 	useEffect(() => {
-		console.log('list game card useeffect');
+		//console.log('list game card useeffect');
 		getDownloadURL(ref(storage, `/images/games/${game.image}`)).then((url) => {
 			setImage(url);
 		});
