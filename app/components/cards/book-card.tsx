@@ -45,7 +45,7 @@ function HomeBookCard({ bookDoc }: { bookDoc: QueryDocumentSnapshot }) {
 						<p>{formattedDate}</p>
 						<div className="w-full flex flex-row">
 							{stars?.map((star, i) => {
-								return <Image key={i} src={Star} alt="star" width={36} height={36} className={`${star ? 'opacity-100' : 'opacity-25'}`} />;
+								return <Image key={i} src={Star} alt="star" className={`${star ? 'opacity-100' : 'opacity-25'} md:w-9 md:h-9 w-6 h-6`} />;
 							})}
 						</div>
 					</div>
@@ -103,10 +103,10 @@ function BookListCard({ bookDoc, editBook, viewBook }: { bookDoc: QueryDocumentS
 						</div>
 					</div>
 					<div className="flex md:flex-col flex-row justify-around items-center lg:w-1/6 w-full ml-2 lg:ml-0 md:h-3/4 h-fit">
-						<button className="lg:hidden p-1 bg-purple-800 w-24 h-12 rounded-3xl hover:bg-purple-500 transition-color duration-500 ease-in-out" onClick={viewBook}>
+						<button className="lg:hidden 1 button transition-color duration-500 ease-in-out" onClick={viewBook}>
 							View
 						</button>
-						<button className="p-1 bg-purple-800 w-24 h-12 rounded-3xl hover:bg-purple-500 transition-color duration-500 ease-in-out" onClick={editBook}>
+						<button className="p-1 button transition-color duration-500 ease-in-out" onClick={editBook}>
 							Edit
 						</button>
 					</div>

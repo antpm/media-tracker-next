@@ -279,10 +279,10 @@ export default function Books() {
 							</div>
 						</form>
 						<div className="flex flex-row justify-evenly w-full mt-4">
-							<button onClick={saveBook} className="bg-purple-800 min-w-24 h-12 rounded-3xl p-2 hover:bg-purple-500 transition-all duration-500 ease-in-out">
+							<button onClick={saveBook} className="button transition-all duration-500 ease-in-out">
 								Save Book
 							</button>
-							<button onClick={toggleAddModal} className=" bg-purple-800 min-w-24 h-12 rounded-3xl p-2 hover:bg-purple-500 transition-all duration-500 ease-in-out">
+							<button onClick={toggleAddModal} className=" button transition-all duration-500 ease-in-out">
 								Cancel
 							</button>
 						</div>
@@ -306,8 +306,8 @@ export default function Books() {
 								<h4 className="mr-4">Sort By:</h4>
 								<div className="w-fit flex rounded-3xl">
 									<button
-										className={`p-1 rounded-s-3xl w-24 h-12  ${
-											listMode === 'complete' ? 'bg-purple-800 opacity-100 pointer-events-none' : 'opacity-50  bg-purple-950 pointer-events-auto hover:bg-purple-900 '
+										className={`toggle-button rounded-s-3xl  ${
+											listMode === 'complete' ? 'opacity-100 pointer-events-none' : 'opacity-50   pointer-events-auto '
 										} transition-opacity duration-500 ease-in-out`}
 										onClick={() => {
 											sortBooks(1);
@@ -315,8 +315,8 @@ export default function Books() {
 										Completion
 									</button>
 									<button
-										className={` p-1 rounded-e-3xl w-24 h-12 ${
-											listMode === 'rating' ? 'bg-purple-800 opacity-100 pointer-events-none' : 'opacity-50 bg-purple-950 pointer-events-auto hover:bg-purple-900'
+										className={` toggle-button rounded-e-3xl ${
+											listMode === 'rating' ? 'opacity-100 pointer-events-none' : 'opacity-50  pointer-events-auto '
 										} transition-all duration-500 ease-in-out`}
 										onClick={() => {
 											sortBooks(2);
@@ -327,7 +327,7 @@ export default function Books() {
 							</div>
 
 							<button
-								className="p-1 bg-purple-800 w-48 h-12 rounded-3xl justify-self-end mx-auto hover:bg-purple-500 transition-color duration-500 ease-in-out mt-4 md:mt-0 "
+								className=" w-48 button justify-self-end mx-auto transition-color duration-500 ease-in-out mt-4 md:mt-0 "
 								onClick={() => {
 									setSaveMode('Add');
 									toggleAddModal();

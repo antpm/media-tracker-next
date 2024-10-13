@@ -38,7 +38,7 @@ function HomeGameCard({ gameDoc }: { gameDoc: QueryDocumentSnapshot }) {
 			{image === '' ? (
 				<HomeLoadingCard />
 			) : (
-				<div className="card shadow-md shadow-slate-950 p-4 items-center md:w-96 w-full h-72 justify-between">
+				<div className="card flex-row shadow-md shadow-slate-950 p-4 items-center md:w-96 w-full h-72 justify-between">
 					<img src={image} className="max-w-32" />
 					<div className=" m-2 h-full flex flex-col justify-evenly text-lg">
 						<p>{game.title}</p>
@@ -48,7 +48,7 @@ function HomeGameCard({ gameDoc }: { gameDoc: QueryDocumentSnapshot }) {
 						<p>{formattedDate}</p>
 						<div className="w-full flex flex-row">
 							{stars?.map((star, i) => {
-								return <Image key={i} src={Star} alt="star" width={36} height={36} className={`${star ? 'opacity-100' : 'opacity-25'}`} />;
+								return <Image key={i} src={Star} alt="star" className={`${star ? 'opacity-100' : 'opacity-25'} md:w-9 md:h-9 w-6 h-6`} />;
 							})}
 						</div>
 					</div>
@@ -107,10 +107,10 @@ function GameListCard({ gameDoc, editGame, viewGame }: { gameDoc: QueryDocumentS
 						</div>
 					</div>
 					<div className="flex md:flex-col flex-row justify-around items-center lg:w-1/6 w-full ml-2 lg:ml-0 md:h-3/4 h-fit">
-						<button className="lg:hidden p-1 bg-purple-800 w-24 h-12 rounded-3xl hover:bg-purple-500 transition-color duration-500 ease-in-out" onClick={viewGame}>
+						<button className="lg:hidden p-1 button transition-color duration-500 ease-in-out" onClick={viewGame}>
 							View
 						</button>
-						<button className="p-1 bg-purple-800 w-24 h-12 rounded-3xl hover:bg-purple-500 transition-color duration-500 ease-in-out" onClick={editGame}>
+						<button className="p-1 button transition-color duration-500 ease-in-out" onClick={editGame}>
 							Edit
 						</button>
 					</div>

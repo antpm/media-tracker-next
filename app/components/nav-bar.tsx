@@ -41,8 +41,8 @@ export default function Navbar() {
 		<>
 			{currentUser && (
 				<div className="z-30">
-					<div id="desktop-nav" className="hidden fixed lg:flex w-48 h-screen flex-col bg-purple-800 border-r-2 border-purple-950">
-						<div className="p-4 flex flex-row items-center border-b-2 bg-purple-900  border-purple-950">
+					<div id="desktop-nav" className="hidden fixed lg:flex w-48 h-screen flex-col nav-bg border-r-2 border-stone-800">
+						<div className="p-4 flex flex-row items-center border-b-2 primary-bg  border-stone-800">
 							<Image src={Logo} alt="logo" width={48} height={48} />
 							<p className="ml-2">Media Tracker</p>
 						</div>
@@ -60,7 +60,7 @@ export default function Navbar() {
 								);
 							})}
 						</div>
-						<div className="flex flex-col h-56 place-content-start border-t-2 border-purple-950 bg-purple-900">
+						<div className="flex flex-col h-56 place-content-start border-t-2 border-stone-800 primary-bg">
 							<Link className="my-2 flex flex-row items-center w-full" href={'/account'}>
 								<Image src={AccountIcon} alt="" className="ml-6" />
 								<p className="ml-2 text-xl text-white">Account</p>
@@ -72,14 +72,14 @@ export default function Navbar() {
 						</div>
 					</div>
 					<div id="mobile-nav" className="h-fit flex flex-col fixed w-full lg:hidden items-center ">
-						<div className="w-full flex flex-row items-center bg-purple-800">
+						<div className="w-full flex flex-row items-center primary-bg">
 							<Image src={Logo} alt="logo" width={48} height={48} />
 							<p className="ml-2 text-2xl flex-grow">Media Tracker</p>
 							<button onClick={changeMenu}>
 								<Image src={Menu} alt="menu" />
 							</button>
 						</div>
-						<div className={`${isOpen ? 'block' : 'hidden'} columns-1 w-full h-fit bg-purple-950 divide-y-2 divide-violet-700 justify-start`}>
+						<div className={`${isOpen ? 'block' : 'hidden'} columns-1 w-full h-fit nav-bg divide-y-2 divide-stone-800 justify-start`}>
 							{links.map((link) => {
 								return (
 									<Link key={link.name} onClick={changeMenu} href={link.path} className="my-2 mx-auto flex flex-row items-center justify-center">
