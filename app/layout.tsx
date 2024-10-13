@@ -3,6 +3,7 @@ import localFont from 'next/font/local';
 import './globals.css';
 import Navbar from './components/nav-bar';
 import { Suspense } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 
 const geistSans = localFont({
 	src: './fonts/GeistVF.woff',
@@ -32,6 +33,7 @@ export default function RootLayout({
 				<Suspense>
 					<main className="w-full h-fit lg:ml-48 mt-16 lg:mt-0 p-4">{children}</main>
 				</Suspense>
+				<Analytics />
 			</body>
 		</html>
 	);
