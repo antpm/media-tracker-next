@@ -22,13 +22,14 @@ export default function Login() {
 		return new Promise((resolve) => setTimeout(resolve, time));
 	}
 
-	/* useEffect(() => {
+	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, (user) => {
 			setCurrentUser(user);
+			setAuthWait(false);
 			user && router.push('/', { scroll: false });
 		});
 		return () => unsubscribe();
-	}, []); */
+	}, []);
 
 	useEffect(() => {
 		if (!auth.currentUser) {
