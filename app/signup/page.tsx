@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { auth, db } from '../util/firebase/firebase-app';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { FirebaseError } from 'firebase/app';
 import { doc, setDoc, Timestamp } from 'firebase/firestore';
 
@@ -12,6 +12,7 @@ export default function SignUp() {
 	const [email, setEmail] = useState('');
 	const [password, setPassword] = useState('');
 	const [confirmPass, setConfirmPass] = useState('');
+	const [displayName, setDisplayName] = useState('');
 	const [errors, setErrors] = useState(false);
 	const [errorsMsg, setErrorsMsg] = useState('');
 	const [success, setSuccess] = useState(false);
@@ -45,7 +46,7 @@ export default function SignUp() {
 	async function handleSignUp() {
 		setErrors(false);
 		setErrorsMsg('');
-		if (email === '' || password === '' || confirmPass === '') {
+		if (email === '' || password === '' || confirmPass === '' || displayName === '') {
 			//console.log('vaidation failed');
 			setErrors(true);
 			setErrorsMsg('All fields are required');
@@ -58,6 +59,7 @@ export default function SignUp() {
 					setDoc(doc(db, 'users', userCred.user.uid), {
 						join: Timestamp.fromDate(new Date()),
 					});
+					updateProfile(auth.currentUser!, { displayName: displayName });
 					auth.signOut();
 					setCurrentUser(userCred.user);
 					setSuccess(true);
@@ -100,6 +102,8 @@ export default function SignUp() {
 						<h1 className="mx-auto m-4 text-2xl">Sign Up</h1>
 						<p className="mx-2">Email*:</p>
 						<input className="text-black mx-2 mb-2" type="email" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+						<p className="mx-2">Display Name*:</p>
+						<input className="text-black mx-2 mb-2" type="email" placeholder="email" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
 						<p className="mx-2">Password*:</p>
 						<input className="text-black mx-2 mb-2" type="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
 						<p className="mx-2">Confirm Password*:</p>
