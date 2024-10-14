@@ -103,7 +103,7 @@ export default function SignUp() {
 						<p className="mx-2">Email*:</p>
 						<input className="text-black mx-2 mb-2" type="email" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
 						<p className="mx-2">Display Name*:</p>
-						<input className="text-black mx-2 mb-2" type="email" placeholder="email" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
+						<input className="text-black mx-2 mb-2" type="text" placeholder="display name" value={displayName} onChange={(e) => setDisplayName(e.target.value)} />
 						<p className="mx-2">Password*:</p>
 						<input className="text-black mx-2 mb-2" type="password" placeholder="password" value={password} onChange={(e) => setPassword(e.target.value)} />
 						<p className="mx-2">Confirm Password*:</p>
