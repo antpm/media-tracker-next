@@ -7,7 +7,7 @@ import { addDocument, auth, editDocument, generateImageName, getDocuments, stora
 import { getDownloadURL, ref } from 'firebase/storage';
 import ModalWrapper from '../components/modal-wrapper';
 import DatePicker from 'react-datepicker';
-import { BookListCard } from '../components/cards/book-card';
+import ListCard from '../components/list-card';
 
 export default function Books() {
 	const router = useRouter();
@@ -340,17 +340,18 @@ export default function Books() {
 								{books?.map((doc) => {
 									return (
 										<div key={doc.id} className="my-4 mx-auto">
-											<BookListCard
-												bookDoc={doc}
-												editBook={() => {
+											<ListCard
+												doc={doc}
+												editDoc={() => {
 													setSaveMode('Edit');
 													enableEditing(doc);
 												}}
-												viewBook={() => {
+												viewDoc={() => {
 													setViewBook(doc);
 													getImage(doc.get('image'));
 													toggleViewModal();
 												}}
+												media="books"
 											/>
 										</div>
 									);

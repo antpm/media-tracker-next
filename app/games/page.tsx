@@ -6,9 +6,9 @@ import { useRouter } from 'next/navigation';
 import { getDocuments } from '../util/firebase/firebase-app';
 import { QueryDocumentSnapshot, Timestamp } from 'firebase/firestore';
 import { getDownloadURL, ref } from 'firebase/storage';
-import { GameListCard } from '../components/cards/game-card';
 import DatePicker from 'react-datepicker';
 import RatingSelect from '../components/rating-select';
+import ListCard from '../components/list-card';
 
 export default function Games() {
 	const router = useRouter();
@@ -26,15 +26,19 @@ export default function Games() {
 	const [errorsMsg, setErrorMsg] = useState('');
 	const [oldImageName, setOldImageName] = useState('');
 	const [editID, setEditID] = useState('');
+
+	//common fields
 	const [title, setTitle] = useState('');
 	const [genre, setGenre] = useState('');
-	const [platform, setPlatform] = useState('');
-	const [developer, setDeveloper] = useState('');
 	const [rating, setRating] = useState(1);
 	const [complete, SetComplete] = useState(new Date());
 	const [image, setImage] = useState<File | null>(null);
 	//in order to get the file input to reset when the modal closes, it is assigned a key which gets changed on close, causing it to be re-rendered
 	const [imageKey, setImageKey] = useState(Date());
+
+	//game fields
+	const [platform, setPlatform] = useState('');
+	const [developer, setDeveloper] = useState('');
 
 	const [viewGame, setViewGame] = useState<QueryDocumentSnapshot | null>(null);
 	const [viewGameImage, setViewGameImage] = useState('');
@@ -361,17 +365,18 @@ export default function Games() {
 								{games?.map((doc) => {
 									return (
 										<div key={doc.id} className="my-4 mx-auto">
-											<GameListCard
-												gameDoc={doc}
-												editGame={() => {
+											<ListCard
+												doc={doc}
+												editDoc={() => {
 													setSaveMode('Edit');
 													enableEditing(doc);
 												}}
-												viewGame={() => {
+												viewDoc={() => {
 													setViewGame(doc);
 													getImage(doc.get('image'));
 													toggleViewModal();
 												}}
+												media="games"
 											/>
 										</div>
 									);
