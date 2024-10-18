@@ -57,10 +57,10 @@ export default function HomeCard({ doc, media }: { doc: QueryDocumentSnapshot; m
 			{image === '' ? (
 				<HomeLoadingCard />
 			) : (
-				<div className="card md:flex-row flex-col shadow-md shadow-slate-950 p-4 items-center md:h-72 w-full justify-evenly">
-					<img src={image} className="max-w-32" />
-					<div className=" m-2 h-full flex flex-col justify-evenly text-lg gap-2">
-						<p>{data.title}</p>
+				<div className="card md:flex-row flex-col shadow-md shadow-slate-950 p-4 items-center min-h-72 w-full justify-evenly">
+					<img src={image} className="max-w-32 mr-2" />
+					<div className=" m-2 min-h-60 flex flex-col justify-evenly text-lg gap-2">
+						<p className="text-2xl">{data.title}</p>
 						{listUniqueData()}
 						<p>Genre: {data.genre}</p>
 						<p>{formattedDate}</p>
