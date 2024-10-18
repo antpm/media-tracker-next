@@ -37,14 +37,14 @@ export default function HomeCard({ doc, media }: { doc: QueryDocumentSnapshot; m
 			case 'games':
 				return (
 					<>
-						<p className="hidden lg:block">Developer: {data.developer}</p>
-						<p className="hidden lg:block">Platform: {data.platform}</p>
+						<p>Developer: {data.developer}</p>
+						<p>Platform: {data.platform}</p>
 					</>
 				);
 			case 'books':
 				return (
 					<>
-						<p className="hidden lg:block">Author: {data.author}</p>
+						<p>Author: {data.author}</p>
 					</>
 				);
 			default:
@@ -53,18 +53,18 @@ export default function HomeCard({ doc, media }: { doc: QueryDocumentSnapshot; m
 	}
 
 	return (
-		<div className="columns-1 h-96 mx-auto">
+		<>
 			{image === '' ? (
 				<HomeLoadingCard />
 			) : (
-				<div className="card flex-row shadow-md shadow-slate-950 p-4 items-center md:w-96 w-full h-72 justify-between">
+				<div className="card md:flex-row flex-col shadow-md shadow-slate-950 p-4 items-center md:h-72 w-full justify-evenly">
 					<img src={image} className="max-w-32" />
-					<div className=" m-2 h-full flex flex-col justify-evenly text-lg">
+					<div className=" m-2 h-full flex flex-col justify-evenly text-lg gap-2">
 						<p>{data.title}</p>
 						{listUniqueData()}
 						<p>Genre: {data.genre}</p>
 						<p>{formattedDate}</p>
-						<div className="w-full flex flex-row">
+						<div className="w-full flex flex-row justify-center">
 							{stars?.map((star, i) => {
 								return <Image key={i} src={Star} alt="star" className={`${star ? 'opacity-100' : 'opacity-25'} md:w-9 md:h-9 w-6 h-6`} />;
 							})}
@@ -72,6 +72,6 @@ export default function HomeCard({ doc, media }: { doc: QueryDocumentSnapshot; m
 					</div>
 				</div>
 			)}
-		</div>
+		</>
 	);
 }
