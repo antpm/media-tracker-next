@@ -9,6 +9,7 @@ import { getDownloadURL, ref } from 'firebase/storage';
 import DatePicker from 'react-datepicker';
 import RatingSelect from '../components/rating-select';
 import ListCard from '../components/list-card';
+import HomeCard from '../components/home-card';
 
 export default function Games() {
 	const router = useRouter();

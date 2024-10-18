@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { HomeIcon, GameIcon, BookIcon, AccountIcon, LogOutIcon, NavClose, NavOpen, Logo, Menu } from '../public/icons/icons';
+import { HomeIcon, GameIcon, BookIcon, AccountIcon, LogOutIcon, Logo, Menu } from '../public/icons/icons';
 import Link from 'next/link';
 import Image from 'next/image';
 import { auth } from '../util/firebase/firebase-app';

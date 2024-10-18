@@ -1,4 +1,4 @@
-import { QueryDocumentSnapshot, QuerySnapshot } from 'firebase/firestore';
+import { QuerySnapshot } from 'firebase/firestore';
 
 type props = {
 	games: QuerySnapshot;

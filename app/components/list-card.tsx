@@ -4,7 +4,7 @@ import { QueryDocumentSnapshot } from 'firebase/firestore';
 import Image from 'next/image';
 import { storage } from '@/app/util/firebase/firebase-app';
 import { getDownloadURL, ref } from 'firebase/storage';
-import { ListLoadingCard } from './cards/loading-card';
+import { ListLoadingCard } from './loading-card';
 import { Star } from '@/app/public/icons/icons';
 
 export default function ListCard({ doc, editDoc, viewDoc, media }: { doc: QueryDocumentSnapshot; editDoc: MouseEventHandler; viewDoc: MouseEventHandler; media: string }) {

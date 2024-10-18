@@ -4,12 +4,12 @@ import { QueryDocumentSnapshot } from 'firebase/firestore';
 import Image from 'next/image';
 import { storage } from '@/app/util/firebase/firebase-app';
 import { getDownloadURL, ref } from 'firebase/storage';
-import { HomeLoadingCard, ListLoadingCard } from './loading-card';
+import { HomeLoadingCard } from './loading-card';
 import { Star } from '@/app/public/icons/icons';
 
-function HomeGameCard({ gameDoc }: { gameDoc: QueryDocumentSnapshot }) {
-	const game = gameDoc.data();
-	const date = game.complete.toDate();
+export default function HomeCard({ doc, media }: { doc: QueryDocumentSnapshot; media: string }) {
+	const data = doc.data();
+	const date = data.complete.toDate();
 
 	const [stars, setStars] = useState<boolean[]>([false, false, false, false, false]);
 	const [image, setImage] = useState('');
@@ -20,31 +20,49 @@ function HomeGameCard({ gameDoc }: { gameDoc: QueryDocumentSnapshot }) {
 	}).format(date);
 
 	useEffect(() => {
-		getDownloadURL(ref(storage, `/images/games/${game.image}`)).then((url) => {
+		getDownloadURL(ref(storage, `/images/${media}/${data.image}`)).then((url) => {
 			setImage(url);
 
 			//console.log('getdownloadurl');
 		});
 		let array: boolean[] = [false, false, false, false, false];
-		for (let i = 0; i < gameDoc.get('rating'); i++) {
+		for (let i = 0; i < data.rating; i++) {
 			array[i] = true;
 		}
 		setStars(array);
 	}, []);
 
+	function listUniqueData(): JSX.Element {
+		switch (media) {
+			case 'games':
+				return (
+					<>
+						<p className="hidden lg:block">Developer: {data.developer}</p>
+						<p className="hidden lg:block">Platform: {data.platform}</p>
+					</>
+				);
+			case 'books':
+				return (
+					<>
+						<p className="hidden lg:block">Author: {data.author}</p>
+					</>
+				);
+			default:
+				return <></>;
+		}
+	}
+
 	return (
 		<div className="columns-1 h-96 mx-auto">
-			<h3 className="mx-auto mb-4 text-center">Game</h3>
 			{image === '' ? (
 				<HomeLoadingCard />
 			) : (
 				<div className="card flex-row shadow-md shadow-slate-950 p-4 items-center md:w-96 w-full h-72 justify-between">
 					<img src={image} className="max-w-32" />
 					<div className=" m-2 h-full flex flex-col justify-evenly text-lg">
-						<p>{game.title}</p>
-						<p>{game.developer}</p>
-						<p>{game.platform}</p>
-						<p>{game.genre}</p>
+						<p>{data.title}</p>
+						{listUniqueData()}
+						<p>Genre: {data.genre}</p>
 						<p>{formattedDate}</p>
 						<div className="w-full flex flex-row">
 							{stars?.map((star, i) => {
@@ -57,5 +75,3 @@ function HomeGameCard({ gameDoc }: { gameDoc: QueryDocumentSnapshot }) {
 		</div>
 	);
 }
-
-export { HomeGameCard };

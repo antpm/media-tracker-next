@@ -1,7 +1,6 @@
-import { MouseEventHandler, useState } from 'react';
+import { MouseEventHandler } from 'react';
 
 import 'react-datepicker/dist/react-datepicker.css';
-import { db, auth } from '../util/firebase/firebase-app';
 
 type props = {
 	children: React.ReactNode;

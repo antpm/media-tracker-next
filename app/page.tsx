@@ -5,9 +5,8 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { QueryDocumentSnapshot, QuerySnapshot } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { HomeGameCard } from './components/cards/game-card';
-import { HomeBookCard } from './components/cards/book-card';
-import StatCard from './components/cards/stat-card';
+import HomeCard from './components/home-card';
+import StatCard from './components/stat-card';
 
 export default function Home() {
 	const [currentUser, setCurrentUser] = useState(auth.currentUser);
@@ -53,8 +52,14 @@ export default function Home() {
 						<section title="Your Latest" className="flex flex-col flex-grow p-4 rounded-xl ">
 							<h2 className="mx-auto mb-4">Your Latest:</h2>
 							<div className="flex flex-row flex-wrap gap-4 lg:justify-evenly max-w-full">
-								{latestGame && <HomeGameCard gameDoc={latestGame} />}
-								{latestBook && <HomeBookCard bookDoc={latestBook} />}
+								<div className="mx-auto">
+									<h3 className="mx-auto mb-4 text-center">Game</h3>
+									{latestGame && <HomeCard doc={latestGame} media="games" />}
+								</div>
+								<div className="mx-auto">
+									<h3 className="mx-auto mb-4 text-center">Book</h3>
+									{latestBook && <HomeCard doc={latestBook} media="books" />}
+								</div>
 							</div>
 						</section>
 
