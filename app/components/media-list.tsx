@@ -9,6 +9,17 @@ import ListCard from './list-card';
 import DatePicker from 'react-datepicker';
 import RatingSelect from '../components/rating-select';
 
+/* 
+    To add a new type of media to the app:
+        -add useState for unique fields for the new media type
+        -add checks to validation method for new unique fields
+        -add a case to the save function to define the docData
+        -add lines to clear new unique fields in clearForm function
+        -add lines to set new unique fields in enableEditing function
+        -add case to show new unique fields in showUniqueFormFields function
+
+*/
+
 export default function MediaList({ media }: { media: string }) {
 	const [addModal, setAddModal] = useState(false);
 	const [viewModal, setViewModal] = useState(false);
@@ -52,10 +63,6 @@ export default function MediaList({ media }: { media: string }) {
 	useEffect(() => {
 		getData();
 	}, []);
-
-	function sleep(time: number) {
-		return new Promise((resolve) => setTimeout(resolve, time));
-	}
 
 	function sortList(mode: Number) {
 		//data from current array must be copied into a new array to trigger re-render when setting state with sorted array
@@ -108,6 +115,15 @@ export default function MediaList({ media }: { media: string }) {
 						title: title,
 						developer: developer,
 						platform: platform,
+						genre: genre,
+						complete: Timestamp.fromDate(complete),
+						rating: rating,
+						image: imageName,
+					};
+				case 'books':
+					docData = {
+						title: title,
+						author: author,
 						genre: genre,
 						complete: Timestamp.fromDate(complete),
 						rating: rating,
@@ -211,7 +227,7 @@ export default function MediaList({ media }: { media: string }) {
 		});
 	}
 
-	function uniqueFormFields(): JSX.Element {
+	function showUniqueFormFields(): JSX.Element {
 		switch (media) {
 			case 'games':
 				return (
@@ -281,7 +297,7 @@ export default function MediaList({ media }: { media: string }) {
 							placeholder="Title"
 						/>
 					</div>
-					{uniqueFormFields()}
+					{showUniqueFormFields()}
 					<div className="w-full text-end">
 						<label className="text-right flex-grow">Genre*:</label>
 						<input

@@ -28,7 +28,7 @@ export default function ListCard({ doc, editDoc, viewDoc, media }: { doc: QueryD
 		});
 	}, []);
 
-	function listUniqueData(): JSX.Element {
+	function showUniqueData(): JSX.Element {
 		switch (media) {
 			case 'games':
 				return (
@@ -64,7 +64,7 @@ export default function ListCard({ doc, editDoc, viewDoc, media }: { doc: QueryD
 					</div>
 					<div className="flex flex-col justify-around lg:w-1/2 w-full md:h-full h-2/3 text-center md:text-start">
 						<p className="text-2xl">{data.title}</p>
-						{listUniqueData()}
+						{showUniqueData()}
 						<p className="hidden lg:block">Genre: {data.genre}</p>
 						<p>{formattedDate}</p>
 						<div className="w-fit flex flex-row mx-auto md:hidden">

@@ -35,6 +35,9 @@
 body {
 	color: var(--foreground);
 	background: var(--background);
+	background-image: url('./public/media-tracker-bg.png');
+	background-size: cover;
+	background-attachment: fixed;
 	font-family: Arial, Helvetica, sans-serif;
 }
 
