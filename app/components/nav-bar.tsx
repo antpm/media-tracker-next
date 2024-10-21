@@ -61,10 +61,10 @@ export default function Navbar() {
 							})}
 						</div>
 						<div className="flex flex-col h-56 place-content-start border-t-2 border-stone-800 primary-bg">
-							{/* <Link className="my-2 flex flex-row items-center w-full" href={'/account'}>
+							<Link className="my-2 flex flex-row items-center w-full" href={'/account'}>
 								<Image src={AccountIcon} alt="" className="ml-6" />
 								<p className="ml-2 text-xl text-white">Account</p>
-							</Link> */}
+							</Link>
 							<button className="my-2 flex flex-row items-center w-full" onClick={logOut}>
 								<Image src={LogOutIcon} alt="" className="ml-6" />
 								<p className="ml-2 text-xl text-white">Log Out</p>
@@ -87,9 +87,9 @@ export default function Navbar() {
 									</Link>
 								);
 							})}
-							{/* <Link href={'/account'} onClick={changeMenu} className="my-2 mx-auto flex flex-row items-center justify-center">
+							<Link href={'/account'} onClick={changeMenu} className="my-2 mx-auto flex flex-row items-center justify-center">
 								<p className=" ml-2 text-xl text-white">Account</p>
-							</Link> */}
+							</Link>
 							<button onClick={logOut} className="my-2 w-full mx-auto flex flex-row items-center justify-center">
 								<p className=" ml-2 text-xl text-white">Log Out</p>
 							</button>

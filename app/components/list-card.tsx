@@ -74,10 +74,10 @@ export default function ListCard({ doc, editDoc, viewDoc, media }: { doc: QueryD
 						</div>
 					</div>
 					<div className="flex md:flex-col flex-row justify-around items-center lg:w-1/6 w-full ml-2 lg:ml-0 md:h-3/4 h-fit">
-						<button className="lg:hidden p-1 button transition-color duration-500 ease-in-out" onClick={viewDoc}>
+						<button className="lg:hidden p-1 button transition-color duration-500 ease-in-out shadow-md shadow-black" onClick={viewDoc}>
 							View
 						</button>
-						<button className="p-1 button transition-color duration-500 ease-in-out" onClick={editDoc}>
+						<button className="p-1 button transition-color duration-500 ease-in-out shadow-md shadow-black" onClick={editDoc}>
 							Edit
 						</button>
 					</div>

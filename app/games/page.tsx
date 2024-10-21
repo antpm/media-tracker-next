@@ -35,5 +35,10 @@ export default function Games() {
 		return () => unsubscribe(); */
 	}, []);
 
-	return <>{user ? <MediaList media="games" /> : <div>Loading...</div>}</>;
+	return (
+		<div className="flex flex-col my-10">
+			<h1 className="mx-auto">Games</h1>
+			{user ? <MediaList media="games" /> : <div>Loading...</div>}
+		</div>
+	);
 }
