@@ -38,7 +38,7 @@ export default function Books() {
 	return (
 		<div className="flex flex-col my-10">
 			<h1 className="mx-auto">Books</h1>
-			{user ? <MediaList media="books" /> : <div>Loading...</div>}
+			{user ? <MediaList media="books" /> : <div className="m-auto animate-pulse">Loading...</div>}
 		</div>
 	);
 }

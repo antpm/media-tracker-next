@@ -41,7 +41,7 @@ export default function Navbar() {
 		<>
 			{currentUser && (
 				<div className="z-30">
-					<div id="desktop-nav" className="hidden fixed lg:flex w-48 h-screen flex-col nav-bg border-r-2 border-stone-800">
+					<div id="desktop-nav" className="hidden fixed lg:flex w-48 h-screen flex-col secondary-bg shadow-2xl shadow-black">
 						<div className="p-4 flex flex-row items-center border-b-2 primary-bg  border-stone-800">
 							<Image src={Logo} alt="logo" width={48} height={48} />
 							<p className="ml-2">Media Tracker</p>
@@ -53,7 +53,7 @@ export default function Navbar() {
 						<div className={`flex flex-col h-full my-10 place-content-start`}>
 							{links.map((link) => {
 								return (
-									<Link key={link.name} href={link.path} className="my-2 flex flex-row items-center w-full">
+									<Link key={link.name} href={link.path} className="my-2 flex flex-row items-center w-full hover:opacity-50 transition-all duration-200 ease-in-out">
 										<Image src={link.icon} alt="" className={`ml-8`} />
 										<p className=" ml-2 text-xl text-white">{link.name}</p>
 									</Link>

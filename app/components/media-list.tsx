@@ -362,10 +362,10 @@ export default function MediaList({ media }: { media: string }) {
 				</div>
 			</ModalWrapper>
 			<section title={`${media}`} className="md:w-3/5 w-full h-fit mx-auto my-10">
-				<div id="game-screen-sort-add" className="w-4/5  flex flex-row flex-wrap items-center justify-start mx-auto card p-2">
+				<div id="game-screen-sort-add" className="w-4/5  flex flex-row flex-wrap items-center justify-start mx-auto card p-2 shadow-lg shadow-black">
 					<div className="flex flex-row flex-grow md:justify-start justify-center items-center">
 						<h4 className="mr-4">Sort By:</h4>
-						<div className="w-fit flex rounded-3xl shadow-md shadow-black">
+						<div className="w-fit flex toggle-button-container shadow-md shadow-black">
 							<button
 								className={`toggle-button rounded-s-3xl ${
 									listMode === 'complete' ? ' opacity-100 pointer-events-none' : 'opacity-50 pointer-events-auto'
@@ -375,6 +375,7 @@ export default function MediaList({ media }: { media: string }) {
 								}}>
 								Completion
 							</button>
+							<div className="toggle-button-divider"></div>
 							<button
 								className={`toggle-button rounded-e-3xl ${
 									listMode === 'rating' ? 'opacity-100 pointer-events-none' : 'opacity-50 pointer-events-auto'
