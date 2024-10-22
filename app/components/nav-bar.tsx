@@ -7,11 +7,14 @@ import Image from 'next/image';
 import { auth } from '../util/firebase/firebase-app';
 import { onAuthStateChanged } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 export default function Navbar() {
 	const [isOpen, setIsOpen] = useState(false);
 	const [currentUser, setCurrentUser] = useState(auth.currentUser);
 	const router = useRouter();
+	const pathname = usePathname();
+	const isActive = (url: string) => pathname === url;
 
 	useEffect(() => {
 		const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -53,7 +56,12 @@ export default function Navbar() {
 						<div className={`flex flex-col h-full my-10 place-content-start`}>
 							{links.map((link) => {
 								return (
-									<Link key={link.name} href={link.path} className="my-2 flex flex-row items-center w-full hover:opacity-50 transition-all duration-200 ease-in-out">
+									<Link
+										key={link.name}
+										href={link.path}
+										className={`${
+											isActive(link.path) && 'scale-125 pointer-events-none'
+										} my-2 flex flex-row items-center w-full hover:opacity-50 transition-all duration-200 ease-in-out`}>
 										<Image src={link.icon} alt="" className={`ml-8`} />
 										<p className=" ml-2 text-xl text-white">{link.name}</p>
 									</Link>
@@ -61,11 +69,13 @@ export default function Navbar() {
 							})}
 						</div>
 						<div className="flex flex-col h-56 place-content-start border-t-2 border-stone-800 primary-bg">
-							<Link className="my-2 flex flex-row items-center w-full" href={'/account'}>
+							<Link
+								className={`${isActive('/account') && 'scale-125 pointer-events-none'} my-2 flex flex-row items-center w-full hover:opacity-50 transition-all duration-200 ease-in-out`}
+								href={'/account'}>
 								<Image src={AccountIcon} alt="" className="ml-6" />
 								<p className="ml-2 text-xl text-white">Account</p>
 							</Link>
-							<button className="my-2 flex flex-row items-center w-full" onClick={logOut}>
+							<button className="my-2 flex flex-row items-center w-full hover:opacity-50 transition-all duration-200 ease-in-out" onClick={logOut}>
 								<Image src={LogOutIcon} alt="" className="ml-6" />
 								<p className="ml-2 text-xl text-white">Log Out</p>
 							</button>
