@@ -120,6 +120,7 @@ export default function MediaList({ media }: { media: string }) {
 						rating: rating,
 						image: imageName,
 					};
+					break;
 				case 'books':
 					docData = {
 						title: title,
@@ -129,6 +130,7 @@ export default function MediaList({ media }: { media: string }) {
 						rating: rating,
 						image: imageName,
 					};
+					break;
 			}
 
 			//console.log('Game Added');
