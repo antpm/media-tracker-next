@@ -2,7 +2,8 @@
 import { auth } from '../util/firebase/firebase-app';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { updateProfile } from 'firebase/auth';
+import { EmailAuthProvider, reauthenticateWithCredential, signInWithEmailAndPassword, updatePassword, updateProfile } from 'firebase/auth';
+import { EmailAuthCredential } from 'firebase/auth/web-extension';
 
 export default function Account() {
 	const [displayName, setDisplayName] = useState<string | null>('');
@@ -50,6 +51,41 @@ export default function Account() {
 		}
 	}
 
+	async function changePassword() {
+		setPassError(false);
+		if (oldPassword === '' || newPassword === '') {
+			setPassError(true);
+			setPassErrorMsg('Password cannot be blank');
+		} else {
+			const credential = EmailAuthProvider.credential(auth.currentUser!.email!, oldPassword);
+			await reauthenticateWithCredential(auth.currentUser!, credential)
+				.then(async () => {
+					await updatePassword(auth.currentUser!, newPassword)
+						.then(async () => {
+							setSuccessMsg('Password Updated');
+							setSuccess(true);
+							setOldPassword('');
+							setNewPassword('');
+							await sleep(5000).then(() => {
+								setSuccess(false);
+							});
+						})
+						.catch((error) => {
+							switch (error.code) {
+								case 'auth/weak-password':
+									setPassError(true);
+									setPassErrorMsg('Password too weak');
+									break;
+							}
+						});
+				})
+				.catch((error) => {
+					setPassErrorMsg('Current Password Incorrect');
+					setPassError(true);
+				});
+		}
+	}
+
 	return (
 		<>
 			{success && <div className="fixed top-0 w-screen inset-x-0 bg-green-600 h-fit text-center text-3xl animate-pulse z-50">{successMsg}</div>}
@@ -94,7 +130,9 @@ export default function Account() {
 							setNewPassword(e.target.value);
 						}}
 					/>
-					<button className="button w-2/3 mx-auto shadow-lg shadow-black transition-color duration-300 ease-in-out"> Change Password</button>
+					<button className="button w-2/3 mx-auto shadow-lg shadow-black transition-color duration-300 ease-in-out" onClick={changePassword}>
+						Change Password
+					</button>
 				</div>
 				<button className="button-danger shadow-lg shadow-black mt-8 transition-color duration-300 ease-in-out">Delete Account</button>
 			</section>

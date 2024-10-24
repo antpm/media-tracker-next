@@ -71,9 +71,11 @@ body {
 }
 
 .modal {
-	background: #3d3b3b;
+	background: var(--primary);
 	border-radius: 0.75rem;
 	border-top-width: 2px;
+	--tw-border-opacity: 1;
+	border-color: rgb(53 8 126 / var(--tw-border-opacity));
 }
 
 .modal-background {
@@ -144,6 +146,10 @@ body {
 
 .nav-bg {
 	background: #3d3b3b;
+}
+
+input {
+	border-radius: 0.125rem /* 2px */;
 }
 
 .loader {

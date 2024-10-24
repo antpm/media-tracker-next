@@ -49,10 +49,7 @@ export default function Navbar() {
 							<Image src={Logo} alt="logo" width={48} height={48} />
 							<p className="ml-2">Media Tracker</p>
 						</div>
-						{/* this button opened and closed the desktop menu, which I decided to get rid of
-                        <button className="mr-2 ml-auto flex flex-row border-b-2 border-purple-950 w-full place-content-end" onClick={changeMenu}>
-								{isOpen ? <Image className="w-16 h-16" src={NavClose} alt="" /> : <Image className="w-16 h-16" src={NavOpen} alt="" />}
-							</button> */}
+
 						<div className={`flex flex-col h-full my-10 place-content-start`}>
 							{links.map((link) => {
 								return (
@@ -61,7 +58,7 @@ export default function Navbar() {
 										href={link.path}
 										className={`${
 											isActive(link.path) && 'scale-125 pointer-events-none'
-										} my-2 flex flex-row items-center w-full hover:opacity-50 transition-all duration-200 ease-in-out`}>
+										} my-2 flex flex-row items-center w-full  hover:bg-violet-900 transition-all duration-200 ease-in-out rounded-3xl`}>
 										<Image src={link.icon} alt="" className={`ml-8`} />
 										<p className=" ml-2 text-xl text-white">{link.name}</p>
 									</Link>
@@ -70,12 +67,14 @@ export default function Navbar() {
 						</div>
 						<div className="flex flex-col h-56 place-content-start border-t-2 border-stone-800 primary-bg">
 							<Link
-								className={`${isActive('/account') && 'scale-125 pointer-events-none'} my-2 flex flex-row items-center w-full hover:opacity-50 transition-all duration-200 ease-in-out`}
+								className={`${
+									isActive('/account') && 'scale-125 pointer-events-none'
+								} my-2 flex flex-row items-center w-full  hover:bg-violet-950 rounded-3xl transition-all duration-200 ease-in-out`}
 								href={'/account'}>
 								<Image src={AccountIcon} alt="" className="ml-6" />
 								<p className="ml-2 text-xl text-white">Account</p>
 							</Link>
-							<button className="my-2 flex flex-row items-center w-full hover:opacity-50 transition-all duration-200 ease-in-out" onClick={logOut}>
+							<button className="my-2 flex flex-row items-center w-full hover:bg-violet-950 rounded-3xl transition-all duration-200 ease-in-out" onClick={logOut}>
 								<Image src={LogOutIcon} alt="" className="ml-6" />
 								<p className="ml-2 text-xl text-white">Log Out</p>
 							</button>
