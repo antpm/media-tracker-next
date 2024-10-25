@@ -401,25 +401,29 @@ export default function MediaList({ media }: { media: string }) {
 				</div>
 				{!waiting && (
 					<div className="lg:w-4/5 w-full mx-auto">
-						{docList?.map((doc) => {
-							return (
-								<div key={doc.id} className="my-4 mx-auto">
-									<ListCard
-										doc={doc}
-										editDoc={() => {
-											setSaveMode('Edit');
-											enableEditing(doc);
-										}}
-										viewDoc={() => {
-											setViewDoc(doc);
-											getImage(doc.get('image'));
-											toggleViewModal();
-										}}
-										media={media}
-									/>
-								</div>
-							);
-						})}
+						{docList?.length === 0 ? (
+							<h2 className="mx-auto my-10 text-center">No Entries</h2>
+						) : (
+							docList?.map((doc) => {
+								return (
+									<div key={doc.id} className="my-4 mx-auto">
+										<ListCard
+											doc={doc}
+											editDoc={() => {
+												setSaveMode('Edit');
+												enableEditing(doc);
+											}}
+											viewDoc={() => {
+												setViewDoc(doc);
+												getImage(doc.get('image'));
+												toggleViewModal();
+											}}
+											media={media}
+										/>
+									</div>
+								);
+							})
+						)}
 					</div>
 				)}
 			</section>

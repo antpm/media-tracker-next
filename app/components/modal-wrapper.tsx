@@ -8,7 +8,7 @@ type props = {
 	modalToggle: MouseEventHandler;
 };
 
-export default function AddModal({ children, modalState, modalToggle }: props) {
+export default function ModalWrapper({ children, modalState, modalToggle }: props) {
 	return (
 		<>
 			<div
@@ -19,7 +19,7 @@ export default function AddModal({ children, modalState, modalToggle }: props) {
 				id="modal"
 				className={`${
 					modalState ? 'visible opacity-100' : 'invisible opacity-0'
-				} flex flex-col modal border-gray-500 shadow-md shadow-slate-950  lg:w-1/4 w-fit min-w-80 h-fit fixed inset-x-0 inset-y-0 m-auto items-center rounded-xl z-50 p-4 transition-all duration-300 ease-out`}>
+				} flex flex-col modal  shadow-md shadow-black w-fit min-w-80 h-fit fixed inset-x-0 inset-y-0 m-auto items-center rounded-xl z-50 p-4 transition-all duration-300 ease-out`}>
 				{children}
 			</div>
 		</>
