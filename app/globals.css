@@ -58,12 +58,13 @@ body {
 	border-radius: 0.75rem;
 	border-top-width: 2px;
 	display: flex;
-	--tw-border-opacity: 1;
-	border-color: rgb(53 8 126 / var(--tw-border-opacity));
+	border-color: var(--secondary);
 }
 
-.nav-border-colour {
-	border-color: var(--secondary);
+.nav-menu-border {
+	border-top-width: 2px;
+	border-bottom-width: 2px;
+	border-color: #410b99;
 }
 
 .button-border-colour {
@@ -88,6 +89,7 @@ body {
 
 .button {
 	background: var(--secondary);
+	align-items: center;
 	min-width: 96px;
 	height: 48px;
 	border-radius: 24px;
@@ -102,6 +104,7 @@ body {
 
 .button-danger {
 	background: #7e0808;
+	align-items: center;
 	min-width: 96px;
 	height: 48px;
 	border-radius: 24px;
@@ -129,7 +132,10 @@ body {
 	background: var(--secondary);
 	min-width: 96px;
 	height: 48px;
-	padding: 8px;
+	padding-top: 8px;
+	padding-bottom: 8px;
+	padding-left: 16px;
+	padding-right: 16px;
 }
 
 .toggle-button:hover {

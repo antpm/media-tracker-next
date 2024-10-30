@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import { deleteUser, EmailAuthProvider, reauthenticateWithCredential, signInWithEmailAndPassword, updatePassword, updateProfile } from 'firebase/auth';
 import ModalWrapper from '../components/modal-wrapper';
 import { doc, setDoc } from 'firebase/firestore';
+import { DisplayNameIcon, PasswordIcon, DeleteIcon, CheckIcon, CloseIcon } from '@/public/icons/icons';
+import Image from 'next/image';
 
 export default function Account() {
 	const [displayName, setDisplayName] = useState<string | null>('');
@@ -143,10 +145,16 @@ export default function Account() {
 								onClick={() => {
 									setConfirm(true);
 								}}>
-								Yes
+								<div className="w-fit mx-auto">
+									<Image src={CheckIcon} alt="yes" height={24} width={24} className="float-left mr-2" />
+									Yes
+								</div>
 							</button>
 							<button className="button ml-4 transition-all duration-500 ease-in-out" onClick={toggleModal}>
-								Cancel
+								<div className="w-fit mx-auto">
+									<Image src={CloseIcon} alt="cancel" height={24} width={24} className="float-left mr-2" />
+									Cancel
+								</div>
 							</button>
 						</div>
 					</>
@@ -173,10 +181,16 @@ export default function Account() {
 
 								<div>
 									<button className="button-danger mr-4 transition-all duration-500 ease-in-out" onClick={deleteAccount}>
-										Delete Account
+										<div className="w-fit mx-auto">
+											<Image src={DeleteIcon} alt="delete account" height={24} width={24} className="float-left mr-2" />
+											Delete Account
+										</div>
 									</button>
 									<button className="button ml-4 transition-all duration-500 ease-in-out" onClick={toggleModal}>
-										Cancel
+										<div className="w-fit mx-auto">
+											<Image src={CloseIcon} alt="cancel" height={24} width={24} className="float-left mr-2" />
+											Cancel
+										</div>
 									</button>
 								</div>
 							</>
@@ -201,7 +215,10 @@ export default function Account() {
 							}}
 						/>
 						<button className="button w-2/3 mx-auto shadow-md shadow-black transition-color duration-500 ease-in-out" onClick={changeDisplayName}>
-							Change Display Name
+							<div className="w-fit mx-auto">
+								<Image src={DisplayNameIcon} alt="change name" height={24} width={24} className="float-left mr-4" />
+								Change Display Name
+							</div>
 						</button>
 					</div>
 					<div className="w-full card p-4 flex flex-col gap-4 shadow-lg shadow-black">
@@ -228,11 +245,17 @@ export default function Account() {
 							}}
 						/>
 						<button className="button w-2/3 mx-auto shadow-lg shadow-black transition-color duration-300 ease-in-out" onClick={changePassword}>
-							Change Password
+							<div className="w-fit mx-auto">
+								<Image src={PasswordIcon} alt="change password" height={24} width={24} className="float-left mr-4" />
+								Change Password
+							</div>
 						</button>
 					</div>
 					<button className="button-danger shadow-lg shadow-black mt-8 transition-color duration-300 ease-in-out" onClick={toggleModal}>
-						Delete Account
+						<div className="mx-auto items-center text- place-content-center w-fit">
+							<Image src={DeleteIcon} alt="delete account" height={24} width={24} className="float-left mr-4" />
+							Delete Account
+						</div>
 					</button>
 				</section>
 			)}

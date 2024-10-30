@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { storage } from '@/app/util/firebase/firebase-app';
 import { getDownloadURL, ref } from 'firebase/storage';
 import { HomeLoadingCard } from './loading-card';
-import { Star } from '@/app/public/icons/icons';
+import { Star } from '@/public/icons/icons';
 
 export default function HomeCard({ doc, media }: { doc: QueryDocumentSnapshot; media: string }) {
 	const data = doc.data();

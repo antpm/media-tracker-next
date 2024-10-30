@@ -6,7 +6,8 @@ import { auth } from '../util/firebase/firebase-app';
 import { signInWithEmailAndPassword, onAuthStateChanged, browserLocalPersistence, browserSessionPersistence } from 'firebase/auth';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { Logo } from '../public/icons/icons';
+import { Logo } from '@/public/icons/icons';
+import { CheckIcon } from '@/public/icons/icons';
 
 export default function Login() {
 	const [currentUser, setCurrentUser] = useState(auth.currentUser);
@@ -71,7 +72,7 @@ export default function Login() {
 			</div>
 			{!currentUser && !authWait ? (
 				<div className="flex w-full h-full items-center justify-center">
-					<div className="flex card flex-col p-2">
+					<div className="flex card flex-col p-2 shadow-md shadow-black">
 						<h1 className="mx-auto m-4 text-2xl">Log In</h1>
 						<p className="mx-2">Email*:</p>
 						<input className="text-black mx-2 mb-2" type="email" placeholder="email" value={email} onChange={(e) => setEmail(e.target.value)} />
@@ -82,7 +83,10 @@ export default function Login() {
 							Remember me
 						</div>
 						<button className="button transition-all duration-500 ease-in-out w-fit mx-auto my-4" type="submit" onClick={handleLogin}>
-							Submit
+							<div className="w-fit mx-auto px-2 items-center">
+								<Image src={CheckIcon} alt="submit" width={24} height={24} className="float-left mr-2" />
+								Submit
+							</div>
 						</button>
 						<Link href={{ pathname: '/signup', query: { preAuth: true } }} className="text-white underline mb-4">
 							Don't have an account? Click here to sign up!

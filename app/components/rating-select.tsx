@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { Star } from '../public/icons/icons';
+import { Star } from '@/public/icons/icons';
 
 export default function RatingSelect({ setRating, rating }: { setRating: Function; rating: number }) {
 	const [stars, setStars] = useState<boolean[]>([true, false, false, false, false]);
