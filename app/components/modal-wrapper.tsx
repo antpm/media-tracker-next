@@ -19,7 +19,7 @@ export default function ModalWrapper({ children, modalState, modalToggle }: prop
 				id="modal"
 				className={`${
 					modalState ? 'visible opacity-100' : 'invisible opacity-0'
-				} flex flex-col modal  shadow-md shadow-black w-fit min-w-80 h-fit fixed inset-x-0 inset-y-0 m-auto items-center rounded-xl z-50 p-4 transition-all duration-300 ease-out`}>
+				} flex flex-col modal  shadow-md shadow-black w-fit min-w-80 h-fit fixed inset-x-0 inset-y-0 m-auto items-center rounded-xl z-50 p-8 transition-all duration-300 ease-out`}>
 				{children}
 			</div>
 		</>

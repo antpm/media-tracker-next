@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import ModalWrapper from '../components/modal-wrapper';
 import { auth, generateImageName, addDocument, editDocument, storage } from '../util/firebase/firebase-app';
 import { getDocuments } from '../util/firebase/firebase-app';
@@ -8,6 +9,7 @@ import { getDownloadURL, ref } from 'firebase/storage';
 import ListCard from './list-card';
 import DatePicker from 'react-datepicker';
 import RatingSelect from '../components/rating-select';
+import { CloseIcon, SaveIcon, AddIcon, DateIcon, Star } from '@/public/icons/icons';
 
 /* 
     To add a new type of media to the app:
@@ -342,11 +344,17 @@ export default function MediaList({ media }: { media: string }) {
 					</div>
 				</form>
 				<div className="flex flex-row justify-evenly w-full mt-4">
-					<button onClick={saveDoc} className=" button  transition-all duration-500 ease-in-out">
-						Save
+					<button onClick={saveDoc} className=" button transition-all duration-500 ease-in-out">
+						<div className=" mx-4 items-center">
+							<Image src={SaveIcon} alt="save" height={24} width={24} className="float-left mr-2" />
+							Save
+						</div>
 					</button>
-					<button onClick={toggleAddModal} className="  button transition-all duration-500 ease-in-out">
-						Cancel
+					<button onClick={toggleAddModal} className=" button transition-all duration-500 ease-in-out">
+						<div className=" mx-4 items-center">
+							<Image src={CloseIcon} alt="cancel" height={24} width={24} className="float-left mr-2" />
+							Cancel
+						</div>
 					</button>
 				</div>
 			</ModalWrapper>
@@ -364,7 +372,7 @@ export default function MediaList({ media }: { media: string }) {
 				</div>
 			</ModalWrapper>
 			<section title={`${media}`} className="md:w-3/5 w-full h-fit mx-auto my-10">
-				<div id="game-screen-sort-add" className="w-4/5  flex flex-row flex-wrap items-center justify-start mx-auto card p-2 shadow-lg shadow-black">
+				<div id="game-screen-sort-add" className="w-full  flex flex-row flex-wrap items-center justify-start mx-auto card p-2 shadow-lg shadow-black">
 					<div className="flex flex-row flex-grow md:justify-start justify-center items-center">
 						<h4 className="mr-4">Sort By:</h4>
 						<div className="w-fit flex toggle-button-container shadow-md shadow-black">
@@ -375,6 +383,7 @@ export default function MediaList({ media }: { media: string }) {
 								onClick={() => {
 									sortList(1);
 								}}>
+								<Image src={DateIcon} alt="date" height={24} width={24} className="float-left mr-2" />
 								Completion
 							</button>
 							<div className="toggle-button-divider"></div>
@@ -385,18 +394,22 @@ export default function MediaList({ media }: { media: string }) {
 								onClick={() => {
 									sortList(2);
 								}}>
+								<Image src={Star} alt="rating" height={24} width={24} className="float-left mr-2" />
 								Rating
 							</button>
 						</div>
 					</div>
 
 					<button
-						className=" w-48 button justify-self-end mx-auto transition-color duration-500 ease-in-out mt-4 md:mt-0 shadow-md shadow-black"
+						className=" button w-fit justify-self-end mx-auto transition-color duration-500 ease-in-out mt-4 md:mt-0 shadow-md shadow-black"
 						onClick={() => {
 							setSaveMode('Add');
 							toggleAddModal();
 						}}>
-						Add New
+						<div className="mx-4">
+							<Image src={AddIcon} alt="add new" height={24} width={24} className="float-left mr-2" />
+							Add New
+						</div>
 					</button>
 				</div>
 				{!waiting && (
@@ -406,7 +419,7 @@ export default function MediaList({ media }: { media: string }) {
 						) : (
 							docList?.map((doc) => {
 								return (
-									<div key={doc.id} className="my-4 mx-auto">
+									<div key={doc.id} className="my-8 mx-auto">
 										<ListCard
 											doc={doc}
 											editDoc={() => {
