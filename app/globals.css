@@ -87,6 +87,22 @@ body {
 	width: 1000px;
 }
 
+.drop-down {
+	background: var(--secondary);
+	align-items: center;
+	text-align: center;
+	min-width: 96px;
+	height: 48px;
+	border-radius: 24px;
+	border-width: 2px;
+	padding: 8px;
+	border-color: var(--button-border);
+}
+
+.drop-down select {
+	display: none;
+}
+
 .button {
 	background: var(--secondary);
 	align-items: center;

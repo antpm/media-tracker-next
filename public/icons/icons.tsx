@@ -17,6 +17,7 @@ import AccountIcon from './account-management.svg';
 import PasswordIcon from './password.svg';
 import DeleteIcon from './delete.svg';
 import CheckIcon from './check.svg';
+import MovieIcon from './movie.svg';
 
 export {
 	GameIcon,
@@ -38,4 +39,5 @@ export {
 	PasswordIcon,
 	DeleteIcon,
 	CheckIcon,
+	MovieIcon,
 };

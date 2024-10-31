@@ -45,6 +45,8 @@ export default function MediaList({ media }: { media: string }) {
 	const [image, setImage] = useState<File | null>(null);
 	//in order to get the file input to reset when the modal closes, it is assigned a key which gets changed on close, causing it to be re-rendered
 	const [imageKey, setImageKey] = useState(Date());
+	const [select, setSelect] = useState<string>('2024');
+	const [openSelect, setOpenSelect] = useState<boolean>(false);
 
 	//game fields
 	const [platform, setPlatform] = useState('');
@@ -52,6 +54,10 @@ export default function MediaList({ media }: { media: string }) {
 
 	//book fields
 	const [author, setAuthor] = useState('');
+
+	//movie fields
+	const [director, setDirector] = useState('');
+	const [starring, setStarring] = useState('');
 
 	const [viewDoc, setViewDoc] = useState<QueryDocumentSnapshot | null>(null);
 	const [viewDocImage, setViewDocImage] = useState('');
@@ -133,6 +139,17 @@ export default function MediaList({ media }: { media: string }) {
 						image: imageName,
 					};
 					break;
+				case 'movies':
+					docData = {
+						title: title,
+						director: director,
+						starring: starring,
+						genre: genre,
+						complete: Timestamp.fromDate(complete),
+						rating: rating,
+						image: imageName,
+					};
+					break;
 			}
 
 			//console.log('Game Added');
@@ -168,6 +185,12 @@ export default function MediaList({ media }: { media: string }) {
 		} else if (media === 'books' && author === '') {
 			valid = false;
 			setErrorMsg('Author field is required');
+		} else if (media === 'movies' && director === '') {
+			valid = false;
+			setErrorMsg('Director field is required');
+		} else if (media === 'movies' && starring === '') {
+			valid = false;
+			setErrorMsg('Starring field is required');
 		} else if (genre === '') {
 			valid = false;
 			setErrorMsg('Genre field is required');
@@ -197,6 +220,8 @@ export default function MediaList({ media }: { media: string }) {
 		setGenre('');
 		setRating(1);
 		setAuthor('');
+		setDirector('');
+		setStarring('');
 		SetComplete(new Date());
 		setImage(null);
 		setImageKey(Date());
@@ -210,6 +235,10 @@ export default function MediaList({ media }: { media: string }) {
 		}
 		if (media === 'books') {
 			setAuthor(doc.get('author'));
+		}
+		if (media === 'movies') {
+			setDirector(doc.get('director'));
+			setStarring(doc.get('starring'));
 		}
 		setGenre(doc.get('genre'));
 		setRating(doc.get('rating'));
@@ -277,9 +306,43 @@ export default function MediaList({ media }: { media: string }) {
 						/>
 					</div>
 				);
+			case 'movies':
+				return (
+					<>
+						<div className="w-full text-end">
+							<label className="text-right flex-grow">Director*:</label>
+							<input
+								type="text"
+								className="text-black mb-4"
+								onChange={(e) => {
+									setDirector(e.target.value);
+								}}
+								value={director}
+								placeholder="Director"
+							/>
+						</div>
+						<div className="w-full text-end">
+							<label className="text-right flex-grow">Starring*:</label>
+							<input
+								type="text"
+								className="text-black mb-4"
+								onChange={(e) => {
+									setStarring(e.target.value);
+								}}
+								value={starring}
+								placeholder="Starring"
+							/>
+						</div>
+					</>
+				);
+				break;
 			default:
 				return <></>;
 		}
+	}
+
+	function toggleSelect() {
+		setOpenSelect(!openSelect);
 	}
 
 	return (
@@ -372,8 +435,19 @@ export default function MediaList({ media }: { media: string }) {
 				</div>
 			</ModalWrapper>
 			<section title={`${media}`} className="md:w-3/5 w-full h-fit mx-auto my-10">
-				<div id="game-screen-sort-add" className="w-full  flex flex-row flex-wrap items-center justify-start mx-auto card p-2 shadow-lg shadow-black">
-					<div className="flex flex-row flex-grow md:justify-start justify-center items-center">
+				<div id="game-screen-sort-add" className="w-full flex flex-row flex-wrap items-center justify-start mx-auto card p-4 shadow-lg shadow-black">
+					<div className="flex flex-row flex-wrap flex-grow md:justify-start justify-center items-center">
+						{/* <h4 className="mr-4">Year:</h4>
+						<select
+							onChange={(e) => {
+								setSelect(e.target.value);
+							}}
+							value={select}
+							className="rounded-md text-black p-2 mr-4">
+							<option value={2024}>2024</option>
+							<option value={2025}>2025</option>
+						</select> */}
+
 						<h4 className="mr-4">Sort By:</h4>
 						<div className="w-fit flex toggle-button-container shadow-md shadow-black">
 							<button
