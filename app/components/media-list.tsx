@@ -45,6 +45,8 @@ export default function MediaList({ media }: { media: string }) {
 	const [image, setImage] = useState<File | null>(null);
 	//in order to get the file input to reset when the modal closes, it is assigned a key which gets changed on close, causing it to be re-rendered
 	const [imageKey, setImageKey] = useState(Date());
+	const [select, setSelect] = useState<string>('2024');
+	const [openSelect, setOpenSelect] = useState<boolean>(false);
 
 	//game fields
 	const [platform, setPlatform] = useState('');
@@ -282,6 +284,10 @@ export default function MediaList({ media }: { media: string }) {
 		}
 	}
 
+	function toggleSelect() {
+		setOpenSelect(!openSelect);
+	}
+
 	return (
 		<>
 			<div className={`${errors ? 'block' : 'hidden'} text-3xl animate-pulse w-screen bg-red-700 text-center fixed z-50 inset-x-0`}>{errorsMsg}</div>
@@ -374,6 +380,17 @@ export default function MediaList({ media }: { media: string }) {
 			<section title={`${media}`} className="md:w-3/5 w-full h-fit mx-auto my-10">
 				<div id="game-screen-sort-add" className="w-full  flex flex-row flex-wrap items-center justify-start mx-auto card p-2 shadow-lg shadow-black">
 					<div className="flex flex-row flex-grow md:justify-start justify-center items-center">
+						<h4 className="mr-4">Year:</h4>
+						<select
+							onChange={(e) => {
+								setSelect(e.target.value);
+							}}
+							value={select}
+							className="rounded-md text-black p-2 mr-4">
+							<option value={2024}>2024</option>
+							<option value={2025}>2025</option>
+						</select>
+
 						<h4 className="mr-4">Sort By:</h4>
 						<div className="w-fit flex toggle-button-container shadow-md shadow-black">
 							<button
