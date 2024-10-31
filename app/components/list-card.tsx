@@ -44,6 +44,13 @@ export default function ListCard({ doc, editDoc, viewDoc, media }: { doc: QueryD
 						<p className="hidden lg:block">Author: {data.author}</p>
 					</>
 				);
+			case 'movies':
+				return (
+					<>
+						<p className="hidden lg:block">Director: {data.director}</p>
+						<p className="hidden lg:block">Starring: {data.starring}</p>
+					</>
+				);
 			default:
 				return <></>;
 		}
