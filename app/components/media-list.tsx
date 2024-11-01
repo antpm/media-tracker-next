@@ -62,6 +62,9 @@ export default function MediaList({ media }: { media: string }) {
 	const [viewDoc, setViewDoc] = useState<QueryDocumentSnapshot | null>(null);
 	const [viewDocImage, setViewDocImage] = useState('');
 
+	const isBrowser = () => typeof window !== 'undefined';
+	const [topScroll, setTopScroll] = useState<Boolean>(false);
+
 	const dateFormat = new Intl.DateTimeFormat('en-US', {
 		month: 'long',
 		day: '2-digit',
@@ -70,7 +73,26 @@ export default function MediaList({ media }: { media: string }) {
 
 	useEffect(() => {
 		getData();
+
+		window.addEventListener('scroll', handleScroll);
+
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+		};
 	}, []);
+
+	function handleScroll() {
+		if (window.scrollY > 200) {
+			setTopScroll(true);
+		} else {
+			setTopScroll(false);
+		}
+	}
+
+	function toTop() {
+		if (!isBrowser()) return;
+		window.scrollTo({ top: 0, behavior: 'smooth' });
+	}
 
 	function sortList(mode: Number) {
 		//data from current array must be copied into a new array to trigger re-render when setting state with sorted array
@@ -435,6 +457,11 @@ export default function MediaList({ media }: { media: string }) {
 				</div>
 			</ModalWrapper>
 			<section title={`${media}`} className="md:w-3/5 w-full h-fit mx-auto my-10">
+				{topScroll && (
+					<button className="fixed right-8 bottom-8 button" onClick={toTop}>
+						Return To Top
+					</button>
+				)}
 				<div id="game-screen-sort-add" className="w-full flex flex-row flex-wrap items-center justify-start mx-auto card p-4 shadow-lg shadow-black">
 					<div className="flex flex-row flex-wrap flex-grow md:justify-start justify-center items-center">
 						{/* <h4 className="mr-4">Year:</h4>
