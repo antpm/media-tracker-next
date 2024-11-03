@@ -18,6 +18,7 @@ import PasswordIcon from './password.svg';
 import DeleteIcon from './delete.svg';
 import CheckIcon from './check.svg';
 import MovieIcon from './movie.svg';
+import UpArrow from './up_arrow.svg';
 
 export {
 	GameIcon,
@@ -40,4 +41,5 @@ export {
 	DeleteIcon,
 	CheckIcon,
 	MovieIcon,
+	UpArrow,
 };

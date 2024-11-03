@@ -9,7 +9,7 @@ import { getDownloadURL, ref } from 'firebase/storage';
 import ListCard from './list-card';
 import DatePicker from 'react-datepicker';
 import RatingSelect from '../components/rating-select';
-import { CloseIcon, SaveIcon, AddIcon, DateIcon, Star } from '@/public/icons/icons';
+import { CloseIcon, SaveIcon, AddIcon, DateIcon, Star, UpArrow } from '@/public/icons/icons';
 
 /* 
     To add a new type of media to the app:
@@ -457,12 +457,14 @@ export default function MediaList({ media }: { media: string }) {
 				</div>
 			</ModalWrapper>
 			<section title={`${media}`} className="md:w-3/5 w-full h-fit mx-auto my-10">
-				{topScroll && (
-					<button className="fixed right-8 bottom-8 button" onClick={toTop}>
-						Return To Top
-					</button>
-				)}
-				<div id="game-screen-sort-add" className="w-full flex flex-row flex-wrap items-center justify-start mx-auto card p-4 shadow-lg shadow-black">
+				<button
+					className={`${topScroll ? 'visible opacity-100 bottom-8' : 'invisible opacity-0 bottom-0'} fixed right-8  button transition-all duration-500 ease-in-out items-center`}
+					onClick={toTop}>
+					<Image src={UpArrow} alt="Return to Top" height={24} width={24} className="float-left mr-1" />
+					Return To Top
+				</button>
+
+				<div id="game-screen-sort-add" className={`w-full flex flex-row flex-wrap items-center justify-start mx-auto card p-4 shadow-lg shadow-black`}>
 					<div className="flex flex-row flex-wrap flex-grow md:justify-start justify-center items-center">
 						{/* <h4 className="mr-4">Year:</h4>
 						<select
