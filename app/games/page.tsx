@@ -36,9 +36,11 @@ export default function Games() {
 	}, []);
 
 	return (
-		<div className="flex flex-col my-10">
-			<h1 className="mx-auto">Games</h1>
-			{user ? <MediaList media="games" /> : <div>Loading...</div>}
-		</div>
+		<>
+			<div className="flex flex-col my-10">
+				<h1 className="mx-auto">Games</h1>
+				{user ? <MediaList media="games" /> : <div>Loading...</div>}
+			</div>
+		</>
 	);
 }
