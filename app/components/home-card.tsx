@@ -47,6 +47,13 @@ export default function HomeCard({ doc, media }: { doc: QueryDocumentSnapshot; m
 						<p>Author: {data.author}</p>
 					</>
 				);
+			case 'movies':
+				return (
+					<>
+						<p>Director: {data.director}</p>
+						<p>Starring: {data.starring}</p>
+					</>
+				);
 			default:
 				return <></>;
 		}
@@ -57,14 +64,14 @@ export default function HomeCard({ doc, media }: { doc: QueryDocumentSnapshot; m
 			{image === '' ? (
 				<HomeLoadingCard />
 			) : (
-				<div className="card md:flex-row flex-col shadow-xl shadow-slate-950 p-4 items-center min-h-72 w-full justify-evenly">
-					<img src={image} className="max-w-32 mr-2" />
-					<div className=" m-2 min-h-60 flex flex-col justify-evenly text-lg gap-2">
+				<div className="card md:flex-row flex-col shadow-md shadow-slate-950 p-4 items-center min-h-72 w-full justify-start">
+					<img src={image} className="h-52 mx-2 rounded-md" />
+					<div className=" m-2 min-h-60 flex flex-col justify-evenly text-lg gap-2 w-full">
 						<p className="text-2xl">{data.title}</p>
 						{showUniqueData()}
 						<p>Genre: {data.genre}</p>
 						<p>{formattedDate}</p>
-						<div className="w-full flex flex-row justify-center">
+						<div className="w-full flex flex-row justify-center mx-auto">
 							{stars?.map((star, i) => {
 								return <Image key={i} src={Star} alt="star" className={`${star ? 'opacity-100' : 'opacity-25'} md:w-9 md:h-9 w-6 h-6`} />;
 							})}
