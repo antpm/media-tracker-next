@@ -115,7 +115,7 @@ export default function MediaList({ media }: { media: string }) {
 	}
 
 	async function getData() {
-		await getDocuments(auth.currentUser!.uid, media, listMode).then((snapshot) => {
+		getDocuments(auth.currentUser!.uid, media, listMode).then((snapshot) => {
 			//console.log('get documents promise');
 			setDocList(snapshot.docs);
 		});
@@ -176,13 +176,13 @@ export default function MediaList({ media }: { media: string }) {
 
 			//console.log('Game Added');
 			if (saveMode === 'Add') {
-				await addDocument(auth.currentUser!.uid, media, docData, imageName, image).then(() => {
+				addDocument(auth.currentUser!.uid, media, docData, imageName, image).then(() => {
 					//console.log(docData);
 					toggleAddModal();
 					getData();
 				});
 			} else if (saveMode === 'Edit') {
-				await editDocument(auth.currentUser!.uid, media, docData, editID, imageName, image).then(() => {
+				editDocument(auth.currentUser!.uid, media, docData, editID, imageName, image).then(() => {
 					toggleAddModal();
 					getData();
 				});
@@ -464,7 +464,7 @@ export default function MediaList({ media }: { media: string }) {
 					Return To Top
 				</button>
 
-				<div id="game-screen-sort-add" className={`w-full flex flex-row flex-wrap items-center justify-start mx-auto card p-4 shadow-lg shadow-black`}>
+				<div id="game-screen-sort-add" className={`w-full  flex flex-row flex-wrap items-center justify-start mx-auto card p-4 shadow-lg shadow-black`}>
 					<div className="flex flex-row flex-wrap flex-grow md:justify-start justify-center items-center">
 						{/* <h4 className="mr-4">Year:</h4>
 						<select
