@@ -72,26 +72,32 @@ export default function Home() {
 							</div>
 						</div>
 
-						<div title="Your Stats" className="flex flex-col lg:w-1/3 w-full rounded-xl mx-auto my-10 p-4">
+						<div title="Your Stats" className="flex flex-col w-3/4 rounded-xl mx-auto my-10 p-4">
 							<h2 className="mx-auto mb-8">Your Stats:</h2>
 							{!waiting && (
-								<div className="flex-col flex gap-8">
+								<div className="grid-cols-2 grid gap-8">
 									{!gameSnap?.empty && (
-										<div className="flex-col flex card shadow-md shadow-black">
-											<h3 className="text-center mt-2">Games</h3>
-											<StatCard snapshot={gameSnap!} />
+										<div>
+											<h3 className="text-center my-4">Games</h3>
+											<div className="flex-col flex card shadow-md shadow-black">
+												<StatCard snapshot={gameSnap!} />
+											</div>
 										</div>
 									)}
 									{!bookSnap?.empty && (
-										<div className="flex-col flex card shadow-md shadow-black">
-											<h3 className="text-center mt-2">Books</h3>
-											<StatCard snapshot={bookSnap!} />
+										<div>
+											<h3 className="text-center my-4">Books</h3>
+											<div className="flex-col flex card shadow-md shadow-black">
+												<StatCard snapshot={bookSnap!} />
+											</div>
 										</div>
 									)}
 									{!movieSnap?.empty && (
-										<div className="flex-col flex card shadow-md shadow-black">
-											<h3 className="text-center mt-2">Movies</h3>
-											<StatCard snapshot={movieSnap!} />
+										<div>
+											<h3 className="text-center my-4">Movies</h3>
+											<div className="flex-col flex card shadow-md shadow-black">
+												<StatCard snapshot={movieSnap!} />
+											</div>
 										</div>
 									)}
 								</div>
