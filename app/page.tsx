@@ -72,10 +72,10 @@ export default function Home() {
 							</div>
 						</div>
 
-						<div title="Your Stats" className="flex flex-col w-3/4 rounded-xl mx-auto my-10 p-4">
+						<div title="Your Stats" className="flex flex-col md:w-3/4 w-full rounded-xl mx-auto my-10 p-4">
 							<h2 className="mx-auto mb-8">Your Stats:</h2>
 							{!waiting && (
-								<div className="grid-cols-2 grid gap-8">
+								<div className="md:grid-cols-2 md:grid gap-8 flex flex-col">
 									{!gameSnap?.empty && (
 										<div>
 											<h3 className="text-center my-4">Games</h3>
