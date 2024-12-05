@@ -51,10 +51,10 @@ export default function Home() {
 	return (
 		<>
 			{currentUser && (
-				<section title="Home Page" className="flex flex-col my-10 max-w-full">
+				<div title="Home Page" className="flex flex-col my-10 max-w-full">
 					<h1 className="mx-auto mb-10">Welcome {currentUser!.displayName}</h1>
 					<div id="home-content" className="flex flex-wrap justify-center mt-4 w-full">
-						<section title="Your Latest" className="flex flex-col flex-grow p-4 rounded-xl w-3/4 items-center">
+						<div title="Your Latest" className="flex flex-col flex-grow p-4 rounded-xl w-3/4 items-center">
 							<h2 className="mx-auto mb-4">Your Latest:</h2>
 							<div className="md:grid md:grid-cols-2 md:gap-8 flex flex-col md:w-3/4 w-full justify-start">
 								<div className=" w-full my-4">
@@ -70,14 +70,41 @@ export default function Home() {
 									{latestMovie && <HomeCard doc={latestMovie} media="movies" />}
 								</div>
 							</div>
-						</section>
+						</div>
 
-						{/* <section title="Your Stats" className="flex flex-col lg:w-1/3 w-full rounded-xl mx-auto my-10 p-4">
-							<h2 className="mx-auto">Your Stats:</h2>
-							{!waiting && <StatCard snapshots={{ games: gameSnap!, books: bookSnap! }} />}
-						</section> */}
+						<div title="Your Stats" className="flex flex-col md:w-3/4 w-full rounded-xl mx-auto my-10 p-4">
+							<h2 className="mx-auto mb-8">Your Stats:</h2>
+							{!waiting && (
+								<div className="md:grid-cols-2 md:grid gap-8 flex flex-col">
+									{!gameSnap?.empty && (
+										<div>
+											<h3 className="text-center my-4">Games</h3>
+											<div className="flex-col flex card shadow-md shadow-black">
+												<StatCard snapshot={gameSnap!} />
+											</div>
+										</div>
+									)}
+									{!bookSnap?.empty && (
+										<div>
+											<h3 className="text-center my-4">Books</h3>
+											<div className="flex-col flex card shadow-md shadow-black">
+												<StatCard snapshot={bookSnap!} />
+											</div>
+										</div>
+									)}
+									{!movieSnap?.empty && (
+										<div>
+											<h3 className="text-center my-4">Movies</h3>
+											<div className="flex-col flex card shadow-md shadow-black">
+												<StatCard snapshot={movieSnap!} />
+											</div>
+										</div>
+									)}
+								</div>
+							)}
+						</div>
 					</div>
-				</section>
+				</div>
 			)}
 		</>
 	);
