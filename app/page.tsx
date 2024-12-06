@@ -15,10 +15,12 @@ export default function Home() {
 	const [gameSnap, setGameSnap] = useState<QuerySnapshot>();
 	const [bookSnap, setBookSnap] = useState<QuerySnapshot>();
 	const [movieSnap, setMovieSnap] = useState<QuerySnapshot>();
+	const [tvSnap, setTvSnap] = useState<QuerySnapshot>();
 
 	const [latestGame, setLatestGame] = useState<QueryDocumentSnapshot>();
 	const [latestBook, setLatestBook] = useState<QueryDocumentSnapshot>();
 	const [latestMovie, setLatestMovie] = useState<QueryDocumentSnapshot>();
+	const [latestTv, setLatestTv] = useState<QueryDocumentSnapshot>();
 
 	const [waiting, setWaiting] = useState(true);
 
@@ -26,14 +28,17 @@ export default function Home() {
 		const gameQuerySnap = await getDocuments(currentUser!.uid, 'games', 'complete');
 		const bookQuerySnap = await getDocuments(currentUser!.uid, 'books', 'complete');
 		const movieQuerySnap = await getDocuments(currentUser!.uid, 'movies', 'complete');
+		const tvQuerySnap = await getDocuments(currentUser!.uid, 'tv', 'complete');
 
 		setGameSnap(gameQuerySnap);
 		setBookSnap(bookQuerySnap);
 		setMovieSnap(movieQuerySnap);
+		setTvSnap(tvQuerySnap);
 
 		setLatestGame(gameQuerySnap.docs[0]);
 		setLatestBook(bookQuerySnap.docs[0]);
 		setLatestMovie(movieQuerySnap.docs[0]);
+		setLatestTv(tvQuerySnap.docs[0]);
 
 		setWaiting(false);
 	}
@@ -69,6 +74,10 @@ export default function Home() {
 									<h3 className="mx-auto mb-4 text-center">Movie</h3>
 									{latestMovie && <HomeCard doc={latestMovie} media="movies" />}
 								</div>
+								<div className=" w-full my-4">
+									<h3 className="mx-auto mb-4 text-center">TV</h3>
+									{latestTv && <HomeCard doc={latestTv} media="tv" />}
+								</div>
 							</div>
 						</div>
 
@@ -97,6 +106,14 @@ export default function Home() {
 											<h3 className="text-center my-4">Movies</h3>
 											<div className="flex-col flex card shadow-md shadow-black">
 												<StatCard snapshot={movieSnap!} />
+											</div>
+										</div>
+									)}
+									{!tvSnap?.empty && (
+										<div>
+											<h3 className="text-center my-4">TV</h3>
+											<div className="flex-col flex card shadow-md shadow-black">
+												<StatCard snapshot={tvSnap!} />
 											</div>
 										</div>
 									)}
