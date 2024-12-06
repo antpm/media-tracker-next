@@ -1,5 +1,5 @@
 'use client';
-import { MouseEventHandler, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { QueryDocumentSnapshot } from 'firebase/firestore';
 import Image from 'next/image';
 import { storage } from '@/app/util/firebase/firebase-app';
@@ -22,8 +22,6 @@ export default function HomeCard({ doc, media }: { doc: QueryDocumentSnapshot; m
 	useEffect(() => {
 		getDownloadURL(ref(storage, `/images/${media}/${data.image}`)).then((url) => {
 			setImage(url);
-
-			//console.log('getdownloadurl');
 		});
 		let array: boolean[] = [false, false, false, false, false];
 		for (let i = 0; i < data.rating; i++) {
@@ -51,6 +49,12 @@ export default function HomeCard({ doc, media }: { doc: QueryDocumentSnapshot; m
 				return (
 					<>
 						<p>Director: {data.director}</p>
+						<p>Starring: {data.starring}</p>
+					</>
+				);
+			case 'tv':
+				return (
+					<>
 						<p>Starring: {data.starring}</p>
 					</>
 				);

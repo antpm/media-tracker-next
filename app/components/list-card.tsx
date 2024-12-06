@@ -51,6 +51,12 @@ export default function ListCard({ doc, editDoc, viewDoc, media }: { doc: QueryD
 						<p className="hidden lg:block">Starring: {data.starring}</p>
 					</>
 				);
+			case 'tv':
+				return (
+					<>
+						<p className="hidden lg:block">Starring: {data.starring}</p>
+					</>
+				);
 			default:
 				return <></>;
 		}
