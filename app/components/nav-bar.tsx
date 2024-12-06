@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { HomeIcon, GameIcon, BookIcon, AccountIcon, LogOutIcon, Logo, Menu, MovieIcon } from '@/public/icons/icons';
+import { HomeIcon, GameIcon, BookIcon, AccountIcon, LogOutIcon, Logo, Menu, MovieIcon, TVIcon } from '@/public/icons/icons';
 import Link from 'next/link';
 import Image from 'next/image';
 import { auth } from '../util/firebase/firebase-app';
@@ -39,6 +39,7 @@ export default function Navbar() {
 		{ name: 'Games', icon: GameIcon, path: '/games' },
 		{ name: 'Books', icon: BookIcon, path: '/books' },
 		{ name: 'Movies', icon: MovieIcon, path: '/movies' },
+		{ name: 'TV', icon: TVIcon, path: '/tv' },
 	];
 
 	return (

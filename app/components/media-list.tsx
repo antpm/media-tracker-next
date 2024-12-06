@@ -55,7 +55,7 @@ export default function MediaList({ media }: { media: string }) {
 	//book fields
 	const [author, setAuthor] = useState('');
 
-	//movie fields
+	//movie/tv fields
 	const [director, setDirector] = useState('');
 	const [starring, setStarring] = useState('');
 
@@ -172,6 +172,16 @@ export default function MediaList({ media }: { media: string }) {
 						image: imageName,
 					};
 					break;
+				case 'tv':
+					docData = {
+						title: title,
+						starring: starring,
+						genre: genre,
+						complete: Timestamp.fromDate(complete),
+						rating: rating,
+						image: imageName,
+					};
+					break;
 			}
 
 			//console.log('Game Added');
@@ -211,6 +221,9 @@ export default function MediaList({ media }: { media: string }) {
 			valid = false;
 			setErrorMsg('Director field is required');
 		} else if (media === 'movies' && starring === '') {
+			valid = false;
+			setErrorMsg('Starring field is required');
+		} else if (media === 'tv' && starring === '') {
 			valid = false;
 			setErrorMsg('Starring field is required');
 		} else if (genre === '') {
@@ -260,6 +273,10 @@ export default function MediaList({ media }: { media: string }) {
 		}
 		if (media === 'movies') {
 			setDirector(doc.get('director'));
+			setStarring(doc.get('starring'));
+		}
+
+		if (media === 'tv') {
 			setStarring(doc.get('starring'));
 		}
 		setGenre(doc.get('genre'));
@@ -357,7 +374,23 @@ export default function MediaList({ media }: { media: string }) {
 						</div>
 					</>
 				);
-				break;
+			case 'tv':
+				return (
+					<>
+						<div className="w-full text-end">
+							<label className="text-right flex-grow">Starring*:</label>
+							<input
+								type="text"
+								className="text-black mb-4"
+								onChange={(e) => {
+									setStarring(e.target.value);
+								}}
+								value={starring}
+								placeholder="Starring"
+							/>
+						</div>
+					</>
+				);
 			default:
 				return <></>;
 		}
