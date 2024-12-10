@@ -489,7 +489,7 @@ export default function MediaList({ media }: { media: string }) {
 					<p>{viewDoc?.get('rating')}</p>
 				</div>
 			</ModalWrapper>
-			<section title={`${media}`} className="md:w-3/5 w-full h-fit mx-auto my-10">
+			<section title={`${media}`} className="2xl:w-3/5 w-full h-fit mx-auto my-10">
 				<button
 					className={`${topScroll ? 'visible opacity-100 bottom-8' : 'invisible opacity-0 bottom-0'} fixed right-8  button transition-all duration-500 ease-in-out items-center`}
 					onClick={toTop}>
