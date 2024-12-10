@@ -69,17 +69,19 @@ export default function HomeCard({ doc, media }: { doc: QueryDocumentSnapshot; m
 				<HomeLoadingCard />
 			) : (
 				<div className="card md:flex-row flex-col shadow-md shadow-slate-950 p-4 items-center min-h-72 w-full justify-start">
-					<img src={image} className="max-h-52 max-w-52 mx-2 rounded-md" />
-					<div className=" m-2 min-h-60 flex flex-col justify-evenly text-lg gap-2 w-full">
-						<p className="text-2xl">{data.title}</p>
-						{showUniqueData()}
-						<p>Genre: {data.genre}</p>
-						<p>{formattedDate}</p>
+					<div className="mx-2">
+						<img src={image} className="max-h-52 max-w-52 mx-2 mb-4 rounded-md" />
 						<div className="w-full flex flex-row justify-center mx-auto">
 							{stars?.map((star, i) => {
 								return <Image key={i} src={Star} alt="star" className={`${star ? 'opacity-100' : 'opacity-25'} md:w-9 md:h-9 w-6 h-6`} />;
 							})}
 						</div>
+					</div>
+					<div className=" m-2 min-h-60 flex flex-col justify-evenly text-lg gap-2 w-full">
+						<p className="text-2xl">{data.title}</p>
+						{showUniqueData()}
+						<p>Genre: {data.genre}</p>
+						<p>{formattedDate}</p>
 					</div>
 				</div>
 			)}

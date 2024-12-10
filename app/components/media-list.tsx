@@ -489,7 +489,7 @@ export default function MediaList({ media }: { media: string }) {
 					<p>{viewDoc?.get('rating')}</p>
 				</div>
 			</ModalWrapper>
-			<section title={`${media}`} className="2xl:w-3/5 w-full h-fit mx-auto my-10">
+			<section title={`${media}`} className=" w-full h-fit mx-auto my-10 p-10">
 				<button
 					className={`${topScroll ? 'visible opacity-100 bottom-8' : 'invisible opacity-0 bottom-0'} fixed right-8  button transition-all duration-500 ease-in-out items-center`}
 					onClick={toTop}>
@@ -497,7 +497,7 @@ export default function MediaList({ media }: { media: string }) {
 					Return To Top
 				</button>
 
-				<div id="game-screen-sort-add" className={`w-full  flex flex-row flex-wrap items-center justify-start mx-auto card p-4 shadow-lg shadow-black`}>
+				<div id="game-screen-sort-add" className={`w-full 2xl:w-3/4  flex flex-row flex-wrap items-center justify-start mx-auto card p-4 shadow-lg shadow-black`}>
 					<div className="flex flex-row flex-wrap flex-grow md:justify-start justify-center items-center">
 						{/* <h4 className="mr-4">Year:</h4>
 						<select
