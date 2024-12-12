@@ -61,6 +61,7 @@ export default function MediaList({ media }: { media: string }) {
 
 	const [viewDoc, setViewDoc] = useState<QueryDocumentSnapshot | null>(null);
 	const [viewDocImage, setViewDocImage] = useState('');
+	const [viewStars, setViewStars] = useState<boolean[]>([false, false, false, false, false]);
 
 	const isBrowser = () => typeof window !== 'undefined';
 	const [topScroll, setTopScroll] = useState<Boolean>(false);
@@ -288,6 +289,18 @@ export default function MediaList({ media }: { media: string }) {
 		toggleAddModal();
 	}
 
+	function callMobileViewModal(doc: QueryDocumentSnapshot) {
+		setViewDoc(doc);
+		let stars = [false, false, false, false, false];
+
+		for (let i = 0; i < doc.get('rating'); i++) {
+			stars[i] = true;
+		}
+		setViewStars(stars);
+		getImage(doc.get('image'));
+		toggleViewModal();
+	}
+
 	function toggleViewModal() {
 		setViewModal(!viewModal);
 		if (viewModal) setViewDocImage('');
@@ -477,19 +490,23 @@ export default function MediaList({ media }: { media: string }) {
 				</div>
 			</ModalWrapper>
 			<ModalWrapper modalState={viewModal} modalToggle={toggleViewModal}>
-				<div className="columns-1 w-4/5 mx-auto">
-					<div className={` mx-auto w-full h-72 place-content-center`}>
-						<img src={viewDocImage} alt="" className="m-auto" />
+				<div className="columns-1 w-4/5 mx-auto text-center">
+					<div className={` mx-auto w-full mb-4 place-content-center`}>
+						<img src={viewDocImage} alt="" className="m-auto max-h-64" />
 					</div>
 					<p>{viewDoc?.get('title')}</p>
 					<p>{viewDoc?.get('developer')}</p>
 					<p>{viewDoc?.get('platform')}</p>
 					<p>{viewDoc?.get('genre')}</p>
 					<p>{dateFormat.format(viewDoc?.get('complete').toDate())}</p>
-					<p>{viewDoc?.get('rating')}</p>
+					<div className="w-fit flex flex-row mx-auto md:hidden">
+						{viewStars?.map((star, i) => {
+							return <Image key={i} src={Star} alt="star" width={36} height={36} className={`${star ? 'opacity-100' : 'opacity-25'}`} />;
+						})}
+					</div>
 				</div>
 			</ModalWrapper>
-			<section title={`${media}`} className=" w-full h-fit mx-auto my-10 p-10">
+			<section title={`${media}`} className=" w-full h-fit mx-auto my-10 lg:p-10">
 				<button
 					className={`${topScroll ? 'visible opacity-100 bottom-8' : 'invisible opacity-0 bottom-0'} fixed right-8  button transition-all duration-500 ease-in-out items-center`}
 					onClick={toTop}>
@@ -563,9 +580,7 @@ export default function MediaList({ media }: { media: string }) {
 												enableEditing(doc);
 											}}
 											viewDoc={() => {
-												setViewDoc(doc);
-												getImage(doc.get('image'));
-												toggleViewModal();
+												callMobileViewModal(doc);
 											}}
 											media={media}
 										/>

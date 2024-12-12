@@ -20,6 +20,7 @@ import CheckIcon from './check.svg';
 import MovieIcon from './movie.svg';
 import UpArrow from './up_arrow.svg';
 import TVIcon from './tv.svg';
+import ViewIcon from './view.svg';
 
 export {
 	GameIcon,
@@ -44,4 +45,5 @@ export {
 	MovieIcon,
 	UpArrow,
 	TVIcon,
+	ViewIcon,
 };
