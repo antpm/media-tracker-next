@@ -36,6 +36,7 @@ export default function MediaList({ media }: { media: string }) {
 	const [errorsMsg, setErrorMsg] = useState('');
 	const [oldImageName, setOldImageName] = useState('');
 	const [editID, setEditID] = useState('');
+	const [listYear, setListYear] = useState<Timestamp>(Timestamp.now);
 
 	//common fields
 	const [title, setTitle] = useState('');
@@ -73,7 +74,12 @@ export default function MediaList({ media }: { media: string }) {
 	});
 
 	useEffect(() => {
-		getData();
+		const currentDate = new Date();
+		const year = new Date(currentDate.getFullYear(), 0, 1);
+		const fireBaseYear = Timestamp.fromDate(year);
+		setListYear(fireBaseYear);
+
+		getData(fireBaseYear);
 
 		window.addEventListener('scroll', handleScroll);
 
@@ -115,8 +121,8 @@ export default function MediaList({ media }: { media: string }) {
 		}
 	}
 
-	async function getData() {
-		getDocuments(auth.currentUser!.uid, media, listMode).then((snapshot) => {
+	async function getData(year: Timestamp) {
+		getDocuments(auth.currentUser!.uid, media, listMode, year).then((snapshot) => {
 			//console.log('get documents promise');
 			setDocList(snapshot.docs);
 		});
@@ -190,12 +196,12 @@ export default function MediaList({ media }: { media: string }) {
 				addDocument(auth.currentUser!.uid, media, docData, imageName, image).then(() => {
 					//console.log(docData);
 					toggleAddModal();
-					getData();
+					getData(listYear);
 				});
 			} else if (saveMode === 'Edit') {
 				editDocument(auth.currentUser!.uid, media, docData, editID, imageName, image).then(() => {
 					toggleAddModal();
-					getData();
+					getData(listYear);
 				});
 			}
 		} else {

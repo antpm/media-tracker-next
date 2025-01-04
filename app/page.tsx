@@ -2,7 +2,7 @@
 
 import { auth, getDocuments } from './util/firebase/firebase-app';
 import { onAuthStateChanged } from 'firebase/auth';
-import { QueryDocumentSnapshot, QuerySnapshot } from 'firebase/firestore';
+import { QueryDocumentSnapshot, QuerySnapshot, Timestamp } from 'firebase/firestore';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import HomeCard from './components/home-card';
@@ -25,10 +25,14 @@ export default function Home() {
 	const [waiting, setWaiting] = useState(true);
 
 	async function getData() {
-		const gameQuerySnap = await getDocuments(currentUser!.uid, 'games', 'complete');
-		const bookQuerySnap = await getDocuments(currentUser!.uid, 'books', 'complete');
-		const movieQuerySnap = await getDocuments(currentUser!.uid, 'movies', 'complete');
-		const tvQuerySnap = await getDocuments(currentUser!.uid, 'tv', 'complete');
+		const currentDate = new Date();
+		const year = new Date(currentDate.getFullYear(), 0, 1);
+		const fireBaseYear = Timestamp.fromDate(year);
+
+		const gameQuerySnap = await getDocuments(currentUser!.uid, 'games', 'complete', fireBaseYear);
+		const bookQuerySnap = await getDocuments(currentUser!.uid, 'books', 'complete', fireBaseYear);
+		const movieQuerySnap = await getDocuments(currentUser!.uid, 'movies', 'complete', fireBaseYear);
+		const tvQuerySnap = await getDocuments(currentUser!.uid, 'tv', 'complete', fireBaseYear);
 
 		setGameSnap(gameQuerySnap);
 		setBookSnap(bookQuerySnap);

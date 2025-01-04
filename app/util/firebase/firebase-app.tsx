@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { collection, getDocs, getFirestore, orderBy, query, QuerySnapshot, addDoc, doc, setDoc } from 'firebase/firestore';
+import { collection, getDocs, getFirestore, orderBy, query, QuerySnapshot, addDoc, doc, setDoc, Timestamp, where } from 'firebase/firestore';
 import { getStorage, uploadBytes, ref } from 'firebase/storage';
 import { firebaseConfig } from './config';
 
@@ -9,9 +9,9 @@ export const auth = getAuth(firebaseApp);
 export const db = getFirestore(firebaseApp);
 export const storage = getStorage(firebaseApp);
 
-export async function getDocuments(userID: string, table: string, sort: string): Promise<QuerySnapshot> {
+export async function getDocuments(userID: string, table: string, sort: string, year: Timestamp): Promise<QuerySnapshot> {
 	const ref = collection(db, 'users', userID, table);
-	const q = query(ref, orderBy(sort, 'desc'));
+	const q = query(ref, where('complete', '>=', year), orderBy(sort, 'desc'));
 	const querySnap = await getDocs(q);
 
 	return querySnap;
