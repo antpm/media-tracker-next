@@ -36,7 +36,9 @@ export default function MediaList({ media }: { media: string }) {
 	const [errorsMsg, setErrorMsg] = useState('');
 	const [oldImageName, setOldImageName] = useState('');
 	const [editID, setEditID] = useState('');
-	const [listYear, setListYear] = useState<Timestamp>(Timestamp.now);
+	const [listYear, setListYear] = useState<number>(2025);
+	const [select, setSelect] = useState<string>('2025');
+	const [openSelect, setOpenSelect] = useState<boolean>(false);
 
 	//common fields
 	const [title, setTitle] = useState('');
@@ -46,8 +48,6 @@ export default function MediaList({ media }: { media: string }) {
 	const [image, setImage] = useState<File | null>(null);
 	//in order to get the file input to reset when the modal closes, it is assigned a key which gets changed on close, causing it to be re-rendered
 	const [imageKey, setImageKey] = useState(Date());
-	const [select, setSelect] = useState<string>('2024');
-	const [openSelect, setOpenSelect] = useState<boolean>(false);
 
 	//game fields
 	const [platform, setPlatform] = useState('');
@@ -74,12 +74,11 @@ export default function MediaList({ media }: { media: string }) {
 	});
 
 	useEffect(() => {
-		const currentDate = new Date();
-		const year = new Date(currentDate.getFullYear(), 0, 1);
-		const fireBaseYear = Timestamp.fromDate(year);
-		setListYear(fireBaseYear);
+		const currentYear = new Date().getFullYear();
 
-		getData(fireBaseYear);
+		setListYear(currentYear);
+
+		getData(currentYear);
 
 		window.addEventListener('scroll', handleScroll);
 
@@ -121,9 +120,8 @@ export default function MediaList({ media }: { media: string }) {
 		}
 	}
 
-	async function getData(year: Timestamp) {
+	async function getData(year: number) {
 		getDocuments(auth.currentUser!.uid, media, listMode, year).then((snapshot) => {
-			//console.log('get documents promise');
 			setDocList(snapshot.docs);
 		});
 
@@ -144,6 +142,7 @@ export default function MediaList({ media }: { media: string }) {
 				imageName = generateImageName(30);
 			}
 
+			complete.setHours(0, 0, 0, 0);
 			var docData = {};
 
 			switch (media) {
@@ -191,10 +190,8 @@ export default function MediaList({ media }: { media: string }) {
 					break;
 			}
 
-			//console.log('Game Added');
 			if (saveMode === 'Add') {
 				addDocument(auth.currentUser!.uid, media, docData, imageName, image).then(() => {
-					//console.log(docData);
 					toggleAddModal();
 					getData(listYear);
 				});
@@ -522,16 +519,18 @@ export default function MediaList({ media }: { media: string }) {
 
 				<div id="game-screen-sort-add" className={`w-full 2xl:w-3/4  flex flex-row flex-wrap items-center justify-start mx-auto card p-4 shadow-lg shadow-black`}>
 					<div className="flex flex-row flex-wrap flex-grow md:justify-start justify-center items-center">
-						{/* <h4 className="mr-4">Year:</h4>
+						<h4 className="mr-4">Year:</h4>
 						<select
 							onChange={(e) => {
 								setSelect(e.target.value);
+								//setListYear(Timestamp.fromDate(new Date(parseInt(select), 0, 1)));
+								getData(parseInt(e.target.value));
 							}}
 							value={select}
 							className="rounded-md text-black p-2 mr-4">
 							<option value={2024}>2024</option>
 							<option value={2025}>2025</option>
-						</select> */}
+						</select>
 
 						<h4 className="mr-4">Sort By:</h4>
 						<div className="w-fit flex toggle-button-container shadow-md shadow-black">

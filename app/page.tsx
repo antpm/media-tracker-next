@@ -25,14 +25,12 @@ export default function Home() {
 	const [waiting, setWaiting] = useState(true);
 
 	async function getData() {
-		const currentDate = new Date();
-		const year = new Date(currentDate.getFullYear(), 0, 1);
-		const fireBaseYear = Timestamp.fromDate(year);
+		const currentYear = new Date().getFullYear();
 
-		const gameQuerySnap = await getDocuments(currentUser!.uid, 'games', 'complete', fireBaseYear);
-		const bookQuerySnap = await getDocuments(currentUser!.uid, 'books', 'complete', fireBaseYear);
-		const movieQuerySnap = await getDocuments(currentUser!.uid, 'movies', 'complete', fireBaseYear);
-		const tvQuerySnap = await getDocuments(currentUser!.uid, 'tv', 'complete', fireBaseYear);
+		const gameQuerySnap = await getDocuments(currentUser!.uid, 'games', 'complete', currentYear);
+		const bookQuerySnap = await getDocuments(currentUser!.uid, 'books', 'complete', currentYear);
+		const movieQuerySnap = await getDocuments(currentUser!.uid, 'movies', 'complete', currentYear);
+		const tvQuerySnap = await getDocuments(currentUser!.uid, 'tv', 'complete', currentYear);
 
 		setGameSnap(gameQuerySnap);
 		setBookSnap(bookQuerySnap);

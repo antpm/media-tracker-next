@@ -9,9 +9,11 @@ export const auth = getAuth(firebaseApp);
 export const db = getFirestore(firebaseApp);
 export const storage = getStorage(firebaseApp);
 
-export async function getDocuments(userID: string, table: string, sort: string, year: Timestamp): Promise<QuerySnapshot> {
+export async function getDocuments(userID: string, table: string, sort: string, year: number): Promise<QuerySnapshot> {
+	const startDate = Timestamp.fromDate(new Date(year, 0, 1));
+	const endDate = Timestamp.fromDate(new Date(year, 11, 31));
 	const ref = collection(db, 'users', userID, table);
-	const q = query(ref, where('complete', '>=', year), orderBy(sort, 'desc'));
+	const q = query(ref, where('complete', '>=', startDate), where('complete', '<=', endDate), orderBy(sort, 'desc'));
 	const querySnap = await getDocs(q);
 
 	return querySnap;
@@ -19,45 +21,21 @@ export async function getDocuments(userID: string, table: string, sort: string, 
 
 export async function addDocument(userID: string, table: string, docData: {}, imageName: string, image: File | null) {
 	const fsRef = collection(db, 'users', userID, table);
-	await addDoc(fsRef, docData)
-		.then(() => {
-			//console.log('doc added');
-		})
-		.catch((error) => {
-			//console.log('Error: ', error.message);
-		});
+	await addDoc(fsRef, docData);
 
 	const storageRef = ref(storage, `/images/${table}/${imageName}`);
 	if (image != null) {
-		await uploadBytes(storageRef, image)
-			.then(() => {
-				//console.log('image uploaded');
-			})
-			.catch((error) => {
-				//console.log('Error: ', error.message);
-			});
+		await uploadBytes(storageRef, image);
 	}
 }
 
 export async function editDocument(userID: string, table: string, docData: {}, docID: string, imageName: string, image: File | null) {
 	const fsRef = doc(db, 'users', userID, table, docID);
-	await setDoc(fsRef, docData)
-		.then(() => {
-			//console.log('doc edited');
-		})
-		.catch((error) => {
-			//console.log('Error: ', error.message);
-		});
+	await setDoc(fsRef, docData);
 
 	const storageRef = ref(storage, `/images/${table}/${imageName}`);
 	if (image != null) {
-		await uploadBytes(storageRef, image)
-			.then(() => {
-				//console.log('image uploaded');
-			})
-			.catch((error) => {
-				//console.log('Error: ', error.message);
-			});
+		await uploadBytes(storageRef, image);
 	}
 }
 
