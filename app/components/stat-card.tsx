@@ -63,30 +63,33 @@ export default function StatCard({ snapshot }: { snapshot: QuerySnapshot }) {
 	}, []);
 
 	return (
-		<div className="mx-auto flex flex-col my-4 w-full">
-			<div className="flex flex-row gap-4 mx-auto mb-4"></div>
-			<h5 className="mx-auto">Entries Per Month:</h5>
-			<ResponsiveContainer width={'90%'} height={250} className="bg-gray-100 mx-auto rounded-md py-2 mb-2">
-				<BarChart data={monthEntryCount} width={600} height={250} margin={{ top: 5, right: 10, left: -40, bottom: 5 }} className="text-black">
-					<CartesianGrid />
-					<XAxis dataKey={'name'} angle={45} />
-					<YAxis />
-					<Tooltip />
-					<Bar dataKey="count" fill="#5710c9" />
-				</BarChart>
-			</ResponsiveContainer>
-			<p className="mx-auto mb-8">Total Entries: {snapshot.size}</p>
-			<h5 className="mx-auto">Entries Per Rating:</h5>
-			<ResponsiveContainer width={'90%'} height={250} className="bg-gray-100 mx-auto rounded-md py-2 mb-2">
-				<BarChart data={ratingEntryCount} width={600} height={250} margin={{ top: 5, right: 10, left: -40, bottom: 5 }} className="text-black">
-					<CartesianGrid />
-					<XAxis dataKey={'name'} />
-					<YAxis />
-					<Tooltip />
-					<Bar dataKey="count" fill="#5710c9" />
-				</BarChart>
-			</ResponsiveContainer>
-			<p className="mx-auto">Average Rating: {avgRating?.toFixed(2)}</p>
+		<div className="mx-auto flex flex-row my-4 w-full">
+			<div className="flex flex-col gap-4 w-1/2 mx-auto">
+				<h5 className="mx-auto">Entries Per Month:</h5>
+				<ResponsiveContainer width={'90%'} height={250} className="bg-gray-100 mx-auto rounded-md py-2 mb-2">
+					<BarChart data={monthEntryCount} width={600} height={250} margin={{ top: 5, right: 10, left: -40, bottom: 5 }} className="text-black">
+						<CartesianGrid />
+						<XAxis dataKey={'name'} angle={45} />
+						<YAxis />
+						<Tooltip />
+						<Bar dataKey="count" fill="#5710c9" />
+					</BarChart>
+				</ResponsiveContainer>
+				<p className="mx-auto mb-8">Total Entries: {snapshot.size}</p>
+			</div>
+			<div className="flex flex-col gap-4 mx-auto mb-4 w-1/2">
+				<h5 className="mx-auto">Entries Per Rating:</h5>
+				<ResponsiveContainer width={'90%'} height={250} className="bg-gray-100 mx-auto rounded-md py-2 mb-2">
+					<BarChart data={ratingEntryCount} width={600} height={250} margin={{ top: 5, right: 10, left: -40, bottom: 5 }} className="text-black">
+						<CartesianGrid />
+						<XAxis dataKey={'name'} />
+						<YAxis />
+						<Tooltip />
+						<Bar dataKey="count" fill="#5710c9" />
+					</BarChart>
+				</ResponsiveContainer>
+				<p className="mx-auto">Average Rating: {avgRating?.toFixed(2)}</p>
+			</div>
 		</div>
 	);
 }
