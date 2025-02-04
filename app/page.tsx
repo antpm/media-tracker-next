@@ -82,46 +82,6 @@ export default function Home() {
 								</div>
 							</div>
 						</div>
-
-						<div title="Your Stats" className="flex flex-col md:w-3/4 w-full rounded-xl mx-auto my-10 p-4">
-							<h2 className="mx-auto mb-8">Your Stats:</h2>
-							{!waiting && (
-								<div className="md:grid-cols-2 md:grid gap-8 flex flex-col">
-									{!gameSnap?.empty && (
-										<div>
-											<h3 className="text-center my-4">Games</h3>
-											<div className="flex-col flex card shadow-md shadow-black">
-												<StatCard snapshot={gameSnap!} />
-											</div>
-										</div>
-									)}
-									{!bookSnap?.empty && (
-										<div>
-											<h3 className="text-center my-4">Books</h3>
-											<div className="flex-col flex card shadow-md shadow-black">
-												<StatCard snapshot={bookSnap!} />
-											</div>
-										</div>
-									)}
-									{!movieSnap?.empty && (
-										<div>
-											<h3 className="text-center my-4">Movies</h3>
-											<div className="flex-col flex card shadow-md shadow-black">
-												<StatCard snapshot={movieSnap!} />
-											</div>
-										</div>
-									)}
-									{!tvSnap?.empty && (
-										<div>
-											<h3 className="text-center my-4">TV</h3>
-											<div className="flex-col flex card shadow-md shadow-black">
-												<StatCard snapshot={tvSnap!} />
-											</div>
-										</div>
-									)}
-								</div>
-							)}
-						</div>
 					</div>
 				</div>
 			)}
